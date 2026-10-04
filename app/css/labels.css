@@ -1,0 +1,47 @@
+@page { size: A4; margin: 8mm; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: #e5e7eb; color: #000; }
+.controls { background: #0f172a; color: #f1f5f9; padding: 12px 20px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; position: sticky; top: 0; z-index: 2; }
+.controls select, .controls button { font: inherit; padding: 6px 10px; border-radius: 8px; }
+.controls button { background: #16a34a; color: #fff; border: 0; font-weight: 700; cursor: pointer; }
+.controls .tip { flex-basis: 100%; margin: 0; font-size: .85rem; color: #94a3b8; }
+.muted { color: #94a3b8; }
+
+.sheet { width: 194mm; margin: 12px auto; background: #fff; padding: 0; display: flex; flex-wrap: wrap; align-content: flex-start; }
+
+.label {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+  padding: 2.5mm; break-inside: avoid; page-break-inside: avoid; overflow: hidden;
+}
+.cut .label { outline: 0.2mm dashed #888; outline-offset: -0.1mm; }
+.label svg { display: block; }
+.label .title { font-weight: 800; line-height: 1.1; margin-top: 1mm; overflow-wrap: break-word; hyphens: auto; }
+.label .code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 7pt; color: #333; margin-top: .5mm; }
+.label .kind { font-size: 6.5pt; text-transform: uppercase; letter-spacing: .06em; color: #555; }
+
+/* бейдж команды: горизонтальный, крупное название */
+.size-badge .label { width: 90mm; height: 60mm; flex-direction: row; gap: 3mm; text-align: left; }
+.size-badge .label svg { width: 46mm; height: 46mm; flex: none; }
+.size-badge .label .title { font-size: 15pt; }
+.size-badge .label .text { display: flex; flex-direction: column; }
+
+.size-large .label { width: 60mm; height: 60mm; }
+.size-large .label svg { width: 44mm; height: 44mm; }
+.size-large .label .title { font-size: 10pt; }
+
+.size-medium .label { width: 45mm; height: 45mm; }
+.size-medium .label svg { width: 32mm; height: 32mm; }
+.size-medium .label .title { font-size: 7.5pt; }
+
+.size-small .label { width: 32mm; height: 32mm; padding: 1.5mm; }
+.size-small .label svg { width: 22mm; height: 22mm; }
+.size-small .label .title { font-size: 5.5pt; }
+.size-small .label .code, .size-small .label .kind { display: none; }
+
+.empty { padding: 40px; text-align: center; width: 100%; color: #555; }
+
+@media print {
+  body { background: #fff; }
+  .no-print { display: none !important; }
+  .sheet { margin: 0; width: auto; }
+}

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>АрхБухта · Админ</title>
+  <meta name="theme-color" content="#0f172a">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+  <header class="topbar no-print">
+    <div class="brand">АрхБухта · админ</div>
+    <div class="topbar-right">
+      <a href="index.html" class="btn-icon">← Касса</a>
+      <button id="btn-lock" class="btn-icon" title="Выйти">🔒</button>
+    </div>
+  </header>
+
+  <nav class="tabs no-print" id="tabs">
+    <button data-tab="holdings" class="active">На руках</button>
+    <button data-tab="summary">Итоги</button>
+    <button data-tab="log">Журнал</button>
+    <button data-tab="inventory">Инвентарь и QR</button>
+    <button data-tab="teams">Команды</button>
+    <button data-tab="consumables">Расходники</button>
+    <button data-tab="settings">Настройки</button>
+  </nav>
+
+  <main id="view" class="admin-main"></main>
+
+  <div id="toast" class="toast" role="alert"></div>
+
+  <div id="pin-gate" class="pin-gate">
+    <form id="pin-form" class="modal-box">
+      <h2>Вход для организаторов</h2>
+      <p class="muted">Введите PIN (по умолчанию 0000 — смените в настройках).</p>
+      <input id="pin-input" class="input-big" type="password" inputmode="numeric" autocomplete="off">
+      <div class="row"><a href="index.html" class="btn btn-ghost">Назад</a><button class="btn btn-go">Войти</button></div>
+    </form>
+  </div>
+
+  <script src="vendor/qrcode.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/logic.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

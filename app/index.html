@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>АрхБухта · Инструменты</title>
+  <meta name="theme-color" content="#0f172a">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body class="kiosk-body" data-screen="idle">
+  <div id="flash"></div>
+
+  <header class="topbar">
+    <div class="brand"><span id="brand-name">АрхБухта</span> · касса инструментов</div>
+    <div class="topbar-right">
+      <span id="clock" class="clock"></span>
+      <button id="btn-fullscreen" class="btn-icon" title="Во весь экран">⛶</button>
+      <a href="admin.html" class="btn-icon" title="Админ">⚙</a>
+    </div>
+  </header>
+
+  <main class="kiosk">
+    <section class="cam">
+      <div class="cam-box">
+        <video id="video" muted playsinline></video>
+        <div class="cam-frame"></div>
+      </div>
+      <div id="cam-status" class="cam-status">Включаем камеру…</div>
+      <button id="btn-manual" class="btn btn-ghost btn-small">Ввести код вручную</button>
+      <p id="setup-hint" class="setup-hint" hidden>База пуста. Добавьте команды и инструменты в <a href="admin.html">админке</a>.</p>
+    </section>
+    <section id="screen" class="screen" aria-live="polite"></section>
+  </main>
+
+  <div id="toast" class="toast" role="alert"></div>
+  <div id="modal" class="modal" hidden></div>
+
+  <div id="start-overlay" class="start-overlay">
+    <div>
+      <div class="big-icon">👆</div>
+      <h1>Нажмите, чтобы начать</h1>
+      <p>Включится звук и полноэкранный режим</p>
+    </div>
+  </div>
+
+  <script src="vendor/jsQR.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/logic.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/feedback.js"></script>
+  <script src="js/scanner.js"></script>
+  <script src="js/kiosk.js"></script>
+</body>
+</html>
