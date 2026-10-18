@@ -488,7 +488,11 @@
     if (!file) return;
     try {
       var data = JSON.parse(await file.text());
-      if (!root.confirm('Заменить ВСЕ текущие данные содержимым файла «' + file.name + '»?')) return;
+      var parts = Object.keys(L.BACKUP_PARTS).filter(function (k) { return data && data.data && k in data.data; });
+      var kept = Object.keys(L.BACKUP_PARTS).filter(function (k) { return parts.indexOf(k) === -1; });
+      if (!root.confirm('Загрузить «' + file.name + '»?\n\nБудут ЗАМЕНЕНЫ: ' + parts.map(function (k) { return L.BACKUP_PARTS[k]; }).join(', ') +
+        (kept.length ? '\nОстанутся как есть: ' + kept.map(function (k) { return L.BACKUP_PARTS[k]; }).join(', ') : '') +
+        '\n\nСначала скачайте копию текущей базы, если она нужна.')) return;
       await L.importAll(data);
       toast('ok', 'База восстановлена');
       await refresh();

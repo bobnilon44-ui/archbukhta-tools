@@ -242,3 +242,26 @@ test('резервная копия: экспорт и восстановлен�
   assert.equal((await db.getOne('items', 'TSIRPIL-01')).holderTeamId, futurum.id);
   await rejectsWith(L.importAll({ foo: 1 }), 'BAD_BACKUP');
 });
+
+test('частичная загрузка: файл только с инвентарём сохраняет команды и настройки', async () => {
+  await AB_setPin('4321');
+  await L.issue(futurum.id, ['TSIRPIL-01']);
+  const inv = {
+    app: 'archbukhta-tools', format: 1,
+    data: {
+      toolTypes: [{ id: 'LOBZ', name: 'Лобзик', kind: 'tool', limit: 2 }],
+      items: [{ id: 'LOBZ-01', typeId: 'LOBZ', label: 'Лобзик К-304', status: 'in', holderTeamId: null, issuedAt: null }],
+      consumables: [],
+      operations: []
+    }
+  };
+  await L.importAll(inv);
+  const s = await L.snapshot();
+  assert.deepEqual(s.teams.map((t) => t.name).sort(), ['Архистра', 'Футурум'], 'команды на месте');
+  assert.equal(s.settings.adminPin, '4321', 'настройки на месте');
+  assert.deepEqual(s.items.map((i) => i.id), ['LOBZ-01'], 'старый инвентарь заменён');
+  assert.equal(s.consumables.length, 0);
+  assert.equal(s.ops.length, 0, 'журнал очищен');
+});
+
+function AB_setPin(pin) { return db.setSettings({ adminPin: pin }); }

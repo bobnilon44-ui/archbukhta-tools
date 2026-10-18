@@ -687,13 +687,21 @@
     });
   }
 
+  var BACKUP_PARTS = {
+    teams: 'команды', toolTypes: 'типы инструментов', items: 'инструменты', consumables: 'расходники',
+    operations: 'журнал', settings: 'настройки'
+  };
+
   function importAll(backup) {
     if (!backup || backup.app !== 'archbukhta-tools' || !backup.data) {
       return Promise.reject(AppError('BAD_BACKUP', 'Это не файл резервной копии АрхБухты.'));
     }
+    // Разделы, которых нет в файле, не трогаем: так файл с одним инвентарём
+    // заменяет инструменты и журнал, но сохраняет команды и настройки.
     return db.run(db.ALL_STORES, 'readwrite', async function (tx) {
       for (var i = 0; i < db.ALL_STORES.length; i++) {
         var name = db.ALL_STORES[i];
+        if (!Object.prototype.hasOwnProperty.call(backup.data, name)) continue;
         await db.req(tx.objectStore(name).clear());
         var rows = backup.data[name] || [];
         for (var j = 0; j < rows.length; j++) await db.put(tx, name, rows[j]);
@@ -727,7 +735,7 @@
     reportTeams: reportTeams, reportConsumables: reportConsumables,
     CSV: CSV, toCSV: toCSV, OP_NAMES: OP_NAMES,
     fmtTime: fmtTime, fmtDuration: fmtDuration, mapToText: mapToText,
-    exportAll: exportAll, importAll: importAll, wipeAll: wipeAll
+    exportAll: exportAll, importAll: importAll, BACKUP_PARTS: BACKUP_PARTS, wipeAll: wipeAll
   };
 
   if (typeof module !== 'undefined' && module.exports) module.exports = AB.logic;
