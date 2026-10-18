@@ -2,7 +2,7 @@
  "app": "archbukhta-tools",
  "format": 1,
  "kind": "inventory",
- "exportedAt": 1792303257820,
+ "exportedAt": 1792303529628,
  "data": {
   "toolTypes": [
    {
@@ -10,189 +10,98 @@
     "name": "Аккумулятор новый",
     "kind": "battery",
     "limit": 4,
-    "createdAt": 1792303257803
+    "createdAt": 1792303529624
    },
    {
     "id": "AKKOLD",
     "name": "Аккумулятор старый",
     "kind": "battery",
     "limit": 4,
-    "createdAt": 1792303257791
+    "createdAt": 1792303529608
    },
    {
-    "id": "DOSKB",
-    "name": "Доска для резки большая",
+    "id": "DREL",
+    "name": "Дрель",
     "kind": "tool",
     "limit": 2,
-    "createdAt": 1792303257807
-   },
-   {
-    "id": "DOSKM",
-    "name": "Доска для резки маленькая",
-    "kind": "tool",
-    "limit": 2,
-    "createdAt": 1792303257808
+    "createdAt": 1792303529576
    },
    {
     "id": "DRSH",
-    "name": "Дрель-шуруповёрт",
+    "name": "Шуруповёрт-дрель",
     "kind": "tool",
     "limit": 2,
-    "createdAt": 1792303257764
-   },
-   {
-    "id": "FLAG",
-    "name": "Флаг",
-    "kind": "tool",
-    "limit": 2,
-    "createdAt": 1792303257812
-   },
-   {
-    "id": "FLAGSH",
-    "name": "Флагшток",
-    "kind": "tool",
-    "limit": 2,
-    "createdAt": 1792303257813
+    "createdAt": 1792303529574
    },
    {
     "id": "GAIK",
     "name": "Гайковёрт (импакт)",
     "kind": "tool",
     "limit": 2,
-    "createdAt": 1792303257767
-   },
-   {
-    "id": "KOLON",
-    "name": "Колонка",
-    "kind": "tool",
-    "limit": 2,
-    "createdAt": 1792303257815
+    "createdAt": 1792303529580
    },
    {
     "id": "LOBZ",
     "name": "Лобзик",
     "kind": "tool",
     "limit": 2,
-    "createdAt": 1792303257771
-   },
-   {
-    "id": "METLA",
-    "name": "Метла",
-    "kind": "tool",
-    "limit": 2,
-    "createdAt": 1792303257817
-   },
-   {
-    "id": "NOUT",
-    "name": "Ноутбук с зарядкой",
-    "kind": "tool",
-    "limit": 2,
-    "createdAt": 1792303257816
-   },
-   {
-    "id": "NOZH",
-    "name": "Ножницы",
-    "kind": "tool",
-    "limit": 2,
-    "createdAt": 1792303257803
-   },
-   {
-    "id": "OTV",
-    "name": "Отвёртка",
-    "kind": "tool",
-    "limit": 2,
-    "createdAt": 1792303257811
-   },
-   {
-    "id": "PAUK",
-    "name": "Паук",
-    "kind": "tool",
-    "limit": 2,
-    "createdAt": 1792303257814
-   },
-   {
-    "id": "PRINT",
-    "name": "Принтер",
-    "kind": "tool",
-    "limit": 2,
-    "createdAt": 1792303257812
-   },
-   {
-    "id": "RACIA",
-    "name": "Рация",
-    "kind": "tool",
-    "limit": 2,
-    "createdAt": 1792303257816
+    "createdAt": 1792303529582
    },
    {
     "id": "SHLKR",
     "name": "Шлифмашинка круглая",
     "kind": "tool",
     "limit": 2,
-    "createdAt": 1792303257774
+    "createdAt": 1792303529586
    },
    {
     "id": "SHLKV",
     "name": "Шлифмашинка квадратная",
     "kind": "tool",
     "limit": 2,
-    "createdAt": 1792303257773
+    "createdAt": 1792303529584
    },
    {
     "id": "SHUR",
     "name": "Шуруповёрт",
     "kind": "tool",
     "limit": 2,
-    "createdAt": 1792303257757
+    "createdAt": 1792303529561
    },
    {
     "id": "STEPL",
     "name": "Степлер",
     "kind": "tool",
     "limit": 2,
-    "createdAt": 1792303257782
-   },
-   {
-    "id": "STREM",
-    "name": "Стремянка красная",
-    "kind": "tool",
-    "limit": 2,
-    "createdAt": 1792303257818
-   },
-   {
-    "id": "TERMO",
-    "name": "Термопод",
-    "kind": "tool",
-    "limit": 2,
-    "createdAt": 1792303257815
+    "createdAt": 1792303529625
    },
    {
     "id": "TORTS",
     "name": "Торцовка",
     "kind": "tool",
     "limit": 2,
-    "createdAt": 1792303257781
+    "createdAt": 1792303529593
    },
    {
     "id": "TSIRK",
     "name": "Циркулярка",
     "kind": "tool",
     "limit": 2,
-    "createdAt": 1792303257779
+    "createdAt": 1792303529591
    },
    {
     "id": "ZARNEW",
     "name": "Зарядка новая",
     "kind": "tool",
     "limit": 2,
-    "createdAt": 1792303257784
+    "createdAt": 1792303529595
    },
    {
     "id": "ZAROLD",
     "name": "Зарядка старая",
     "kind": "tool",
     "limit": 2,
-    "createdAt": 1792303257789
+    "createdAt": 1792303529605
    }
   ],
   "items": [
@@ -204,7 +113,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257803
+    "createdAt": 1792303529624
    },
    {
     "id": "AKKNEW-02",
@@ -214,7 +123,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257803
+    "createdAt": 1792303529624
    },
    {
     "id": "AKKOLD-01",
@@ -224,7 +133,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257791
+    "createdAt": 1792303529608
    },
    {
     "id": "AKKOLD-02",
@@ -234,7 +143,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257791
+    "createdAt": 1792303529608
    },
    {
     "id": "AKKOLD-03",
@@ -244,7 +153,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257792
+    "createdAt": 1792303529609
    },
    {
     "id": "AKKOLD-04",
@@ -254,7 +163,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257792
+    "createdAt": 1792303529609
    },
    {
     "id": "AKKOLD-05",
@@ -264,7 +173,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257792
+    "createdAt": 1792303529609
    },
    {
     "id": "AKKOLD-06",
@@ -274,7 +183,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257792
+    "createdAt": 1792303529609
    },
    {
     "id": "AKKOLD-07",
@@ -284,7 +193,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257792
+    "createdAt": 1792303529609
    },
    {
     "id": "AKKOLD-08",
@@ -294,7 +203,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257792
+    "createdAt": 1792303529609
    },
    {
     "id": "AKKOLD-09",
@@ -304,7 +213,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257793
+    "createdAt": 1792303529610
    },
    {
     "id": "AKKOLD-10",
@@ -314,7 +223,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257793
+    "createdAt": 1792303529610
    },
    {
     "id": "AKKOLD-11",
@@ -324,7 +233,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257793
+    "createdAt": 1792303529610
    },
    {
     "id": "AKKOLD-12",
@@ -334,7 +243,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257793
+    "createdAt": 1792303529610
    },
    {
     "id": "AKKOLD-13",
@@ -344,207 +253,47 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257793
+    "createdAt": 1792303529610
    },
    {
-    "id": "DOSKB-01",
-    "typeId": "DOSKB",
-    "label": "Доска для резки большая №1",
+    "id": "DREL-01",
+    "typeId": "DREL",
+    "label": "Дрель К-222",
     "note": "",
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257807
-   },
-   {
-    "id": "DOSKB-02",
-    "typeId": "DOSKB",
-    "label": "Доска для резки большая №2",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257807
-   },
-   {
-    "id": "DOSKB-03",
-    "typeId": "DOSKB",
-    "label": "Доска для резки большая №3",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257807
-   },
-   {
-    "id": "DOSKB-04",
-    "typeId": "DOSKB",
-    "label": "Доска для резки большая №4",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257807
-   },
-   {
-    "id": "DOSKB-05",
-    "typeId": "DOSKB",
-    "label": "Доска для резки большая №5",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257807
-   },
-   {
-    "id": "DOSKB-06",
-    "typeId": "DOSKB",
-    "label": "Доска для резки большая №6",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257807
-   },
-   {
-    "id": "DOSKM-01",
-    "typeId": "DOSKM",
-    "label": "Доска для резки маленькая №1",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257809
-   },
-   {
-    "id": "DOSKM-02",
-    "typeId": "DOSKM",
-    "label": "Доска для резки маленькая №2",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257809
-   },
-   {
-    "id": "DOSKM-03",
-    "typeId": "DOSKM",
-    "label": "Доска для резки маленькая №3",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257809
-   },
-   {
-    "id": "DOSKM-04",
-    "typeId": "DOSKM",
-    "label": "Доска для резки маленькая №4",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257809
-   },
-   {
-    "id": "DOSKM-05",
-    "typeId": "DOSKM",
-    "label": "Доска для резки маленькая №5",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257809
-   },
-   {
-    "id": "DOSKM-06",
-    "typeId": "DOSKM",
-    "label": "Доска для резки маленькая №6",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257809
+    "createdAt": 1792303529576
    },
    {
     "id": "DRSH-01",
     "typeId": "DRSH",
-    "label": "Дрель-шуруповёрт К-222",
+    "label": "Шуруповёрт-дрель К-220",
     "note": "",
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257765
+    "createdAt": 1792303529575
    },
    {
     "id": "DRSH-02",
     "typeId": "DRSH",
-    "label": "Дрель-шуруповёрт К-220",
+    "label": "Шуруповёрт-дрель К-223",
     "note": "",
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257765
+    "createdAt": 1792303529575
    },
    {
     "id": "DRSH-03",
     "typeId": "DRSH",
-    "label": "Дрель-шуруповёрт К-223",
-    "note": "",
+    "label": "Шуруповёрт-дрель К-220 (2, не в своей коробке)",
+    "note": "в таблице номер К-220 повторяется — проверить",
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257765
-   },
-   {
-    "id": "DRSH-04",
-    "typeId": "DRSH",
-    "label": "Дрель-шуруповёрт К-220 (2)",
-    "note": "В таблице второй раз К-220, «не в своей коробке» — проверить номер",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257765
-   },
-   {
-    "id": "FLAG-01",
-    "typeId": "FLAG",
-    "label": "Флаг №1",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257813
-   },
-   {
-    "id": "FLAG-02",
-    "typeId": "FLAG",
-    "label": "Флаг №2",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257813
-   },
-   {
-    "id": "FLAGSH-01",
-    "typeId": "FLAGSH",
-    "label": "Флагшток №1",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257813
-   },
-   {
-    "id": "FLAGSH-02",
-    "typeId": "FLAGSH",
-    "label": "Флагшток №2",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257813
+    "createdAt": 1792303529575
    },
    {
     "id": "GAIK-01",
@@ -554,17 +303,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257769
-   },
-   {
-    "id": "KOLON-01",
-    "typeId": "KOLON",
-    "label": "Колонка",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257815
+    "createdAt": 1792303529580
    },
    {
     "id": "LOBZ-01",
@@ -574,7 +313,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257771
+    "createdAt": 1792303529583
    },
    {
     "id": "LOBZ-02",
@@ -584,7 +323,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257771
+    "createdAt": 1792303529583
    },
    {
     "id": "LOBZ-03",
@@ -594,247 +333,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257772
-   },
-   {
-    "id": "METLA-01",
-    "typeId": "METLA",
-    "label": "Метла",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257817
-   },
-   {
-    "id": "NOUT-01",
-    "typeId": "NOUT",
-    "label": "Ноутбук с зарядкой",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257816
-   },
-   {
-    "id": "NOZH-01",
-    "typeId": "NOZH",
-    "label": "Ножницы №1",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257803
-   },
-   {
-    "id": "NOZH-02",
-    "typeId": "NOZH",
-    "label": "Ножницы №2",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257803
-   },
-   {
-    "id": "NOZH-03",
-    "typeId": "NOZH",
-    "label": "Ножницы №3",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257804
-   },
-   {
-    "id": "NOZH-04",
-    "typeId": "NOZH",
-    "label": "Ножницы №4",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257804
-   },
-   {
-    "id": "NOZH-05",
-    "typeId": "NOZH",
-    "label": "Ножницы №5",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257804
-   },
-   {
-    "id": "NOZH-06",
-    "typeId": "NOZH",
-    "label": "Ножницы №6",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257804
-   },
-   {
-    "id": "NOZH-07",
-    "typeId": "NOZH",
-    "label": "Ножницы №7",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257804
-   },
-   {
-    "id": "NOZH-08",
-    "typeId": "NOZH",
-    "label": "Ножницы №8",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257804
-   },
-   {
-    "id": "NOZH-09",
-    "typeId": "NOZH",
-    "label": "Ножницы №9",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257804
-   },
-   {
-    "id": "NOZH-10",
-    "typeId": "NOZH",
-    "label": "Ножницы №10",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257804
-   },
-   {
-    "id": "OTV-01",
-    "typeId": "OTV",
-    "label": "Отвёртка №1",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257811
-   },
-   {
-    "id": "OTV-02",
-    "typeId": "OTV",
-    "label": "Отвёртка №2",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257811
-   },
-   {
-    "id": "OTV-03",
-    "typeId": "OTV",
-    "label": "Отвёртка №3",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257811
-   },
-   {
-    "id": "PAUK-01",
-    "typeId": "PAUK",
-    "label": "Паук №1",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257814
-   },
-   {
-    "id": "PAUK-02",
-    "typeId": "PAUK",
-    "label": "Паук №2",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257814
-   },
-   {
-    "id": "PRINT-01",
-    "typeId": "PRINT",
-    "label": "Принтер",
-    "note": "количество в таблице не указано — взят 1",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257812
-   },
-   {
-    "id": "RACIA-01",
-    "typeId": "RACIA",
-    "label": "Рация №1",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257816
-   },
-   {
-    "id": "RACIA-02",
-    "typeId": "RACIA",
-    "label": "Рация №2",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257816
-   },
-   {
-    "id": "RACIA-03",
-    "typeId": "RACIA",
-    "label": "Рация №3",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257816
-   },
-   {
-    "id": "RACIA-04",
-    "typeId": "RACIA",
-    "label": "Рация №4",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257816
-   },
-   {
-    "id": "RACIA-05",
-    "typeId": "RACIA",
-    "label": "Рация №5",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257816
-   },
-   {
-    "id": "RACIA-06",
-    "typeId": "RACIA",
-    "label": "Рация №6",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257816
+    "createdAt": 1792303529583
    },
    {
     "id": "SHLKR-01",
@@ -844,7 +343,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257775
+    "createdAt": 1792303529586
    },
    {
     "id": "SHLKR-02",
@@ -854,7 +353,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257775
+    "createdAt": 1792303529589
    },
    {
     "id": "SHLKR-03",
@@ -864,17 +363,17 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257775
+    "createdAt": 1792303529590
    },
    {
     "id": "SHLKR-04",
     "typeId": "SHLKR",
-    "label": "Шлифмашинка круглая (без номера)",
-    "note": "",
+    "label": "Шлифмашинка круглая К-502",
+    "note": "номер присвоен, в таблице без номера",
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257776
+    "createdAt": 1792303529590
    },
    {
     "id": "SHLKV-01",
@@ -884,7 +383,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257773
+    "createdAt": 1792303529585
    },
    {
     "id": "SHLKV-02",
@@ -894,7 +393,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257773
+    "createdAt": 1792303529585
    },
    {
     "id": "SHUR-01",
@@ -904,7 +403,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257759
+    "createdAt": 1792303529565
    },
    {
     "id": "SHUR-02",
@@ -914,7 +413,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257760
+    "createdAt": 1792303529567
    },
    {
     "id": "SHUR-03",
@@ -924,17 +423,17 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257760
+    "createdAt": 1792303529568
    },
    {
     "id": "SHUR-04",
     "typeId": "SHUR",
-    "label": "Шуруповёрт (в кейсе)",
-    "note": "",
+    "label": "Шуруповёрт К-501 (в кейсе)",
+    "note": "номер присвоен, в таблице: «в кейсе»",
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257761
+    "createdAt": 1792303529569
    },
    {
     "id": "STEPL-01",
@@ -944,7 +443,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257782
+    "createdAt": 1792303529625
    },
    {
     "id": "STEPL-02",
@@ -954,7 +453,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257782
+    "createdAt": 1792303529625
    },
    {
     "id": "STEPL-03",
@@ -964,87 +463,57 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257783
-   },
-   {
-    "id": "STREM-01",
-    "typeId": "STREM",
-    "label": "Стремянка красная №1",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257818
-   },
-   {
-    "id": "STREM-02",
-    "typeId": "STREM",
-    "label": "Стремянка красная №2",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257818
-   },
-   {
-    "id": "TERMO-01",
-    "typeId": "TERMO",
-    "label": "Термопод",
-    "note": "",
-    "status": "in",
-    "holderTeamId": null,
-    "issuedAt": null,
-    "createdAt": 1792303257815
+    "createdAt": 1792303529625
    },
    {
     "id": "TORTS-01",
     "typeId": "TORTS",
-    "label": "Торцовка аккумуляторная бордовая",
-    "note": "в комплекте 2 аккумулятора",
+    "label": "Торцовка аккумуляторная К-506 (бордовая)",
+    "note": "номер присвоен; в комплекте 2 аккумулятора",
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257781
+    "createdAt": 1792303529593
    },
    {
     "id": "TORTS-02",
     "typeId": "TORTS",
-    "label": "Торцовка проводная красная",
-    "note": "в таблице: «Удшеуср (красная)»",
+    "label": "Торцовка проводная К-507 (красная)",
+    "note": "номер присвоен; в таблице: «Удшеуср (красная)»",
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257781
+    "createdAt": 1792303529594
    },
    {
     "id": "TSIRK-01",
     "typeId": "TSIRK",
-    "label": "Циркулярка большая (с коробкой)",
-    "note": "",
+    "label": "Циркулярка большая К-503 (с коробкой)",
+    "note": "номер присвоен",
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257779
+    "createdAt": 1792303529591
    },
    {
     "id": "TSIRK-02",
     "typeId": "TSIRK",
-    "label": "Циркулярка большая (без коробки)",
-    "note": "",
+    "label": "Циркулярка большая К-504 (без коробки)",
+    "note": "номер присвоен",
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257779
+    "createdAt": 1792303529592
    },
    {
     "id": "TSIRK-03",
     "typeId": "TSIRK",
-    "label": "Циркулярка с ручкой (с коробкой)",
-    "note": "",
+    "label": "Циркулярка с ручкой К-505 (с коробкой)",
+    "note": "номер присвоен",
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257779
+    "createdAt": 1792303529592
    },
    {
     "id": "ZARNEW-01",
@@ -1054,7 +523,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257784
+    "createdAt": 1792303529595
    },
    {
     "id": "ZARNEW-02",
@@ -1064,7 +533,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257784
+    "createdAt": 1792303529596
    },
    {
     "id": "ZARNEW-03",
@@ -1074,7 +543,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257784
+    "createdAt": 1792303529596
    },
    {
     "id": "ZARNEW-04",
@@ -1084,7 +553,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257784
+    "createdAt": 1792303529596
    },
    {
     "id": "ZARNEW-05",
@@ -1094,7 +563,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257784
+    "createdAt": 1792303529597
    },
    {
     "id": "ZARNEW-06",
@@ -1104,7 +573,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257785
+    "createdAt": 1792303529597
    },
    {
     "id": "ZAROLD-01",
@@ -1114,7 +583,7 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257789
+    "createdAt": 1792303529607
    },
    {
     "id": "ZAROLD-02",
@@ -1124,13 +593,13 @@
     "status": "in",
     "holderTeamId": null,
     "issuedAt": null,
-    "createdAt": 1792303257789
+    "createdAt": 1792303529607
    }
   ],
   "consumables": [],
   "operations": [
    {
-    "ts": 1792303257759,
+    "ts": 1792303529566,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1149,7 +618,7 @@
     "id": 1
    },
    {
-    "ts": 1792303257760,
+    "ts": 1792303529568,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1168,7 +637,7 @@
     "id": 2
    },
    {
-    "ts": 1792303257760,
+    "ts": 1792303529569,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1187,7 +656,7 @@
     "id": 3
    },
    {
-    "ts": 1792303257761,
+    "ts": 1792303529569,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1206,16 +675,16 @@
     "id": 4
    },
    {
-    "ts": 1792303257765,
+    "ts": 1792303529575,
     "op": "register",
     "teamId": null,
     "teamName": null,
     "fromTeamId": null,
     "fromTeamName": null,
     "itemId": "DRSH-01",
-    "itemLabel": "Дрель-шуруповёрт №1",
+    "itemLabel": "Шуруповёрт-дрель №1",
     "typeId": "DRSH",
-    "typeName": "Дрель-шуруповёрт",
+    "typeName": "Шуруповёрт-дрель",
     "consumableId": null,
     "consumableName": null,
     "qty": null,
@@ -1225,16 +694,16 @@
     "id": 5
    },
    {
-    "ts": 1792303257765,
+    "ts": 1792303529575,
     "op": "register",
     "teamId": null,
     "teamName": null,
     "fromTeamId": null,
     "fromTeamName": null,
     "itemId": "DRSH-02",
-    "itemLabel": "Дрель-шуруповёрт №2",
+    "itemLabel": "Шуруповёрт-дрель №2",
     "typeId": "DRSH",
-    "typeName": "Дрель-шуруповёрт",
+    "typeName": "Шуруповёрт-дрель",
     "consumableId": null,
     "consumableName": null,
     "qty": null,
@@ -1244,16 +713,16 @@
     "id": 6
    },
    {
-    "ts": 1792303257765,
+    "ts": 1792303529575,
     "op": "register",
     "teamId": null,
     "teamName": null,
     "fromTeamId": null,
     "fromTeamName": null,
     "itemId": "DRSH-03",
-    "itemLabel": "Дрель-шуруповёрт №3",
+    "itemLabel": "Шуруповёрт-дрель №3",
     "typeId": "DRSH",
-    "typeName": "Дрель-шуруповёрт",
+    "typeName": "Шуруповёрт-дрель",
     "consumableId": null,
     "consumableName": null,
     "qty": null,
@@ -1263,16 +732,16 @@
     "id": 7
    },
    {
-    "ts": 1792303257765,
+    "ts": 1792303529577,
     "op": "register",
     "teamId": null,
     "teamName": null,
     "fromTeamId": null,
     "fromTeamName": null,
-    "itemId": "DRSH-04",
-    "itemLabel": "Дрель-шуруповёрт №4",
-    "typeId": "DRSH",
-    "typeName": "Дрель-шуруповёрт",
+    "itemId": "DREL-01",
+    "itemLabel": "Дрель №1",
+    "typeId": "DREL",
+    "typeName": "Дрель",
     "consumableId": null,
     "consumableName": null,
     "qty": null,
@@ -1282,7 +751,7 @@
     "id": 8
    },
    {
-    "ts": 1792303257769,
+    "ts": 1792303529580,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1301,7 +770,7 @@
     "id": 9
    },
    {
-    "ts": 1792303257771,
+    "ts": 1792303529583,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1320,7 +789,7 @@
     "id": 10
    },
    {
-    "ts": 1792303257771,
+    "ts": 1792303529583,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1339,7 +808,7 @@
     "id": 11
    },
    {
-    "ts": 1792303257772,
+    "ts": 1792303529583,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1358,7 +827,7 @@
     "id": 12
    },
    {
-    "ts": 1792303257773,
+    "ts": 1792303529585,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1377,7 +846,7 @@
     "id": 13
    },
    {
-    "ts": 1792303257773,
+    "ts": 1792303529585,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1396,7 +865,7 @@
     "id": 14
    },
    {
-    "ts": 1792303257775,
+    "ts": 1792303529586,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1415,7 +884,7 @@
     "id": 15
    },
    {
-    "ts": 1792303257775,
+    "ts": 1792303529590,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1434,7 +903,7 @@
     "id": 16
    },
    {
-    "ts": 1792303257775,
+    "ts": 1792303529590,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1453,7 +922,7 @@
     "id": 17
    },
    {
-    "ts": 1792303257777,
+    "ts": 1792303529590,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1472,7 +941,7 @@
     "id": 18
    },
    {
-    "ts": 1792303257779,
+    "ts": 1792303529591,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1491,7 +960,7 @@
     "id": 19
    },
    {
-    "ts": 1792303257779,
+    "ts": 1792303529592,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1510,7 +979,7 @@
     "id": 20
    },
    {
-    "ts": 1792303257780,
+    "ts": 1792303529592,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1529,7 +998,7 @@
     "id": 21
    },
    {
-    "ts": 1792303257781,
+    "ts": 1792303529594,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1548,7 +1017,7 @@
     "id": 22
    },
    {
-    "ts": 1792303257781,
+    "ts": 1792303529594,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1567,64 +1036,7 @@
     "id": 23
    },
    {
-    "ts": 1792303257782,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "STEPL-01",
-    "itemLabel": "Степлер №1",
-    "typeId": "STEPL",
-    "typeName": "Степлер",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 24
-   },
-   {
-    "ts": 1792303257782,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "STEPL-02",
-    "itemLabel": "Степлер №2",
-    "typeId": "STEPL",
-    "typeName": "Степлер",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 25
-   },
-   {
-    "ts": 1792303257783,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "STEPL-03",
-    "itemLabel": "Степлер №3",
-    "typeId": "STEPL",
-    "typeName": "Степлер",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 26
-   },
-   {
-    "ts": 1792303257784,
+    "ts": 1792303529595,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1640,10 +1052,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 27
+    "id": 24
    },
    {
-    "ts": 1792303257784,
+    "ts": 1792303529596,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1659,10 +1071,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 28
+    "id": 25
    },
    {
-    "ts": 1792303257784,
+    "ts": 1792303529596,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1678,10 +1090,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 29
+    "id": 26
    },
    {
-    "ts": 1792303257784,
+    "ts": 1792303529597,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1697,10 +1109,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 30
+    "id": 27
    },
    {
-    "ts": 1792303257785,
+    "ts": 1792303529597,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1716,10 +1128,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 31
+    "id": 28
    },
    {
-    "ts": 1792303257785,
+    "ts": 1792303529597,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1735,10 +1147,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 32
+    "id": 29
    },
    {
-    "ts": 1792303257789,
+    "ts": 1792303529607,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1754,10 +1166,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 33
+    "id": 30
    },
    {
-    "ts": 1792303257790,
+    "ts": 1792303529607,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1773,10 +1185,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 34
+    "id": 31
    },
    {
-    "ts": 1792303257791,
+    "ts": 1792303529608,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1792,10 +1204,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 35
+    "id": 32
    },
    {
-    "ts": 1792303257792,
+    "ts": 1792303529609,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1811,10 +1223,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 36
+    "id": 33
    },
    {
-    "ts": 1792303257792,
+    "ts": 1792303529609,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1830,10 +1242,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 37
+    "id": 34
    },
    {
-    "ts": 1792303257792,
+    "ts": 1792303529609,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1849,10 +1261,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 38
+    "id": 35
    },
    {
-    "ts": 1792303257792,
+    "ts": 1792303529609,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1868,10 +1280,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 39
+    "id": 36
    },
    {
-    "ts": 1792303257792,
+    "ts": 1792303529609,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1887,10 +1299,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 40
+    "id": 37
    },
    {
-    "ts": 1792303257792,
+    "ts": 1792303529609,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1906,10 +1318,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 41
+    "id": 38
    },
    {
-    "ts": 1792303257792,
+    "ts": 1792303529609,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1925,10 +1337,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 42
+    "id": 39
    },
    {
-    "ts": 1792303257793,
+    "ts": 1792303529610,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1944,10 +1356,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 43
+    "id": 40
    },
    {
-    "ts": 1792303257793,
+    "ts": 1792303529610,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1963,10 +1375,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 44
+    "id": 41
    },
    {
-    "ts": 1792303257793,
+    "ts": 1792303529610,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -1982,10 +1394,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 45
+    "id": 42
    },
    {
-    "ts": 1792303257793,
+    "ts": 1792303529610,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -2001,10 +1413,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 46
+    "id": 43
    },
    {
-    "ts": 1792303257793,
+    "ts": 1792303529610,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -2020,10 +1432,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 47
+    "id": 44
    },
    {
-    "ts": 1792303257803,
+    "ts": 1792303529624,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -2039,10 +1451,10 @@
     "note": "",
     "batchId": null,
     "synced": false,
-    "id": 48
+    "id": 45
    },
    {
-    "ts": 1792303257803,
+    "ts": 1792303529624,
     "op": "register",
     "teamId": null,
     "teamName": null,
@@ -2058,843 +1470,64 @@
     "note": "",
     "batchId": null,
     "synced": false,
+    "id": 46
+   },
+   {
+    "ts": 1792303529625,
+    "op": "register",
+    "teamId": null,
+    "teamName": null,
+    "fromTeamId": null,
+    "fromTeamName": null,
+    "itemId": "STEPL-01",
+    "itemLabel": "Степлер №1",
+    "typeId": "STEPL",
+    "typeName": "Степлер",
+    "consumableId": null,
+    "consumableName": null,
+    "qty": null,
+    "note": "",
+    "batchId": null,
+    "synced": false,
+    "id": 47
+   },
+   {
+    "ts": 1792303529625,
+    "op": "register",
+    "teamId": null,
+    "teamName": null,
+    "fromTeamId": null,
+    "fromTeamName": null,
+    "itemId": "STEPL-02",
+    "itemLabel": "Степлер №2",
+    "typeId": "STEPL",
+    "typeName": "Степлер",
+    "consumableId": null,
+    "consumableName": null,
+    "qty": null,
+    "note": "",
+    "batchId": null,
+    "synced": false,
+    "id": 48
+   },
+   {
+    "ts": 1792303529625,
+    "op": "register",
+    "teamId": null,
+    "teamName": null,
+    "fromTeamId": null,
+    "fromTeamName": null,
+    "itemId": "STEPL-03",
+    "itemLabel": "Степлер №3",
+    "typeId": "STEPL",
+    "typeName": "Степлер",
+    "consumableId": null,
+    "consumableName": null,
+    "qty": null,
+    "note": "",
+    "batchId": null,
+    "synced": false,
     "id": 49
-   },
-   {
-    "ts": 1792303257803,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "NOZH-01",
-    "itemLabel": "Ножницы №1",
-    "typeId": "NOZH",
-    "typeName": "Ножницы",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 50
-   },
-   {
-    "ts": 1792303257804,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "NOZH-02",
-    "itemLabel": "Ножницы №2",
-    "typeId": "NOZH",
-    "typeName": "Ножницы",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 51
-   },
-   {
-    "ts": 1792303257804,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "NOZH-03",
-    "itemLabel": "Ножницы №3",
-    "typeId": "NOZH",
-    "typeName": "Ножницы",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 52
-   },
-   {
-    "ts": 1792303257804,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "NOZH-04",
-    "itemLabel": "Ножницы №4",
-    "typeId": "NOZH",
-    "typeName": "Ножницы",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 53
-   },
-   {
-    "ts": 1792303257804,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "NOZH-05",
-    "itemLabel": "Ножницы №5",
-    "typeId": "NOZH",
-    "typeName": "Ножницы",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 54
-   },
-   {
-    "ts": 1792303257804,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "NOZH-06",
-    "itemLabel": "Ножницы №6",
-    "typeId": "NOZH",
-    "typeName": "Ножницы",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 55
-   },
-   {
-    "ts": 1792303257804,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "NOZH-07",
-    "itemLabel": "Ножницы №7",
-    "typeId": "NOZH",
-    "typeName": "Ножницы",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 56
-   },
-   {
-    "ts": 1792303257804,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "NOZH-08",
-    "itemLabel": "Ножницы №8",
-    "typeId": "NOZH",
-    "typeName": "Ножницы",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 57
-   },
-   {
-    "ts": 1792303257804,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "NOZH-09",
-    "itemLabel": "Ножницы №9",
-    "typeId": "NOZH",
-    "typeName": "Ножницы",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 58
-   },
-   {
-    "ts": 1792303257804,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "NOZH-10",
-    "itemLabel": "Ножницы №10",
-    "typeId": "NOZH",
-    "typeName": "Ножницы",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 59
-   },
-   {
-    "ts": 1792303257807,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "DOSKB-01",
-    "itemLabel": "Доска для резки большая №1",
-    "typeId": "DOSKB",
-    "typeName": "Доска для резки большая",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 60
-   },
-   {
-    "ts": 1792303257807,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "DOSKB-02",
-    "itemLabel": "Доска для резки большая №2",
-    "typeId": "DOSKB",
-    "typeName": "Доска для резки большая",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 61
-   },
-   {
-    "ts": 1792303257807,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "DOSKB-03",
-    "itemLabel": "Доска для резки большая №3",
-    "typeId": "DOSKB",
-    "typeName": "Доска для резки большая",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 62
-   },
-   {
-    "ts": 1792303257807,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "DOSKB-04",
-    "itemLabel": "Доска для резки большая №4",
-    "typeId": "DOSKB",
-    "typeName": "Доска для резки большая",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 63
-   },
-   {
-    "ts": 1792303257807,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "DOSKB-05",
-    "itemLabel": "Доска для резки большая №5",
-    "typeId": "DOSKB",
-    "typeName": "Доска для резки большая",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 64
-   },
-   {
-    "ts": 1792303257807,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "DOSKB-06",
-    "itemLabel": "Доска для резки большая №6",
-    "typeId": "DOSKB",
-    "typeName": "Доска для резки большая",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 65
-   },
-   {
-    "ts": 1792303257809,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "DOSKM-01",
-    "itemLabel": "Доска для резки маленькая №1",
-    "typeId": "DOSKM",
-    "typeName": "Доска для резки маленькая",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 66
-   },
-   {
-    "ts": 1792303257809,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "DOSKM-02",
-    "itemLabel": "Доска для резки маленькая №2",
-    "typeId": "DOSKM",
-    "typeName": "Доска для резки маленькая",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 67
-   },
-   {
-    "ts": 1792303257809,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "DOSKM-03",
-    "itemLabel": "Доска для резки маленькая №3",
-    "typeId": "DOSKM",
-    "typeName": "Доска для резки маленькая",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 68
-   },
-   {
-    "ts": 1792303257809,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "DOSKM-04",
-    "itemLabel": "Доска для резки маленькая №4",
-    "typeId": "DOSKM",
-    "typeName": "Доска для резки маленькая",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 69
-   },
-   {
-    "ts": 1792303257809,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "DOSKM-05",
-    "itemLabel": "Доска для резки маленькая №5",
-    "typeId": "DOSKM",
-    "typeName": "Доска для резки маленькая",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 70
-   },
-   {
-    "ts": 1792303257809,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "DOSKM-06",
-    "itemLabel": "Доска для резки маленькая №6",
-    "typeId": "DOSKM",
-    "typeName": "Доска для резки маленькая",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 71
-   },
-   {
-    "ts": 1792303257811,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "OTV-01",
-    "itemLabel": "Отвёртка №1",
-    "typeId": "OTV",
-    "typeName": "Отвёртка",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 72
-   },
-   {
-    "ts": 1792303257811,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "OTV-02",
-    "itemLabel": "Отвёртка №2",
-    "typeId": "OTV",
-    "typeName": "Отвёртка",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 73
-   },
-   {
-    "ts": 1792303257811,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "OTV-03",
-    "itemLabel": "Отвёртка №3",
-    "typeId": "OTV",
-    "typeName": "Отвёртка",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 74
-   },
-   {
-    "ts": 1792303257812,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "PRINT-01",
-    "itemLabel": "Принтер №1",
-    "typeId": "PRINT",
-    "typeName": "Принтер",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 75
-   },
-   {
-    "ts": 1792303257813,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "FLAG-01",
-    "itemLabel": "Флаг №1",
-    "typeId": "FLAG",
-    "typeName": "Флаг",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 76
-   },
-   {
-    "ts": 1792303257813,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "FLAG-02",
-    "itemLabel": "Флаг №2",
-    "typeId": "FLAG",
-    "typeName": "Флаг",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 77
-   },
-   {
-    "ts": 1792303257813,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "FLAGSH-01",
-    "itemLabel": "Флагшток №1",
-    "typeId": "FLAGSH",
-    "typeName": "Флагшток",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 78
-   },
-   {
-    "ts": 1792303257813,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "FLAGSH-02",
-    "itemLabel": "Флагшток №2",
-    "typeId": "FLAGSH",
-    "typeName": "Флагшток",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 79
-   },
-   {
-    "ts": 1792303257814,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "PAUK-01",
-    "itemLabel": "Паук №1",
-    "typeId": "PAUK",
-    "typeName": "Паук",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 80
-   },
-   {
-    "ts": 1792303257814,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "PAUK-02",
-    "itemLabel": "Паук №2",
-    "typeId": "PAUK",
-    "typeName": "Паук",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 81
-   },
-   {
-    "ts": 1792303257815,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "KOLON-01",
-    "itemLabel": "Колонка №1",
-    "typeId": "KOLON",
-    "typeName": "Колонка",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 82
-   },
-   {
-    "ts": 1792303257815,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "TERMO-01",
-    "itemLabel": "Термопод №1",
-    "typeId": "TERMO",
-    "typeName": "Термопод",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 83
-   },
-   {
-    "ts": 1792303257816,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "NOUT-01",
-    "itemLabel": "Ноутбук с зарядкой №1",
-    "typeId": "NOUT",
-    "typeName": "Ноутбук с зарядкой",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 84
-   },
-   {
-    "ts": 1792303257816,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "RACIA-01",
-    "itemLabel": "Рация №1",
-    "typeId": "RACIA",
-    "typeName": "Рация",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 85
-   },
-   {
-    "ts": 1792303257816,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "RACIA-02",
-    "itemLabel": "Рация №2",
-    "typeId": "RACIA",
-    "typeName": "Рация",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 86
-   },
-   {
-    "ts": 1792303257816,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "RACIA-03",
-    "itemLabel": "Рация №3",
-    "typeId": "RACIA",
-    "typeName": "Рация",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 87
-   },
-   {
-    "ts": 1792303257816,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "RACIA-04",
-    "itemLabel": "Рация №4",
-    "typeId": "RACIA",
-    "typeName": "Рация",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 88
-   },
-   {
-    "ts": 1792303257816,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "RACIA-05",
-    "itemLabel": "Рация №5",
-    "typeId": "RACIA",
-    "typeName": "Рация",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 89
-   },
-   {
-    "ts": 1792303257816,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "RACIA-06",
-    "itemLabel": "Рация №6",
-    "typeId": "RACIA",
-    "typeName": "Рация",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 90
-   },
-   {
-    "ts": 1792303257817,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "METLA-01",
-    "itemLabel": "Метла №1",
-    "typeId": "METLA",
-    "typeName": "Метла",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 91
-   },
-   {
-    "ts": 1792303257818,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "STREM-01",
-    "itemLabel": "Стремянка красная №1",
-    "typeId": "STREM",
-    "typeName": "Стремянка красная",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 92
-   },
-   {
-    "ts": 1792303257818,
-    "op": "register",
-    "teamId": null,
-    "teamName": null,
-    "fromTeamId": null,
-    "fromTeamName": null,
-    "itemId": "STREM-02",
-    "itemLabel": "Стремянка красная №2",
-    "typeId": "STREM",
-    "typeName": "Стремянка красная",
-    "consumableId": null,
-    "consumableName": null,
-    "qty": null,
-    "note": "",
-    "batchId": null,
-    "synced": false,
-    "id": 93
    }
   ]
  }
