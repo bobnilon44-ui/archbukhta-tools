@@ -31,7 +31,7 @@ small { font-size: .78em; }
   min-height: 64px; touch-action: manipulation;
 }
 .btn:active { transform: scale(.98); }
-.btn-go { background: var(--green); flex: 2; font-size: 1.7rem; }
+.btn-go { background: var(--green); flex: 2; font-size: 1.5rem; }
 .btn-go:hover { background: var(--green-2); }
 .btn-ghost { background: var(--panel-2); border: 2px solid var(--line); flex: 1; }
 .btn-danger { background: var(--red); }
@@ -58,11 +58,16 @@ small { font-size: .78em; }
 .clock { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 1.2rem; }
 
 .kiosk {
-  display: grid; grid-template-columns: minmax(280px, 34%) 1fr; gap: 20px;
-  padding: 20px; height: calc(100vh - 56px);
+  display: grid; grid-template-columns: minmax(460px, 52%) 1fr; gap: 18px;
+  padding: 16px 18px; height: calc(100vh - 56px);
 }
-.cam { display: flex; flex-direction: column; gap: 12px; min-height: 0; }
-.cam-box { position: relative; border-radius: var(--radius); overflow: hidden; background: #000; aspect-ratio: 4 / 3; }
+.left { display: flex; flex-direction: column; gap: 14px; min-height: 0; }
+.cam { display: flex; gap: 14px; align-items: stretch; flex: none; }
+.cam-side { display: flex; flex-direction: column; gap: 10px; justify-content: flex-start; min-width: 0; }
+.cam-box {
+  position: relative; border-radius: var(--radius); overflow: hidden; background: #000;
+  aspect-ratio: 4 / 3; height: 26vh; min-height: 160px; flex: none;
+}
 .cam-box video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); display: block; }
 .cam-frame {
   position: absolute; inset: 14%; border: 4px dashed rgba(255,255,255,.55); border-radius: 18px; pointer-events: none;
@@ -74,32 +79,65 @@ body[data-screen="cart"] .cam-frame, body[data-screen="consumables"] .cam-frame 
 .cam-status.ok::before { content: "● "; color: var(--green-2); }
 .setup-hint { background: #422006; border: 1px solid var(--amber); border-radius: 12px; padding: 12px; }
 
-.screen { min-height: 0; overflow: auto; }
-.panel { background: var(--panel); border-radius: var(--radius); padding: 28px; border: 3px solid transparent; }
+.screen { min-height: 0; overflow: auto; flex: 1; }
+.panel { background: var(--panel); border-radius: var(--radius); padding: 22px 24px; border: 3px solid transparent; }
 .panel-team { border-color: var(--blue); }
 .panel-ok { border-color: var(--green); text-align: center; }
 .panel-warn { border-color: var(--amber); text-align: center; }
 .panel-return { border-color: var(--amber); }
-.panel h1 { font-size: 2.4rem; }
-.team-head h1 { font-size: 2.8rem; color: #bfdbfe; }
+.panel-transfer { border-color: #a855f7; }
+.panel h1 { font-size: 2rem; }
+.team-head h1 { font-size: 2.3rem; color: #bfdbfe; }
 .instr { font-size: 1.25rem; }
 .big { font-size: 1.6rem; }
-.big-icon { font-size: 5rem; line-height: 1; margin-bottom: 10px; }
+.big-icon { font-size: 4rem; line-height: 1; margin-bottom: 8px; }
+/* кнопки действий всегда видны, даже если список в корзине длинный */
+.screen .actions { position: sticky; bottom: -22px; background: var(--panel); padding: 12px 0 22px; margin-bottom: -22px; z-index: 1; }
+.actions-col { flex-direction: column; gap: 10px; }
+.actions-col .btn { flex: none; width: 100%; }
+.btn-transfer { background: #7c3aed; font-size: 1.5rem; }
+.btn-transfer:hover { background: #8b5cf6; }
+.scan-prompt {
+  background: #2e1065; border: 3px dashed #a855f7; border-radius: 14px; padding: 20px;
+  font-size: 1.5rem; text-align: center; margin: 14px 0;
+}
 
-.idle { display: flex; flex-direction: column; gap: 20px; height: 100%; justify-content: center; }
+.idle { display: flex; flex-direction: column; gap: 14px; }
 .hint {
-  display: flex; gap: 24px; align-items: center; background: var(--panel);
-  border-radius: var(--radius); padding: 32px; border-left: 10px solid var(--blue);
+  display: flex; gap: 20px; align-items: center; background: var(--panel);
+  border-radius: var(--radius); padding: 20px 24px; border-left: 10px solid var(--blue);
 }
 .hint-return { border-left-color: var(--amber); }
-.hint-icon { font-size: 4.5rem; }
-.hint h2 { font-size: 2.2rem; }
-.hint p { font-size: 1.4rem; margin: 0; }
+.hint-icon { font-size: 3.4rem; }
+.hint h2 { font-size: 1.8rem; margin-bottom: .2em; }
+.hint p { font-size: 1.2rem; margin: 0; }
+
+/* табло «Сейчас на руках» */
+.board {
+  background: var(--panel); border-radius: var(--radius); padding: 16px 18px;
+  display: flex; flex-direction: column; min-height: 0;
+}
+.board-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.board-head h2 { font-size: 1.6rem; margin: 0; }
+.board-empty { color: var(--muted); font-size: 1.3rem; text-align: center; padding: 40px 10px; }
+.board-list { overflow: auto; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding-right: 4px; }
+.bteam { background: var(--panel-2); border-radius: 12px; padding: 10px 14px; border: 2px solid transparent; }
+.bteam.current { border-color: var(--blue); }
+.bteam h3 { display: flex; justify-content: space-between; font-size: 1.3rem; margin: 0 0 6px; }
+.bteam .count { background: var(--bg); border-radius: 999px; padding: 0 10px; font-size: 1rem; line-height: 1.6; }
+.bteam ul { list-style: none; margin: 0; padding: 0; }
+.bteam li { display: flex; gap: 10px; align-items: baseline; padding: 4px 6px; border-radius: 8px; font-size: 1.1rem; }
+.bteam li + li { border-top: 1px solid var(--line); }
+.bteam .bico { flex: none; }
+.bteam .bname { flex: 1; }
+.bteam .btime { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.bteam li.fresh { animation: fresh 6s ease-out; }
+@keyframes fresh { from { background: rgba(34,197,94,.45); } to { background: transparent; } }
 
 .cart-list { list-style: none; padding: 0; margin: 16px 0; display: flex; flex-direction: column; gap: 10px; }
 .cart-list li {
   display: flex; align-items: center; gap: 14px; background: var(--panel-2);
-  border-radius: 14px; padding: 12px 16px; font-size: 1.4rem;
+  border-radius: 14px; padding: 10px 14px; font-size: 1.25rem;
 }
 .cart-list li.empty { color: var(--muted); justify-content: center; border: 2px dashed var(--line); background: none; padding: 26px; }
 .cart-list .ico { font-size: 1.8rem; }
@@ -162,8 +200,9 @@ body[data-screen="cart"] .cam-frame, body[data-screen="consumables"] .cam-frame 
 }
 .start-overlay[hidden] { display: none; }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .kiosk { grid-template-columns: 1fr; height: auto; }
   .kiosk-body { overflow: auto; }
-  .cam-box { max-height: 40vh; }
+  .cam { flex-direction: column; }
+  .cam-box { height: auto; width: 100%; max-height: 40vh; }
 }

@@ -1,6 +1,8 @@
-/* Киоск самообслуживания: выдача и возврат. Экран — конечный автомат:
+/* Киоск самообслуживания: выдача, возврат, передача. Левая колонка — конечный автомат:
  *   idle → cart(команда) → consumables → done → idle
- *   idle → returnConfirm(предмет) → returned → idle
+ *   idle → itemAction(предмет) → returned → idle
+ *                              → transferScan(ждём бейдж получателя) → transferred → idle
+ * Правая колонка — табло «Сейчас на руках», обновляется после каждой операции.
  */
 (function (root) {
   'use strict';
@@ -14,6 +16,8 @@
   var busy = false;
 
   var screenEl = ui.$('#screen');
+  var boardEl = ui.$('#board');
+  var fresh = {}; // itemId → до какого времени подсвечивать строку на табло
 
   /* ---------- общие помощники ---------- */
 
@@ -45,8 +49,8 @@
   function touch() {
     if (state.screen === 'cart' || state.screen === 'consumables') {
       deadline = Date.now() + settings.cartTimeoutSec * 1000;
-    } else if (state.screen === 'returnConfirm') {
-      deadline = Date.now() + 25000;
+    } else if (state.screen === 'itemAction' || state.screen === 'transferScan') {
+      deadline = Date.now() + 30000;
     } else {
       deadline = 0;
     }
@@ -112,6 +116,10 @@
     var team = await AB.db.getOne('teams', teamId);
     if (!team) throw new Error('Неизвестная команда (' + teamId + '). Обратитесь к организаторам.');
     if (team.active === false) throw new Error('Команда «' + team.name + '» отключена. Обратитесь к организаторам.');
+    if (state.screen === 'transferScan') {
+      await doTransfer(team);
+      return;
+    }
     if (state.screen === 'cart' || state.screen === 'consumables') {
       if (state.team.id === teamId) { toast('info', 'Корзина команды «' + team.name + '» уже открыта.'); return; }
       if (state.cart.length || state.consumables.length) {
@@ -125,7 +133,7 @@
   }
 
   async function openCart(team) {
-    var held = L.reportHoldings(await L.snapshot()).filter(function (h) { return h.teamId === team.id; });
+    var held = (await L.holdingsNow()).filter(function (h) { return h.teamId === team.id; });
     setScreen({ screen: 'cart', team: team, cart: [], consumables: [], held: held });
   }
 
@@ -140,7 +148,12 @@
       render();
       return;
     }
-    // вне корзины скан инструмента = возврат
+    if (state.screen === 'transferScan') {
+      fb.warn();
+      toast('warn', 'Ждём бейдж команды, которой передаёте «' + state.item.label + '». Или нажмите «Отмена».');
+      return;
+    }
+    // вне корзины скан инструмента = вернуть на склад или передать другой команде
     var info = await L.lookupForReturn(itemId);
     if (info.item.status !== 'out') {
       fb.warn();
@@ -150,7 +163,7 @@
     clearTimeout(timers.back);
     closeModal();
     fb.ok();
-    setScreen({ screen: 'returnConfirm', item: info.item, type: info.type, team: info.team });
+    setScreen({ screen: 'itemAction', item: info.item, type: info.type, team: info.team });
   }
 
   async function scanConsumable(consumableId) {
@@ -203,10 +216,11 @@
       fb.done();
       setScreen({ screen: 'done', result: res });
       backToIdleIn(6000);
+      markFresh(res.issued.map(function (x) { return x.item.id; }));
     } catch (e) {
       fail(e);
       // состояние могло измениться (кто-то вернул/взял) — перечитываем «на руках»
-      if (state.team) state.held = L.reportHoldings(await L.snapshot()).filter(function (h) { return h.teamId === state.team.id; });
+      if (state.team) state.held = (await L.holdingsNow()).filter(function (h) { return h.teamId === state.team.id; });
       render();
     } finally {
       busy = false;
@@ -221,12 +235,77 @@
       if (r.chargeReminder) fb.warn(); else fb.done();
       setScreen({ screen: 'returned', result: r });
       backToIdleIn(r.chargeReminder ? 10000 : 5000);
+      renderBoard();
     } catch (e) {
       fail(e);
       goIdle();
     } finally {
       busy = false;
     }
+  }
+
+  function startTransfer() {
+    setScreen({ screen: 'transferScan', item: state.item, type: state.type, team: state.team });
+    if (scanner) scanner.resetDebounce();
+  }
+
+  async function doTransfer(toTeam) {
+    try {
+      var r = await L.transferItem(state.item.id, toTeam.id);
+      closeModal();
+      fb.done();
+      setScreen({ screen: 'transferred', result: r });
+      backToIdleIn(7000);
+      markFresh([r.item.id]);
+    } catch (e) {
+      fail(e);
+      // при лимите или неверном бейдже остаёмся ждать другой бейдж; если инструмент уже не на руках — на старт
+      if (e.code === 'NOT_OUT' || e.code === 'ITEM_NOT_FOUND') goIdle();
+    }
+  }
+
+  /* ---------- табло «Сейчас на руках» ---------- */
+
+  function markFresh(ids) {
+    var until = Date.now() + 6000;
+    ids.forEach(function (id) { fresh[id] = until; });
+    renderBoard();
+    setTimeout(renderBoard, 6100);
+  }
+
+  function shortTime(ts) {
+    var d = new Date(ts), now = new Date();
+    var hm = L.fmtTime(ts).slice(-5);
+    return d.toDateString() === now.toDateString() ? hm : L.fmtTime(ts).slice(0, 5) + ' ' + hm;
+  }
+
+  async function renderBoard() {
+    var rows;
+    try { rows = await L.holdingsNow(); } catch (e) { return; }
+    var now = Date.now();
+    var currentTeam = (state.screen === 'cart' || state.screen === 'consumables') && state.team ? state.team.id : null;
+    var groups = [], byTeam = {};
+    rows.forEach(function (r) {
+      if (!byTeam[r.teamId]) { byTeam[r.teamId] = { id: r.teamId, name: r.teamName, items: [] }; groups.push(byTeam[r.teamId]); }
+      byTeam[r.teamId].items.push(r);
+    });
+    var html = '<div class="board-head"><h2>Сейчас на руках</h2><span class="muted">' +
+      (rows.length ? rows.length + ' шт. · команд: ' + groups.length : '') + '</span></div>';
+    if (!rows.length) {
+      html += '<div class="board-empty">Всё на месте — на руках ничего нет.</div>';
+    } else {
+      html += '<div class="board-list">' + groups.map(function (g) {
+        return '<section class="bteam' + (g.id === currentTeam ? ' current' : '') + '">' +
+          '<h3><span>' + esc(g.name) + '</span><span class="count">' + g.items.length + '</span></h3><ul>' +
+          g.items.map(function (r) {
+            return '<li' + (fresh[r.itemId] > now ? ' class="fresh"' : '') + '>' +
+              '<span class="bico">' + (r.kind === 'battery' ? '🔋' : '🛠') + '</span>' +
+              '<span class="bname">' + esc(r.label) + '</span>' +
+              '<span class="btime">с ' + shortTime(r.issuedAt) + '</span></li>';
+          }).join('') + '</ul></section>';
+      }).join('') + '</div>';
+    }
+    boardEl.innerHTML = html;
   }
 
   /* ---------- модальные окна ---------- */
@@ -349,9 +428,9 @@
         '<div class="idle">' +
         '<div class="hint hint-take"><div class="hint-icon">🪪</div><div><h2>Взять инструмент</h2>' +
         '<p>Поднесите к камере <b>бейдж команды</b></p></div></div>' +
-        '<div class="hint hint-return"><div class="hint-icon">🔧</div><div><h2>Вернуть инструмент</h2>' +
+        '<div class="hint hint-return"><div class="hint-icon">🔧</div><div><h2>Вернуть или передать</h2>' +
         '<p>Поднесите к камере <b>QR на инструменте или аккумуляторе</b></p></div></div>' +
-        '<p class="muted center">Передавать инструмент другой команде из рук в руки нельзя: сначала верните его сюда.</p>' +
+        '<p class="muted center">Справа видно, у какой команды сейчас нужный инструмент.</p>' +
         '</div>';
     }
 
@@ -409,21 +488,43 @@
         '<h1>Выдано команде «' + esc(r.team.name) + '»</h1><ul class="result-list">' +
         r.issued.map(function (x) { return '<li>' + esc(x.item.label) + '</li>'; }).join('') +
         r.consumables.map(function (x) { return '<li>' + esc(x.consumable.name) + ': ' + x.qty + ' ' + esc(x.consumable.unit) + '</li>'; }).join('') +
-        '</ul><p>Инструмент числится за вашей командой, пока вы не вернёте его сюда.</p>' +
+        '</ul><p>Инструмент числится за вашей командой, пока вы не вернёте его сюда или не передадите другой команде.</p>' +
         '<button class="btn btn-ghost" data-act="home">Готово</button></div>';
     }
 
-    else if (s.screen === 'returnConfirm') {
+    else if (s.screen === 'itemAction') {
       var held = s.item.issuedAt ? L.fmtDuration(Date.now() - s.item.issuedAt) : '';
       html =
-        '<div class="panel panel-return"><span class="muted">Возврат</span>' +
+        '<div class="panel panel-return"><span class="muted">Что сделать с инструментом?</span>' +
         '<h1>' + (s.type && s.type.kind === 'battery' ? '🔋 ' : '🛠 ') + esc(s.item.label) + '</h1>' +
         '<p class="big">Числится за командой <b>«' + esc(s.team ? s.team.name : s.item.holderTeamId) + '»</b>' +
-        (held ? '<br><span class="muted">на руках ' + held + '</span>' : '') + '</p>' +
-        '<div class="actions">' +
+        (held ? '<br><span class="muted">у неё ' + held + '</span>' : '') + '</p>' +
+        '<div class="actions actions-col">' +
+        '<button class="btn btn-go" data-act="return">⬇ Вернуть на склад</button>' +
+        '<button class="btn btn-transfer" data-act="transfer">⇄ Передать другой команде</button>' +
         '<button class="btn btn-ghost" data-act="cancel">Отмена</button>' +
-        '<button class="btn btn-go" data-act="return">Вернуть</button>' +
         '</div><div id="countdown"></div></div>';
+    }
+
+    else if (s.screen === 'transferScan') {
+      html =
+        '<div class="panel panel-transfer"><span class="muted">Передача</span>' +
+        '<h1>' + esc(s.item.label) + '</h1>' +
+        '<p class="big">Сейчас у «' + esc(s.team ? s.team.name : s.item.holderTeamId) + '».</p>' +
+        '<div class="scan-prompt">🪪 Поднесите к камере <b>бейдж команды, которая забирает</b> инструмент</div>' +
+        '<p class="muted">После передачи за инструмент отвечает новая команда.</p>' +
+        '<div class="actions"><button class="btn btn-ghost" data-act="cancel">Отмена</button></div>' +
+        '<div id="countdown"></div></div>';
+    }
+
+    else if (s.screen === 'transferred') {
+      var tr = s.result;
+      html =
+        '<div class="panel panel-ok"><div class="big-icon">🤝</div>' +
+        '<h1>' + esc(tr.item.label) + ' передан(а)</h1>' +
+        '<p class="big">«' + esc(tr.from.name) + '» → <b>«' + esc(tr.to.name) + '»</b></p>' +
+        '<p>Теперь за инструмент отвечает команда «' + esc(tr.to.name) + '».</p>' +
+        '<button class="btn btn-ghost" data-act="home">Готово</button></div>';
     }
 
     else if (s.screen === 'returned') {
@@ -439,7 +540,11 @@
 
     screenEl.innerHTML = html;
     renderCountdown();
+    // подсветка текущей команды на табло
+    var cur = (s.screen === 'cart' || s.screen === 'consumables') ? s.team.id : null;
+    if (cur !== lastBoardTeam) { lastBoardTeam = cur; renderBoard(); }
   }
+  var lastBoardTeam = null;
 
   function summaryText() {
     var parts = [];
@@ -468,6 +573,7 @@
       case 'back': state.screen = 'cart'; return render();
       case 'issue': return doIssue();
       case 'return': return doReturn();
+      case 'transfer': return startTransfer();
     }
   });
 
@@ -511,6 +617,8 @@
       ui.$('#setup-hint').hidden = false;
     }
     render();
+    renderBoard();
+    setInterval(renderBoard, 30000);
     clock();
     setInterval(clock, 10000);
     timers.tick = setInterval(onTick, 500);
@@ -522,7 +630,9 @@
     scanner.start();
     // настройки могли поменяться в админке в соседней вкладке
     document.addEventListener('visibilitychange', async function () {
-      if (!document.hidden) settings = await AB.db.getSettings();
+      if (document.hidden) return;
+      settings = await AB.db.getSettings();
+      renderBoard();
     });
   }
 

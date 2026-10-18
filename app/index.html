@@ -22,16 +22,23 @@
   </header>
 
   <main class="kiosk">
-    <section class="cam">
-      <div class="cam-box">
-        <video id="video" muted playsinline></video>
-        <div class="cam-frame"></div>
+    <!-- слева: сканер и текущее действие -->
+    <section class="left">
+      <div class="cam">
+        <div class="cam-box">
+          <video id="video" muted playsinline></video>
+          <div class="cam-frame"></div>
+        </div>
+        <div class="cam-side">
+          <div id="cam-status" class="cam-status">Включаем камеру…</div>
+          <button id="btn-manual" class="btn btn-ghost btn-small">Ввести код вручную</button>
+          <p id="setup-hint" class="setup-hint" hidden>База пуста. Добавьте команды и инструменты в <a href="admin.html">админке</a>.</p>
+        </div>
       </div>
-      <div id="cam-status" class="cam-status">Включаем камеру…</div>
-      <button id="btn-manual" class="btn btn-ghost btn-small">Ввести код вручную</button>
-      <p id="setup-hint" class="setup-hint" hidden>База пуста. Добавьте команды и инструменты в <a href="admin.html">админке</a>.</p>
+      <section id="screen" class="screen" aria-live="polite"></section>
     </section>
-    <section id="screen" class="screen" aria-live="polite"></section>
+    <!-- справа: у кого сейчас инструменты -->
+    <aside id="board" class="board" aria-live="polite"></aside>
   </main>
 
   <div id="toast" class="toast" role="alert"></div>

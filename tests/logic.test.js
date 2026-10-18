@@ -73,12 +73,77 @@ test('нельзя выдать уже выданное и вернуть нев
   await rejectsWith(L.checkCandidate(futurum.id, 'NOPE-01', []), 'ITEM_NOT_FOUND');
 });
 
-test('передача между командами только через комнату', async () => {
+test('взять чужой инструмент через выдачу нельзя, через возврат на склад — можно', async () => {
   await L.issue(futurum.id, ['TSIRPIL-01']);
   await rejectsWith(L.issue(archistra.id, ['TSIRPIL-01']), 'ALREADY_OUT');
   await L.returnItem('TSIRPIL-01');
   await L.issue(archistra.id, ['TSIRPIL-01']);
   assert.equal((await db.getOne('items', 'TSIRPIL-01')).holderTeamId, archistra.id);
+});
+
+test('передача другой команде без возврата на склад', async () => {
+  await L.issue(futurum.id, ['TSIRPIL-01']);
+  const before = (await db.getOne('items', 'TSIRPIL-01')).issuedAt;
+  await new Promise((r) => setTimeout(r, 5));
+  const r = await L.transferItem('TSIRPIL-01', archistra.id);
+  assert.equal(r.from.id, futurum.id);
+  assert.equal(r.to.id, archistra.id);
+  const item = await db.getOne('items', 'TSIRPIL-01');
+  assert.equal(item.status, 'out', 'на склад не возвращается');
+  assert.equal(item.holderTeamId, archistra.id, 'ответственность у новой команды');
+  assert.ok(item.issuedAt > before, 'время — с момента передачи');
+
+  const s = await L.snapshot();
+  const op = s.ops.find((o) => o.op === 'transfer');
+  assert.equal(op.itemId, 'TSIRPIL-01');
+  assert.equal(op.fromTeamId, futurum.id);
+  assert.equal(op.fromTeamName, 'Футурум');
+  assert.equal(op.teamId, archistra.id);
+  assert.equal(s.ops.filter((o) => o.op === 'return').length, 0);
+
+  // отчёты: числится за новой командой, счётчики передач
+  assert.deepEqual(L.reportHoldings(s).map((h) => [h.teamName, h.itemId]), [['Архистра', 'TSIRPIL-01']]);
+  const teams = Object.fromEntries(L.reportTeams(s).map((t) => [t.teamName, t]));
+  assert.equal(teams['Футурум'].transferredOut, 1);
+  assert.equal(teams['Архистра'].transferredIn, 1);
+  assert.equal(teams['Футурум'].onHands.length, 0);
+  assert.match(L.CSV.operations(s), /Передача;Футурум;Архистра;Циркулярная пила/);
+
+  // обычный возврат после передачи снимает с новой команды
+  const back = await L.returnItem('TSIRPIL-01');
+  assert.equal(back.team.id, archistra.id);
+  assert.equal((await db.getOne('items', 'TSIRPIL-01')).status, 'in');
+});
+
+test('передача: ошибки и откат', async () => {
+  await rejectsWith(L.transferItem('TSIRPIL-01', archistra.id), 'NOT_OUT');
+  await rejectsWith(L.transferItem('NOPE-01', archistra.id), 'ITEM_NOT_FOUND');
+  await L.issue(futurum.id, ['TSIRPIL-01']);
+  await rejectsWith(L.transferItem('TSIRPIL-01', futurum.id), 'SAME_TEAM');
+  await rejectsWith(L.transferItem('TSIRPIL-01', 'T99'), 'TEAM_NOT_FOUND');
+  await L.updateTeam(archistra.id, { active: false });
+  await rejectsWith(L.transferItem('TSIRPIL-01', archistra.id), 'TEAM_INACTIVE');
+  const s = await L.snapshot();
+  assert.equal(s.items.find((i) => i.id === 'TSIRPIL-01').holderTeamId, futurum.id, 'ничего не поменялось');
+  assert.equal(s.ops.filter((o) => o.op === 'transfer').length, 0, 'в журнале нет лишних записей');
+});
+
+test('передача: лимит проверяется у получателя', async () => {
+  await L.issue(archistra.id, ['TSIRPIL-01', 'TSIRPIL-02']);
+  await L.issue(futurum.id, ['TSIRPIL-03']);
+  await assert.rejects(L.transferItem('TSIRPIL-03', archistra.id), (e) => {
+    assert.equal(e.code, 'LIMIT');
+    assert.equal(e.message, 'Лимит для вашей команды: 2 шт. Сначала верните один.');
+    return true;
+  });
+  assert.equal((await db.getOne('items', 'TSIRPIL-03')).holderTeamId, futurum.id);
+  // передача на другой тип — без ограничений по пилам
+  await L.issue(futurum.id, ['SHURUP-01']);
+  await L.transferItem('SHURUP-01', archistra.id);
+  // освободили место — передача проходит
+  await L.returnItem('TSIRPIL-01');
+  await L.transferItem('TSIRPIL-03', archistra.id);
+  assert.equal((await db.getOne('items', 'TSIRPIL-03')).holderTeamId, archistra.id);
 });
 
 test('лимит 2 на тип: учитывает и то, что на руках, и корзину', async () => {
@@ -165,7 +230,7 @@ test('итоговые отчёты: кто что взял, сколько ос
   const csv = L.CSV.teams(s);
   assert.ok(csv.startsWith('﻿Команда;'));
   assert.match(csv, /Футурум;1;Циркулярная пила №1 \[TSIRPIL-01\]/);
-  assert.match(L.CSV.operations(s), /Выдача;Архистра/);
+  assert.match(L.CSV.operations(s), /Выдача;;Архистра/);
 });
 
 test('резервная копия: экспорт и восстановление', async () => {

@@ -91,6 +91,7 @@
       ts: Date.now(),
       op: null,
       teamId: null, teamName: null,
+      fromTeamId: null, fromTeamName: null,
       itemId: null, itemLabel: null,
       typeId: null, typeName: null,
       consumableId: null, consumableName: null,
@@ -136,7 +137,7 @@
       var holder = await db.get(tx, 'teams', item.holderTeamId);
       throw AppError('ALREADY_OUT',
         '«' + item.label + '» числится за командой «' + (holder ? holder.name : item.holderTeamId) +
-        '». Сначала инструмент нужно вернуть в комнату.', { item: item });
+        '». Её участник может передать его вам: скан инструмента → «Передать другой команде» → ваш бейдж.', { item: item });
     }
     var type = await db.get(tx, 'toolTypes', item.typeId);
     var limit = effectiveLimit(type, settings);
@@ -259,6 +260,45 @@
         item: item, type: type, team: team, heldMs: heldMs,
         chargeReminder: !!(type && type.kind === 'battery')
       };
+    });
+  }
+
+  /* ---------- передача между командами ---------- */
+
+  /**
+   * Передача выданного инструмента другой команде без возврата на склад.
+   * Ответственность переходит к получателю; лимит проверяется у получателя.
+   */
+  function transferItem(itemId, toTeamId) {
+    return db.run(['teams', 'toolTypes', 'items', 'operations', 'settings'], 'readwrite', async function (tx) {
+      var settings = await db.readSettings(tx);
+      var item = await db.get(tx, 'items', itemId);
+      if (!item) throw AppError('ITEM_NOT_FOUND', 'Неизвестный инструмент (' + itemId + ').');
+      if (item.status !== 'out') {
+        throw AppError('NOT_OUT', '«' + item.label + '» не числится выданным — передавать нечего.', { item: item });
+      }
+      var from = await db.get(tx, 'teams', item.holderTeamId);
+      var fromName = from ? from.name : item.holderTeamId;
+      if (item.holderTeamId === toTeamId) {
+        throw AppError('SAME_TEAM', '«' + item.label + '» уже числится за командой «' + fromName + '». Отсканируйте бейдж другой команды.', { item: item });
+      }
+      var to = await getActiveTeam(tx, toTeamId);
+      var type = await db.get(tx, 'toolTypes', item.typeId);
+      var limit = effectiveLimit(type, settings);
+      var held = (await db.byIndex(tx, 'items', 'holderTeamId', toTeamId))
+        .filter(function (i) { return i.status === 'out' && i.typeId === item.typeId; }).length;
+      if (held + 1 > limit) {
+        throw AppError('LIMIT', limitMessage(limit), { item: item, type: type, held: held, limit: limit, team: to });
+      }
+      var now = Date.now();
+      item.holderTeamId = to.id;
+      item.issuedAt = now;
+      await db.put(tx, 'items', item);
+      await db.add(tx, 'operations', newOp(Object.assign({
+        ts: now, op: 'transfer', fromTeamId: from ? from.id : null, fromTeamName: fromName,
+        note: 'от «' + fromName + '»'
+      }, itemOpFields(item, type, to))));
+      return { item: item, type: type, from: from || { id: null, name: fromName }, to: to };
     });
   }
 
@@ -459,6 +499,15 @@
     });
   }
 
+  /** То же, что reportHoldings, но читает только нужные хранилища (для табло на кассе). */
+  function holdingsNow() {
+    return db.run(['teams', 'toolTypes', 'items'], 'readonly', async function (tx) {
+      return reportHoldings({
+        teams: await db.all(tx, 'teams'), types: await db.all(tx, 'toolTypes'), items: await db.all(tx, 'items')
+      });
+    });
+  }
+
   /** Инвентарь по типам: сколько всего, в комнате, на руках (и у кого), на обслуживании. */
   function reportInventory(s) {
     var teams = indexBy(s.teams, 'id');
@@ -489,7 +538,8 @@
     var rows = s.teams.slice().sort(byName).map(function (team) {
       return {
         teamId: team.id, teamName: team.name, active: team.active !== false,
-        onHands: [], onHandsByType: {}, issuedByType: {}, issuedTotal: 0, returnedTotal: 0, consumables: {}
+        onHands: [], onHandsByType: {}, issuedByType: {}, issuedTotal: 0, returnedTotal: 0,
+        transferredIn: 0, transferredOut: 0, consumables: {}
       };
     });
     var byId = indexBy(rows, 'teamId');
@@ -500,6 +550,7 @@
       r.onHandsByType[tn] = (r.onHandsByType[tn] || 0) + 1;
     });
     s.ops.forEach(function (o) {
+      if (o.op === 'transfer' && byId[o.fromTeamId]) byId[o.fromTeamId].transferredOut++;
       var r = byId[o.teamId];
       if (!r) return;
       if (o.op === 'issue') {
@@ -508,6 +559,8 @@
         r.issuedTotal++;
       } else if (o.op === 'return' || o.op === 'override') {
         r.returnedTotal++;
+      } else if (o.op === 'transfer') {
+        r.transferredIn++;
       } else if (o.op === 'consume') {
         var cn = o.consumableName || o.consumableId;
         r.consumables[cn] = (r.consumables[cn] || 0) + o.qty;
@@ -571,7 +624,7 @@
 
   var OP_NAMES = {
     issue: 'Выдача', 'return': 'Возврат', override: 'Возврат (админ)', consume: 'Расходник',
-    restock: 'Пополнение', adjust: 'Инвентаризация', register: 'Добавлен', status: 'Статус'
+    transfer: 'Передача', restock: 'Пополнение', adjust: 'Инвентаризация', register: 'Добавлен', status: 'Статус'
   };
 
   var CSV = {
@@ -586,6 +639,7 @@
       return toCSV(s.ops.slice().sort(function (a, b) { return a.ts - b.ts || a.id - b.id; }), [
         { title: '№', value: 'id' }, { title: 'Время', value: function (o) { return fmtTime(o.ts); } },
         { title: 'Операция', value: function (o) { return OP_NAMES[o.op] || o.op; } },
+        { title: 'От команды', value: 'fromTeamName' },
         { title: 'Команда', value: 'teamName' }, { title: 'Тип', value: 'typeName' },
         { title: 'Инструмент', value: 'itemLabel' }, { title: 'Код', value: 'itemId' },
         { title: 'Расходник', value: 'consumableName' }, { title: 'Кол-во', value: 'qty' },
@@ -609,6 +663,7 @@
         { title: 'Сейчас на руках (шт)', value: function (r) { return r.onHands.length; } },
         { title: 'Сейчас на руках', value: function (r) { return r.onHands.map(function (h) { return h.label + ' [' + h.itemId + ']'; }).join(', '); } },
         { title: 'Всего выдач', value: 'issuedTotal' }, { title: 'Всего возвратов', value: 'returnedTotal' },
+        { title: 'Получили передачей', value: 'transferredIn' }, { title: 'Передали другим', value: 'transferredOut' },
         { title: 'Брали (по типам, раз)', value: function (r) { return mapToText(r.issuedByType); } },
         { title: 'Расходники', value: function (r) { return mapToText(r.consumables); } }
       ]);
@@ -662,12 +717,13 @@
     effectiveLimit: effectiveLimit, limitMessage: limitMessage,
     checkCandidate: checkCandidate, checkConsumable: checkConsumable,
     issue: issue, lookupForReturn: lookupForReturn, returnItem: returnItem,
+    transferItem: transferItem,
     addTeams: addTeams, updateTeam: updateTeam,
     addToolType: addToolType, updateToolType: updateToolType,
     addItems: addItems, updateItem: updateItem,
     addConsumable: addConsumable, changeStock: changeStock, updateConsumable: updateConsumable,
     snapshot: snapshot,
-    reportHoldings: reportHoldings, reportInventory: reportInventory,
+    reportHoldings: reportHoldings, holdingsNow: holdingsNow, reportInventory: reportInventory,
     reportTeams: reportTeams, reportConsumables: reportConsumables,
     CSV: CSV, toCSV: toCSV, OP_NAMES: OP_NAMES,
     fmtTime: fmtTime, fmtDuration: fmtDuration, mapToText: mapToText,

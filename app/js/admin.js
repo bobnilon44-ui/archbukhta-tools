@@ -136,10 +136,12 @@
       }).join('') + '</tbody></table>';
 
     html += '<h2 class="section">По командам</h2><table><thead><tr><th>Команда</th><th class="num">На руках</th>' +
-      '<th>Что брали (раз)</th><th class="num">Выдач</th><th class="num">Возвратов</th><th>Расходники</th></tr></thead><tbody>' +
+      '<th>Что брали (раз)</th><th class="num">Выдач</th><th class="num">Возвратов</th>' +
+      '<th class="num">Получили передачей</th><th class="num">Передали</th><th>Расходники</th></tr></thead><tbody>' +
       teams.map(function (t) {
         return '<tr><td>' + esc(t.teamName) + '</td><td class="num">' + (t.onHands.length ? '<span class="pill out">' + t.onHands.length + '</span>' : '0') + '</td>' +
           '<td>' + esc(L.mapToText(t.issuedByType)) + '</td><td class="num">' + t.issuedTotal + '</td><td class="num">' + t.returnedTotal + '</td>' +
+          '<td class="num">' + t.transferredIn + '</td><td class="num">' + t.transferredOut + '</td>' +
           '<td>' + esc(L.mapToText(t.consumables)) + '</td></tr>';
       }).join('') + '</tbody></table>';
 
@@ -157,7 +159,7 @@
     var ops = snap.ops.slice().sort(function (a, b) { return b.ts - a.ts || b.id - a.id; }).filter(function (o) {
       if (logFilter.op && o.op !== logFilter.op) return false;
       if (!q) return true;
-      return [o.teamName, o.itemLabel, o.itemId, o.typeName, o.consumableName, o.note].join(' ').toLowerCase().indexOf(q) !== -1;
+      return [o.teamName, o.fromTeamName, o.itemLabel, o.itemId, o.typeName, o.consumableName, o.note].join(' ').toLowerCase().indexOf(q) !== -1;
     });
     var shown = ops.slice(0, 1000);
     return '<div class="toolbar"><input id="log-q" placeholder="Поиск: команда, инструмент, код…" value="' + esc(logFilter.q) + '" style="min-width:300px">' +
@@ -167,7 +169,8 @@
       '<span class="spacer"></span>' + csvButton('operations', 'CSV — весь журнал') + '</div>' +
       '<table><thead><tr><th>Время</th><th>Операция</th><th>Команда</th><th>Инструмент / расходник</th><th class="num">Кол-во</th><th>Примечание</th></tr></thead><tbody>' +
       shown.map(function (o) {
-        return '<tr><td>' + L.fmtTime(o.ts) + '</td><td>' + esc(L.OP_NAMES[o.op] || o.op) + '</td><td>' + esc(o.teamName || '') + '</td>' +
+        return '<tr><td>' + L.fmtTime(o.ts) + '</td><td>' + esc(L.OP_NAMES[o.op] || o.op) + '</td><td>' +
+          (o.op === 'transfer' ? esc(o.fromTeamName || '') + ' → <b>' + esc(o.teamName || '') + '</b>' : esc(o.teamName || '')) + '</td>' +
           '<td>' + esc(o.itemLabel || o.consumableName || '') + (o.itemId ? ' <code>' + esc(o.itemId) + '</code>' : '') + '</td>' +
           '<td class="num">' + (o.qty === null || o.qty === undefined ? '' : o.qty) + '</td><td>' + esc(o.note || '') + '</td></tr>';
       }).join('') + '</tbody></table>';
