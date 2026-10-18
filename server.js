@@ -24,6 +24,13 @@ http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': TYPES[path.extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-cache' });
     res.end(data);
   });
+}).on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error('Порт ' + PORT + ' уже занят: скорее всего, работает касса, запущенная раньше.');
+    console.error('Остановите её (lsof -ti tcp:' + PORT + ' -sTCP:LISTEN | xargs kill) и запустите снова.');
+    process.exit(1);
+  }
+  throw err;
 }).listen(PORT, '127.0.0.1', () => {
   console.log('АрхБухта: откройте http://localhost:' + PORT + ' (Ctrl+C — остановить)');
 });

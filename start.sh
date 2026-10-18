@@ -3,6 +3,14 @@
 cd "$(dirname "$0")"
 PORT=8080
 URL="http://localhost:$PORT/"
+# Если порт занят, браузер откроет чужую (обычно старую) копию кассы — предупреждаем и не стартуем.
+if command -v lsof >/dev/null 2>&1 && lsof -ti tcp:$PORT -sTCP:LISTEN >/dev/null 2>&1; then
+  echo "Порт $PORT уже занят: скорее всего, работает касса, запущенная раньше (возможно, из другой папки)."
+  echo "Закройте то окно Терминала или остановите её командой:"
+  echo "  lsof -ti tcp:$PORT -sTCP:LISTEN | xargs kill"
+  echo "и запустите start.sh снова."
+  exit 1
+fi
 if command -v node >/dev/null 2>&1; then
   node server.js &
 elif command -v python3 >/dev/null 2>&1; then
