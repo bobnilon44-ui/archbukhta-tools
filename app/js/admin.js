@@ -33,7 +33,7 @@
   }
 
   function csvButton(kind, title) {
-    return '<button class="btn btn-ghost" data-act="csv" data-kind="' + kind + '">⬇ ' + esc(title) + '</button>';
+    return '<button class="btn btn-ghost" data-act="csv" data-kind="' + kind + '">↓ ' + esc(title) + '</button>';
   }
 
   function limitText(l) { return l === Infinity ? 'без лимита' : l + ' шт'; }
@@ -51,7 +51,7 @@
     var hasData = snap.ops.length > 0;
     if (!hasData) return '';
     if (!last || Date.now() - last > 3 * 3600 * 1000) {
-      return '<div class="card debt">💾 Резервная копия ' + (last ? 'делалась ' + L.fmtTime(last) : 'ещё не делалась') +
+      return '<div class="card debt">Резервная копия ' + (last ? 'делалась ' + L.fmtTime(last) : 'ещё не делалась') +
         '. Данные хранятся только в этом браузере — <button class="btn btn-ghost btn-small" data-act="backup">скачать копию</button></div>';
     }
     return '';
@@ -89,7 +89,7 @@
         html += '<tr class="group"><td colspan="6">' + esc(r.teamName) + ' — ' + n + ' шт.</td></tr>';
         lastTeam = r.teamId;
       }
-      html += '<tr><td>' + (r.kind === 'battery' ? '🔋 ' : '') + esc(r.label) + '</td><td>' + esc(r.typeName) + '</td>' +
+      html += '<tr><td>' + (r.kind === 'battery' ? ui.icon('battery') + ' ' : '') + esc(r.label) + '</td><td>' + esc(r.typeName) + '</td>' +
         '<td><code>' + esc(r.itemId) + '</code></td><td>' + L.fmtTime(r.issuedAt) + '</td>' +
         '<td>' + L.fmtDuration(Date.now() - r.issuedAt) + '</td>' +
         '<td><button class="btn btn-ghost btn-small" data-act="force-return" data-id="' + esc(r.itemId) + '">Вернуть</button></td></tr>';
@@ -108,10 +108,10 @@
 
     var html =
       '<div class="toolbar"><h2 style="margin:0">Итоги конкурса</h2><span class="spacer"></span>' +
-      '<button class="btn btn-ghost" data-act="print">🖨 Печать / PDF</button>' +
+      '<button class="btn btn-ghost" data-act="print">Печать / PDF</button>' +
       csvButton('teams', 'По командам') + csvButton('inventory', 'Инвентарь') +
       csvButton('consumables', 'Расходники') + csvButton('operations', 'Журнал') +
-      '<button class="btn btn-go" data-act="csv-all">⬇ Скачать всё</button></div>' +
+      '<button class="btn btn-go" data-act="csv-all">↓ Скачать всё</button></div>' +
       '<p class="muted">Отчёт на ' + L.fmtTime(Date.now()) + '</p>' +
       '<div class="stats">' +
       '<div class="stat"><span class="muted">Всего единиц</span><b>' + sum('total') + '</b></div>' +
@@ -125,12 +125,12 @@
       return '<div class="card debt"><h3>' + esc(t.teamName) + ' — ' + t.onHands.length + ' шт.</h3><ul>' +
         t.onHands.map(function (h) { return '<li>' + esc(h.label) + ' <code>' + esc(h.itemId) + '</code> <span class="muted">с ' + L.fmtTime(h.issuedAt) + '</span></li>'; }).join('') +
         '</ul></div>';
-    }).join('') + '</div>' : '<div class="card clear">✅ Все инструменты возвращены.</div>';
+    }).join('') + '</div>' : '<div class="card clear">Все инструменты возвращены.</div>';
 
     html += '<h2 class="section">Инструмент по типам</h2><table><thead><tr><th>Тип</th><th class="num">Всего</th>' +
       '<th class="num">В комнате</th><th class="num">На руках</th><th>У кого</th><th class="num">Ремонт</th><th class="num">Списано</th></tr></thead><tbody>' +
       inv.map(function (r) {
-        return '<tr><td>' + (r.kind === 'battery' ? '🔋 ' : '') + esc(r.name) + '</td><td class="num">' + r.total + '</td>' +
+        return '<tr><td>' + (r.kind === 'battery' ? ui.icon('battery') + ' ' : '') + esc(r.name) + '</td><td class="num">' + r.total + '</td>' +
           '<td class="num">' + r.inRoom + '</td><td class="num">' + r.out + '</td><td>' + esc(L.mapToText(r.outByTeam)) + '</td>' +
           '<td class="num">' + r.service + '</td><td class="num">' + r.retired + '</td></tr>';
       }).join('') + '</tbody></table>';
@@ -180,7 +180,7 @@
     var inv = L.reportInventory(snap);
     var html = '';
     if (lastCreated) {
-      html += '<div class="card clear">✅ ' + esc(lastCreated.title) + ' <a class="btn btn-go" target="_blank" href="' + esc(lastCreated.url) + '">🖨 Печать QR для новых</a></div>';
+      html += '<div class="card clear">' + esc(lastCreated.title) + ' <a class="btn btn-go" target="_blank" href="' + esc(lastCreated.url) + '">Печать QR для новых</a></div>';
     }
     html += '<div class="card"><h3>Добавить новый тип инструмента</h3>' +
       '<div class="form-row">' +
@@ -193,7 +193,7 @@
       '<p class="muted">QR-коды генерируются автоматически и офлайн. Лимит 0 — без лимита. Новую единицу существующего типа добавляйте кнопкой «+» в таблице.</p></div>';
 
     html += '<div class="toolbar"><h2 style="margin:0">Типы и единицы</h2><span class="spacer"></span>' +
-      '<a class="btn btn-ghost" target="_blank" href="' + labelsUrl({ items: 'all' }) + '">🖨 QR всех инструментов</a>' +
+      '<a class="btn btn-ghost" target="_blank" href="' + labelsUrl({ items: 'all' }) + '">QR всех инструментов</a>' +
       csvButton('inventory', 'CSV') + '</div>';
 
     if (!inv.length) return html + '<div class="card">Пока нет ни одного типа. Добавьте первый выше.</div>';
@@ -239,13 +239,13 @@
     var teams = snap.teams.slice().sort(function (a, b) { return a.id.localeCompare(b.id); });
     var html = '';
     if (lastCreated && lastCreated.kind === 'teams') {
-      html += '<div class="card clear">✅ ' + esc(lastCreated.title) + ' <a class="btn btn-go" target="_blank" href="' + esc(lastCreated.url) + '">🖨 Печать бейджей для новых</a></div>';
+      html += '<div class="card clear">' + esc(lastCreated.title) + ' <a class="btn btn-go" target="_blank" href="' + esc(lastCreated.url) + '">Печать бейджей для новых</a></div>';
     }
     html += '<div class="card"><h3>Добавить команды</h3><p class="muted">Одна команда на строку. Повторы по названию пропускаются.</p>' +
       '<textarea id="new-teams" placeholder="Футурум&#10;Архистра"></textarea>' +
       '<div class="row"><button class="btn btn-go" data-act="add-teams">Добавить и сделать бейджи</button></div></div>' +
       '<div class="toolbar"><h2 style="margin:0">Команды (' + teams.length + ')</h2><span class="spacer"></span>' +
-      '<a class="btn btn-ghost" target="_blank" href="' + labelsUrl({ teams: 'all' }) + '">🖨 Бейджи всех команд</a></div>';
+      '<a class="btn btn-ghost" target="_blank" href="' + labelsUrl({ teams: 'all' }) + '">Бейджи всех команд</a></div>';
     if (!teams.length) return html;
     html += '<table><thead><tr><th>QR</th><th>Код</th><th>Название</th><th>Активна</th><th class="num">На руках</th><th></th></tr></thead><tbody>' +
       teams.map(function (t) {
@@ -269,7 +269,7 @@
       '<button class="btn btn-go" data-act="add-consumable">Добавить</button></div>' +
       '<p class="muted">Лимит на расходники не действует. QR на коробку необязателен: на кассе расходники выбираются кнопками.</p></div>' +
       '<div class="toolbar"><h2 style="margin:0">Расходники</h2><span class="spacer"></span>' +
-      '<a class="btn btn-ghost" target="_blank" href="' + labelsUrl({ consumables: 'all' }) + '">🖨 QR на коробки</a>' +
+      '<a class="btn btn-ghost" target="_blank" href="' + labelsUrl({ consumables: 'all' }) + '">QR на коробки</a>' +
       csvButton('consumables', 'CSV') + '</div>';
     if (!rows.length) return html;
     html += '<table><thead><tr><th>Название</th><th>Ед.</th><th class="num">Остаток</th><th class="num">Выдано</th><th>Пополнить</th><th>Инвентаризация (факт)</th><th>Порог</th></tr></thead><tbody>' +
@@ -303,7 +303,7 @@
       '<p class="muted">Все данные хранятся в браузере этого ноутбука. Регулярно скачивайте копию (флешка, облако — когда есть интернет). ' +
       'Этим же файлом можно перенести базу: подготовить на другом компьютере и загрузить сюда.' +
       (s.lastBackupAt ? ' Последняя копия: ' + L.fmtTime(s.lastBackupAt) + '.' : '') + '</p>' +
-      '<div class="row"><button class="btn btn-go" data-act="backup">⬇ Скачать копию (JSON)</button>' +
+      '<div class="row"><button class="btn btn-go" data-act="backup">↓ Скачать копию (JSON)</button>' +
       '<label class="btn btn-ghost">⬆ Восстановить из файла<input type="file" id="restore-file" accept=".json,application/json" hidden></label></div></div>' +
 
       '<div class="card"><h3>Демо и очистка</h3>' +

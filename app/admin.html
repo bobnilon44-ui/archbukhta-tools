@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>АрхБухта · Админ</title>
-  <meta name="theme-color" content="#0f172a">
+  <meta name="theme-color" content="#06151d">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/app.css">
@@ -12,10 +12,14 @@
 </head>
 <body class="admin-body">
   <header class="topbar no-print">
-    <div class="brand">АрхБухта · админ</div>
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><use href="#ab-mark"/></svg>
+      <span class="logo">АрхБухта<sup>*</sup></span>
+      <span class="sub">Админ · инструменты</span>
+    </div>
     <div class="topbar-right">
       <a href="index.html" class="btn-icon">← Касса</a>
-      <button id="btn-lock" class="btn-icon" title="Выйти">🔒</button>
+      <button id="btn-lock" class="btn-icon" title="Выйти">Выйти</button>
     </div>
   </header>
 
@@ -35,7 +39,8 @@
 
   <div id="pin-gate" class="pin-gate">
     <form id="pin-form" class="modal-box">
-      <h2>Вход для организаторов</h2>
+      <span class="eyebrow">АрхБухта*</span>
+      <h2 style="margin-top:12px">Вход для организаторов</h2>
       <p class="muted">Введите PIN (по умолчанию 0000 — смените в настройках).</p>
       <input id="pin-input" class="input-big" type="password" inputmode="numeric" autocomplete="off">
       <div class="row"><a href="index.html" class="btn btn-ghost">Назад</a><button class="btn btn-go">Войти</button></div>

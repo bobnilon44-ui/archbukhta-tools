@@ -1,11 +1,15 @@
+@import url(../fonts/fonts.css);
 @page { size: A4; margin: 8mm; }
 * { box-sizing: border-box; }
-body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: #e5e7eb; color: #000; }
-.controls { background: #0f172a; color: #f1f5f9; padding: 12px 20px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; position: sticky; top: 0; z-index: 2; }
-.controls select, .controls button { font: inherit; padding: 6px 10px; border-radius: 8px; }
-.controls button { background: #16a34a; color: #fff; border: 0; font-weight: 700; cursor: pointer; }
-.controls .tip { flex-basis: 100%; margin: 0; font-size: .85rem; color: #94a3b8; }
-.muted { color: #94a3b8; }
+body { margin: 0; font-family: "Manrope", Arial, sans-serif; background: #0b1d26; color: #000; }
+.controls { background: #06151d; color: #d7edf3; padding: 12px 20px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; position: sticky; top: 0; z-index: 2;
+  border-bottom: 1px solid rgba(215,237,243,.22); font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.controls b { font-family: "Dela Gothic One", sans-serif; font-weight: 400; font-size: 16px; letter-spacing: .02em; }
+.controls select { font: inherit; padding: 6px 10px; background: transparent; color: #d7edf3; border: 1px solid rgba(215,237,243,.3); text-transform: none; letter-spacing: 0; }
+.controls select option { background: #06151d; }
+.controls button { font: inherit; padding: 10px 18px; border-radius: 99px; background: #8fd6ea; color: #06151d; border: 0; font-weight: 500; cursor: pointer; }
+.controls .tip { flex-basis: 100%; margin: 0; font-size: 11px; color: rgba(215,237,243,.62); text-transform: none; letter-spacing: .02em; }
+.muted { color: rgba(215,237,243,.62); }
 
 .sheet { width: 194mm; margin: 12px auto; background: #fff; padding: 0; display: flex; flex-wrap: wrap; align-content: flex-start; }
 
@@ -15,15 +19,20 @@ body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ari
 }
 .cut .label { outline: 0.2mm dashed #888; outline-offset: -0.1mm; }
 .label svg { display: block; }
-.label .title { font-weight: 800; line-height: 1.1; margin-top: 1mm; overflow-wrap: break-word; hyphens: auto; }
-.label .code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 7pt; color: #333; margin-top: .5mm; }
-.label .kind { font-size: 6.5pt; text-transform: uppercase; letter-spacing: .06em; color: #555; }
+.label .title { font-family: "Dela Gothic One", "Arial Black", sans-serif; font-weight: 400; text-transform: uppercase; line-height: 1.05; margin-top: 1mm; overflow-wrap: break-word; hyphens: auto; color: #06151d; }
+.label .code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 7pt; color: #1b5468; margin-top: .5mm; letter-spacing: .04em; }
+.label .kind { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 6pt; text-transform: uppercase; letter-spacing: .1em; color: #1b5468; display: flex; align-items: center; justify-content: center; gap: 1.2mm; }
+.label .kind .lmark { width: 3mm; height: 3mm; color: #06151d; }
+.size-badge .label .kind { justify-content: flex-start; font-size: 7pt; }
+.size-badge .label .kind .lmark { width: 5mm; height: 5mm; }
 
 /* бейдж команды: горизонтальный, крупное название */
 .size-badge .label { width: 90mm; height: 60mm; flex-direction: row; gap: 3mm; text-align: left; }
-.size-badge .label svg { width: 46mm; height: 46mm; flex: none; }
-.size-badge .label .title { font-size: 15pt; }
-.size-badge .label .text { display: flex; flex-direction: column; }
+.size-badge .label > svg { width: 44mm; height: 44mm; flex: none; }
+.size-badge .label .title { font-size: 13pt; overflow-wrap: anywhere; }
+.size-badge .label .title.long { font-size: 10.5pt; }
+.size-badge .label .title.xlong { font-size: 8.5pt; }
+.size-badge .label .text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
 
 .size-large .label { width: 60mm; height: 60mm; }
 .size-large .label svg { width: 44mm; height: 44mm; }

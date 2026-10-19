@@ -57,8 +57,8 @@
       return;
     }
     sheet.innerHTML = data.labels.map(function (l) {
-      var text = '<div class="text"><div class="kind">' + esc(data.eventName) + ' · ' + esc(l.kind) + '</div>' +
-        '<div class="title">' + esc(l.title) + '</div><div class="code">' + esc(l.id) + '</div></div>';
+      var text = '<div class="text"><div class="kind">' + ui.mark('lmark') + esc(data.eventName) + ' · ' + esc(l.kind) + '</div>' +
+        '<div class="title' + (l.title.length > 24 ? ' xlong' : l.title.length > 12 ? ' long' : '') + '">' + esc(l.title) + '</div><div class="code">' + esc(l.id) + '</div></div>';
       return '<div class="label">' + ui.qrSvg(l.code, 4) + text + '</div>';
     }).join('');
   }

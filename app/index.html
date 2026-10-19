@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>АрхБухта · Инструменты</title>
-  <meta name="theme-color" content="#0f172a">
+  <meta name="theme-color" content="#06151d">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/app.css">
@@ -13,11 +13,15 @@
   <div id="flash"></div>
 
   <header class="topbar">
-    <div class="brand"><span id="brand-name">АрхБухта</span> · касса инструментов</div>
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><use href="#ab-mark"/></svg>
+      <span class="logo"><span id="brand-name">АрхБухта</span><sup>*</sup></span>
+      <span class="sub">Касса инструментов</span>
+    </div>
     <div class="topbar-right">
       <span id="clock" class="clock"></span>
-      <button id="btn-fullscreen" class="btn-icon" title="Во весь экран">⛶</button>
-      <a href="admin.html" class="btn-icon" title="Админ">⚙</a>
+      <button id="btn-fullscreen" class="btn-icon" title="Во весь экран">⛶ Экран</button>
+      <a href="admin.html" class="btn-icon" title="Админ">Админ</a>
     </div>
   </header>
 
@@ -45,10 +49,12 @@
   <div id="modal" class="modal" hidden></div>
 
   <div id="start-overlay" class="start-overlay">
-    <div>
-      <div class="big-icon">👆</div>
-      <h1>Нажмите, чтобы начать</h1>
-      <p>Включится звук и полноэкранный режим</p>
+    <svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><use href="#ab-mark"/></svg>
+    <span class="eyebrow">Касса инструментов</span>
+    <h1 style="margin-top:22px">Арх<br>Бухта<span class="star">*</span></h1>
+    <div class="start-meta">
+      <span class="btn btn-go" style="flex:none">Нажмите, чтобы начать</span>
+      <p>Взять, вернуть или передать инструмент — по QR-коду. Включится звук и полноэкранный режим.</p>
     </div>
   </div>
 

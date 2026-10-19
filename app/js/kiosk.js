@@ -289,17 +289,17 @@
       if (!byTeam[r.teamId]) { byTeam[r.teamId] = { id: r.teamId, name: r.teamName, items: [] }; groups.push(byTeam[r.teamId]); }
       byTeam[r.teamId].items.push(r);
     });
-    var html = '<div class="board-head"><h2>Сейчас на руках</h2><span class="muted">' +
+    var html = '<span class="eyebrow">Табло</span><div class="board-head"><h2>Сейчас на руках</h2><span class="muted">' +
       (rows.length ? rows.length + ' шт. · команд: ' + groups.length : '') + '</span></div>';
     if (!rows.length) {
-      html += '<div class="board-empty">Всё на месте — на руках ничего нет.</div>';
+      html += ui.crack() + '<div class="board-empty">' + ui.icon('check') + 'Всё на месте — на руках ничего нет.</div>';
     } else {
       html += '<div class="board-list">' + groups.map(function (g) {
         return '<section class="bteam' + (g.id === currentTeam ? ' current' : '') + '">' +
           '<h3><span>' + esc(g.name) + '</span><span class="count">' + g.items.length + '</span></h3><ul>' +
           g.items.map(function (r) {
             return '<li' + (fresh[r.itemId] > now ? ' class="fresh"' : '') + '>' +
-              '<span class="bico">' + (r.kind === 'battery' ? '🔋' : '🛠') + '</span>' +
+              '<span class="bico">' + ui.icon(r.kind === 'battery' ? 'battery' : 'tool') + '</span>' +
               '<span class="bname">' + esc(r.label) + '</span>' +
               '<span class="btime">с ' + shortTime(r.issuedAt) + '</span></li>';
           }).join('') + '</ul></section>';
@@ -425,10 +425,11 @@
 
     if (s.screen === 'idle') {
       html =
+        '<span class="eyebrow">Самообслуживание</span>' + ui.crack() +
         '<div class="idle">' +
-        '<div class="hint hint-take"><div class="hint-icon">🪪</div><div><h2>Взять инструмент</h2>' +
+        '<div class="hint hint-take"><div class="hint-icon">' + ui.icon('badge') + '</div><div><h2>Взять инструмент</h2>' +
         '<p>Поднесите к камере <b>бейдж команды</b></p></div></div>' +
-        '<div class="hint hint-return"><div class="hint-icon">🔧</div><div><h2>Вернуть или передать</h2>' +
+        '<div class="hint hint-return"><div class="hint-icon">' + ui.icon('wrench') + '</div><div><h2>Вернуть или передать</h2>' +
         '<p>Поднесите к камере <b>QR на инструменте или аккумуляторе</b></p></div></div>' +
         '<p class="muted center">Справа видно, у какой команды сейчас нужный инструмент.</p>' +
         '</div>';
@@ -438,18 +439,18 @@
       var counts = cartTypeCounts();
       html =
         '<div class="panel panel-team">' +
-        '<div class="team-head"><span class="muted">Корзина команды</span><h1>' + esc(s.team.name) + '</h1></div>' +
+        '<div class="team-head"><span class="eyebrow">Корзина команды</span><h1>' + esc(s.team.name) + '</h1></div>' +
         '<p class="instr">Сканируйте QR на каждом инструменте и аккумуляторе, затем нажмите <b>«Далее»</b>.</p>' +
         '<ul class="cart-list">' +
         (s.cart.length ? s.cart.map(function (c) {
           var lim = L.effectiveLimit(c.type, settings);
-          return '<li><span class="ico">' + (c.type && c.type.kind === 'battery' ? '🔋' : '🛠') + '</span>' +
+          return '<li><span class="ico">' + ui.icon(c.type && c.type.kind === 'battery' ? 'battery' : 'tool') + '</span>' +
             '<span class="name">' + esc(c.item.label) + '<small>' + esc(c.item.id) +
             (lim !== Infinity ? ' · будет на руках ' + counts[c.item.typeId] + ' из ' + lim : '') + '</small></span>' +
             '<button class="btn-x" data-remove="' + esc(c.item.id) + '" aria-label="Убрать">✕</button></li>';
         }).join('') : '<li class="empty">Пока пусто: поднесите инструмент к камере</li>') +
         s.consumables.map(function (c) {
-          return '<li><span class="ico">📦</span><span class="name">' + esc(c.consumable.name) +
+          return '<li><span class="ico">' + ui.icon('box') + '</span><span class="name">' + esc(c.consumable.name) +
             '<small>' + c.qty + ' ' + esc(c.consumable.unit) + '</small></span>' +
             '<button class="btn-x" data-remove-c="' + esc(c.consumable.id) + '" aria-label="Убрать">✕</button></li>';
         }).join('') +
@@ -466,7 +467,7 @@
     else if (s.screen === 'consumables') {
       html =
         '<div class="panel panel-team">' +
-        '<div class="team-head"><span class="muted">Команда</span><h1>' + esc(s.team.name) + '</h1></div>' +
+        '<div class="team-head"><span class="eyebrow">Команда</span><h1>' + esc(s.team.name) + '</h1></div>' +
         '<h2>Берёте расходники?</h2><p class="instr">Нажмите на нужный и введите количество. Если не нужны — нажмите <b>«Выдать»</b>.</p>' +
         '<div class="cons-grid">' + s.available.map(function (c) {
           var inCart = s.consumables.filter(function (x) { return x.consumable.id === c.id; })[0];
@@ -484,7 +485,7 @@
     else if (s.screen === 'done') {
       var r = s.result;
       html =
-        '<div class="panel panel-ok"><div class="big-icon">✅</div>' +
+        '<div class="panel panel-ok"><div class="big-icon">' + ui.icon('check') + '</div>' +
         '<h1>Выдано команде «' + esc(r.team.name) + '»</h1><ul class="result-list">' +
         r.issued.map(function (x) { return '<li>' + esc(x.item.label) + '</li>'; }).join('') +
         r.consumables.map(function (x) { return '<li>' + esc(x.consumable.name) + ': ' + x.qty + ' ' + esc(x.consumable.unit) + '</li>'; }).join('') +
@@ -495,23 +496,23 @@
     else if (s.screen === 'itemAction') {
       var held = s.item.issuedAt ? L.fmtDuration(Date.now() - s.item.issuedAt) : '';
       html =
-        '<div class="panel panel-return"><span class="muted">Что сделать с инструментом?</span>' +
-        '<h1>' + (s.type && s.type.kind === 'battery' ? '🔋 ' : '🛠 ') + esc(s.item.label) + '</h1>' +
+        '<div class="panel panel-return"><span class="eyebrow">Что сделать с инструментом?</span>' +
+        '<h1 style="margin-top:10px">' + esc(s.item.label) + '</h1>' +
         '<p class="big">Числится за командой <b>«' + esc(s.team ? s.team.name : s.item.holderTeamId) + '»</b>' +
         (held ? '<br><span class="muted">у неё ' + held + '</span>' : '') + '</p>' +
         '<div class="actions actions-col">' +
-        '<button class="btn btn-go" data-act="return">⬇ Вернуть на склад</button>' +
-        '<button class="btn btn-transfer" data-act="transfer">⇄ Передать другой команде</button>' +
+        '<button class="btn btn-go" data-act="return">' + ui.icon('down') + 'Вернуть на склад</button>' +
+        '<button class="btn btn-transfer" data-act="transfer">' + ui.icon('swap') + 'Передать другой команде</button>' +
         '<button class="btn btn-ghost" data-act="cancel">Отмена</button>' +
         '</div><div id="countdown"></div></div>';
     }
 
     else if (s.screen === 'transferScan') {
       html =
-        '<div class="panel panel-transfer"><span class="muted">Передача</span>' +
+        '<div class="panel panel-transfer"><span class="eyebrow">Передача</span>' +
         '<h1>' + esc(s.item.label) + '</h1>' +
         '<p class="big">Сейчас у «' + esc(s.team ? s.team.name : s.item.holderTeamId) + '».</p>' +
-        '<div class="scan-prompt">🪪 Поднесите к камере <b>бейдж команды, которая забирает</b> инструмент</div>' +
+        '<div class="scan-prompt">' + ui.icon('badge') + '<span>Поднесите к камере <b>бейдж команды, которая забирает</b> инструмент</span></div>' +
         '<p class="muted">После передачи за инструмент отвечает новая команда.</p>' +
         '<div class="actions"><button class="btn btn-ghost" data-act="cancel">Отмена</button></div>' +
         '<div id="countdown"></div></div>';
@@ -520,7 +521,7 @@
     else if (s.screen === 'transferred') {
       var tr = s.result;
       html =
-        '<div class="panel panel-ok"><div class="big-icon">🤝</div>' +
+        '<div class="panel panel-ok"><div class="big-icon">' + ui.icon('swap') + '</div>' +
         '<h1>' + esc(tr.item.label) + ' передан(а)</h1>' +
         '<p class="big">«' + esc(tr.from.name) + '» → <b>«' + esc(tr.to.name) + '»</b></p>' +
         '<p>Теперь за инструмент отвечает команда «' + esc(tr.to.name) + '».</p>' +
@@ -531,10 +532,10 @@
       var rr = s.result;
       html =
         '<div class="panel ' + (rr.chargeReminder ? 'panel-warn' : 'panel-ok') + '">' +
-        '<div class="big-icon">' + (rr.chargeReminder ? '🔌' : '✅') + '</div>' +
+        '<div class="big-icon">' + ui.icon(rr.chargeReminder ? 'plug' : 'check') + '</div>' +
         '<h1>Возвращено: ' + esc(rr.item.label) + '</h1>' +
         '<p>Снято с команды «' + esc(rr.team ? rr.team.name : '') + '».</p>' +
-        (rr.chargeReminder ? '<div class="charge">⚡ Поставьте аккумулятор на зарядку!</div>' : '<p>Положите инструмент на место.</p>') +
+        (rr.chargeReminder ? '<div class="charge">' + ui.icon('plug') + 'Поставьте аккумулятор на зарядку!</div>' : '<p>Положите инструмент на место.</p>') +
         '<button class="btn btn-ghost" data-act="home">' + (rr.chargeReminder ? 'Поставил(а) на зарядку' : 'Готово') + '</button></div>';
     }
 
