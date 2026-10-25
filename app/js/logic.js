@@ -222,7 +222,7 @@
         }));
         taken.push({ consumable: cons, qty: merged[cid] });
       }
-      return { team: team, issued: issued, consumables: taken, batchId: batchId };
+      return { team: team, issued: issued, consumables: taken, batchId: batchId, undoRef: { batchId: batchId } };
     });
   }
 
@@ -250,14 +250,17 @@
       var team = await db.get(tx, 'teams', item.holderTeamId);
       var heldMs = Date.now() - (item.issuedAt || Date.now());
       var teamId = item.holderTeamId;
+      var prevIssuedAt = item.issuedAt;
       item.status = 'in';
       item.holderTeamId = null;
       item.issuedAt = null;
       await db.put(tx, 'items', item);
       var f = itemOpFields(item, type, team || { id: teamId, name: teamId });
-      await db.add(tx, 'operations', newOp(Object.assign({ op: opts.override ? 'override' : 'return', note: opts.note || '' }, f)));
+      var opId = await db.add(tx, 'operations', newOp(Object.assign({
+        op: opts.override ? 'override' : 'return', note: opts.note || '', prevIssuedAt: prevIssuedAt
+      }, f)));
       return {
-        item: item, type: type, team: team, heldMs: heldMs,
+        item: item, type: type, team: team, heldMs: heldMs, undoRef: { opId: opId },
         chargeReminder: !!(type && type.kind === 'battery')
       };
     });
@@ -291,14 +294,76 @@
         throw AppError('LIMIT', limitMessage(limit), { item: item, type: type, held: held, limit: limit, team: to });
       }
       var now = Date.now();
+      var prevIssuedAt = item.issuedAt;
       item.holderTeamId = to.id;
       item.issuedAt = now;
       await db.put(tx, 'items', item);
-      await db.add(tx, 'operations', newOp(Object.assign({
+      var opId = await db.add(tx, 'operations', newOp(Object.assign({
+        prevIssuedAt: prevIssuedAt,
         ts: now, op: 'transfer', fromTeamId: from ? from.id : null, fromTeamName: fromName,
         note: 'от «' + fromName + '»'
       }, itemOpFields(item, type, to))));
-      return { item: item, type: type, from: from || { id: null, name: fromName }, to: to };
+      return { item: item, type: type, from: from || { id: null, name: fromName }, to: to, undoRef: { opId: opId } };
+    });
+  }
+
+  /* ---------- отмена последней операции (сразу после неё, на кассе) ---------- */
+
+  function undoneErr(label) {
+    return AppError('UNDO_STALE', 'Отменить нельзя: «' + label + '» уже изменился после этой операции.');
+  }
+
+  /**
+   * Откатывает выдачу (по batchId), возврат или передачу (по opId).
+   * Исходные записи журнала помечаются undone, а в журнал добавляется запись «Отмена».
+   * Если предмет успели снова взять/вернуть/передать — отказ, ничего не меняется.
+   */
+  function undoOperation(ref) {
+    return db.run(['teams', 'toolTypes', 'items', 'consumables', 'operations'], 'readwrite', async function (tx) {
+      var all = await db.all(tx, 'operations');
+      var ops = ref.batchId
+        ? all.filter(function (o) { return o.batchId === ref.batchId && (o.op === 'issue' || o.op === 'consume'); })
+        : all.filter(function (o) { return o.id === ref.opId; });
+      if (!ops.length) throw AppError('UNDO_NOT_FOUND', 'Операция не найдена.');
+      if (ops.some(function (o) { return o.undone; })) throw AppError('UNDO_DONE', 'Эта операция уже отменена.');
+      var now = Date.now(), restored = [];
+      for (var i = 0; i < ops.length; i++) {
+        var o = ops[i];
+        if (o.op === 'consume') {
+          var c = await db.get(tx, 'consumables', o.consumableId);
+          if (c) { c.stock += o.qty; await db.put(tx, 'consumables', c); }
+        } else {
+          var item = await db.get(tx, 'items', o.itemId);
+          if (!item) throw AppError('ITEM_NOT_FOUND', 'Инструмент не найден.');
+          if (o.op === 'issue') {
+            if (item.status !== 'out' || item.holderTeamId !== o.teamId || item.issuedAt !== o.ts) throw undoneErr(item.label);
+            item.status = 'in'; item.holderTeamId = null; item.issuedAt = null;
+          } else if (o.op === 'return' || o.op === 'override') {
+            if (item.status !== 'in') throw undoneErr(item.label);
+            item.status = 'out'; item.holderTeamId = o.teamId; item.issuedAt = o.prevIssuedAt || o.ts;
+          } else if (o.op === 'transfer') {
+            if (item.status !== 'out' || item.holderTeamId !== o.teamId || item.issuedAt !== o.ts) throw undoneErr(item.label);
+            item.holderTeamId = o.fromTeamId; item.issuedAt = o.prevIssuedAt || o.ts;
+          } else {
+            throw AppError('UNDO_UNSUPPORTED', 'Эту операцию нельзя отменить на кассе.');
+          }
+          await db.put(tx, 'items', item);
+          restored.push(item);
+        }
+        o.undone = true;
+        await db.put(tx, 'operations', o);
+      }
+      var first = ops[0];
+      await db.add(tx, 'operations', newOp({
+        ts: now, op: 'undo', teamId: first.teamId, teamName: first.teamName,
+        fromTeamId: first.fromTeamId, fromTeamName: first.fromTeamName,
+        itemId: ops.length === 1 ? first.itemId : null, itemLabel: ops.length === 1 ? first.itemLabel : null,
+        consumableId: ops.length === 1 ? first.consumableId : null, consumableName: ops.length === 1 ? first.consumableName : null,
+        qty: ops.length === 1 ? first.qty : null,
+        note: 'отмена: ' + (OP_NAMES[first.op] || first.op).toLowerCase() +
+          (ops.length > 1 ? ' (' + ops.length + ' поз.)' : '') + ' от ' + fmtTime(first.ts).slice(-5)
+      }));
+      return { ops: ops, items: restored };
     });
   }
 
@@ -550,6 +615,7 @@
       r.onHandsByType[tn] = (r.onHandsByType[tn] || 0) + 1;
     });
     s.ops.forEach(function (o) {
+      if (o.undone) return;
       if (o.op === 'transfer' && byId[o.fromTeamId]) byId[o.fromTeamId].transferredOut++;
       var r = byId[o.teamId];
       if (!r) return;
@@ -574,7 +640,7 @@
     return s.consumables.slice().sort(byName).map(function (c) {
       var row = { id: c.id, name: c.name, unit: c.unit, stock: c.stock, lowThreshold: c.lowThreshold, consumed: 0, received: 0, byTeam: {} };
       s.ops.forEach(function (o) {
-        if (o.consumableId !== c.id) return;
+        if (o.consumableId !== c.id || o.undone) return;
         if (o.op === 'consume') {
           row.consumed += o.qty;
           var tn = o.teamName || o.teamId;
@@ -624,7 +690,7 @@
 
   var OP_NAMES = {
     issue: 'Выдача', 'return': 'Возврат', override: 'Возврат (админ)', consume: 'Расходник',
-    transfer: 'Передача', restock: 'Пополнение', adjust: 'Инвентаризация', register: 'Добавлен', status: 'Статус'
+    transfer: 'Передача', restock: 'Пополнение', adjust: 'Инвентаризация', register: 'Добавлен', status: 'Статус', undo: 'Отмена'
   };
 
   var CSV = {
@@ -638,7 +704,7 @@
     operations: function (s) {
       return toCSV(s.ops.slice().sort(function (a, b) { return a.ts - b.ts || a.id - b.id; }), [
         { title: '№', value: 'id' }, { title: 'Время', value: function (o) { return fmtTime(o.ts); } },
-        { title: 'Операция', value: function (o) { return OP_NAMES[o.op] || o.op; } },
+        { title: 'Операция', value: function (o) { return (OP_NAMES[o.op] || o.op) + (o.undone ? ' (отменена)' : ''); } },
         { title: 'От команды', value: 'fromTeamName' },
         { title: 'Команда', value: 'teamName' }, { title: 'Тип', value: 'typeName' },
         { title: 'Инструмент', value: 'itemLabel' }, { title: 'Код', value: 'itemId' },
@@ -725,7 +791,7 @@
     effectiveLimit: effectiveLimit, limitMessage: limitMessage,
     checkCandidate: checkCandidate, checkConsumable: checkConsumable,
     issue: issue, lookupForReturn: lookupForReturn, returnItem: returnItem,
-    transferItem: transferItem,
+    transferItem: transferItem, undoOperation: undoOperation,
     addTeams: addTeams, updateTeam: updateTeam,
     addToolType: addToolType, updateToolType: updateToolType,
     addItems: addItems, updateItem: updateItem,

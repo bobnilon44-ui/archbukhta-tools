@@ -216,6 +216,33 @@ body[data-screen="transferScan"] .cam-frame { --c: var(--swap); }
 #countdown { margin-top: 12px; min-height: 1.4em; color: var(--soft); text-align: center; font-family: var(--f-mono); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; }
 #countdown.urgent { color: var(--warn); font-size: .95rem; }
 
+/* сообщение об ошибке прямо в панели — рядом с причиной, кнопки не закрывает */
+.notice {
+  display: flex; gap: 12px; align-items: flex-start; margin: 12px 0; padding: 14px 16px;
+  border: 1px solid var(--n, var(--err)); background: color-mix(in srgb, var(--n, var(--err)) 14%, transparent);
+  font-size: 1.15rem; font-weight: 700; line-height: 1.3;
+}
+.notice .ico-svg { font-size: 1.5rem; color: var(--n, var(--err)); margin-top: 1px; }
+.notice-warn { --n: var(--warn); }
+.notice-info { --n: var(--acc); font-weight: 500; }
+
+/* только что добавленный в корзину инструмент */
+.cart-list li.fresh { animation: added .9s ease-out; }
+@keyframes added { from { background: rgba(126, 226, 168, .28); } to { background: transparent; } }
+
+/* удачный скан — подсветка рамки камеры, а не всего экрана */
+.cam-box.ping-ok { animation: ping-ok .7s ease-out; }
+.cam-box.ping-warn { animation: ping-warn 1s ease-out; }
+@keyframes ping-ok { from { box-shadow: 0 0 0 4px var(--ok), 0 0 24px 4px rgba(126, 226, 168, .5); } to { box-shadow: 0 0 0 0 transparent; } }
+@keyframes ping-warn { from { box-shadow: 0 0 0 4px var(--warn), 0 0 24px 4px rgba(243, 197, 107, .5); } to { box-shadow: 0 0 0 0 transparent; } }
+
+/* экран результата: «Готово» и «Отменить» */
+.result-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+.result-actions .btn { flex: none; min-width: 200px; }
+.btn-undo { border-color: var(--warn); color: var(--warn); }
+.btn-undo .undo-left { font-variant-numeric: tabular-nums; opacity: .75; }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+
 /* ---------- табло «Сейчас на руках» ---------- */
 
 .board {
@@ -256,7 +283,7 @@ body[data-screen="transferScan"] .cam-frame { --c: var(--swap); }
 
 #flash { position: fixed; inset: 0; pointer-events: none; z-index: 40; opacity: 0; }
 #flash.flash-ok { animation: flash .6s ease-out; box-shadow: inset 0 0 0 14px var(--ok); background: rgba(126, 226, 168, .14); }
-#flash.flash-error { animation: flash 1s ease-out; box-shadow: inset 0 0 0 14px var(--err); background: rgba(255, 122, 107, .22); }
+#flash.flash-error { animation: flash .8s ease-out; box-shadow: inset 0 0 0 12px var(--err); background: rgba(255, 122, 107, .14); }
 #flash.flash-warn { animation: flash 1s ease-out; box-shadow: inset 0 0 0 14px var(--warn); background: rgba(243, 197, 107, .18); }
 @keyframes flash { from { opacity: 1; } to { opacity: 0; } }
 
@@ -294,8 +321,36 @@ body[data-screen="transferScan"] .cam-frame { --c: var(--swap); }
   .cam-box { height: auto; width: 100%; max-height: 40vh; }
   .brand .sub { display: none; }
 }
+/* ---------- системные настройки доступности ---------- */
+
+/* «Уменьшить движение»: без пульсаций, выездов и сжатий — только короткая смена прозрачности */
 @media (prefers-reduced-motion: reduce) {
-  .charge, .bteam li.fresh { animation: none; }
+  .charge, .bteam li.fresh, .cart-list li.fresh, .cam-box.ping-ok, .cam-box.ping-warn { animation: none; }
+  .btn:active { transform: none; }
+  .toast { transition: opacity .2s; transform: translate(-50%, 0); opacity: 0; }
+  .toast.show { opacity: 1; }
+  #flash.flash-ok, #flash.flash-error, #flash.flash-warn { animation: flash-soft .5s ease-out; box-shadow: inset 0 0 0 6px var(--fc, var(--ok)); background: none; }
+  #flash.flash-error { --fc: var(--err); }
+  #flash.flash-warn { --fc: var(--warn); }
+  @keyframes flash-soft { from { opacity: .8; } to { opacity: 0; } }
+}
+
+/* «Уменьшить прозрачность»: стекло становится сплошным */
+@media (prefers-reduced-transparency: reduce) {
+  .panel, .board, .topbar, .modal-box { background: var(--bg-2); backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .modal { backdrop-filter: none; background: rgba(3, 10, 14, .92); }
+  body::before { background: var(--bg); }
+}
+
+/* «Повысить контраст»: плотные фоны, чёткие рамки, текст без полупрозрачности */
+@media (prefers-contrast: more) {
+  :root {
+    --line: color-mix(in srgb, var(--fg) 70%, transparent);
+    --soft: color-mix(in srgb, var(--fg) 88%, transparent);
+    --glass: var(--bg);
+  }
+  .panel, .board { backdrop-filter: none; -webkit-backdrop-filter: none; border-width: 2px; }
+  .btn-ghost { border-color: var(--fg); }
 }
 
 /* подсветка при наведении — только для мыши: на сенсорном экране кнопка не «залипает» */

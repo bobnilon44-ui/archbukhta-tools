@@ -31,7 +31,6 @@
   }
 
   var SOUNDS = {
-    scan: function () { tone(1200, 0, 0.09, 'square', 0.15); },
     ok: function () { tone(880, 0, 0.12); tone(1320, 0.12, 0.18); },
     done: function () { tone(660, 0, 0.12); tone(880, 0.12, 0.12); tone(1320, 0.24, 0.25); },
     error: function () { tone(220, 0, 0.22, 'sawtooth', 0.25); tone(180, 0.26, 0.3, 'sawtooth', 0.25); },
@@ -46,6 +45,14 @@
     el.className = 'flash-' + kind;
   }
 
+  function ping(kind) {
+    var el = document.querySelector('.cam-box');
+    if (!el) return flash(kind);
+    el.classList.remove('ping-ok', 'ping-warn');
+    void el.offsetWidth;
+    el.classList.add('ping-' + kind);
+  }
+
   AB.feedback = {
     setEnabled: function (v) { enabled = !!v; },
     /** Разблокировать звук: браузеры разрешают аудио только после жеста пользователя. */
@@ -54,10 +61,11 @@
       if (!enabled || !SOUNDS[name]) return;
       try { SOUNDS[name](); } catch (e) { /* без звука — не критично */ }
     },
-    ok: function () { this.play('ok'); flash('ok'); },
+    // Звук и свет срабатывают в одном кадре и по итогу проверки, а не по факту скана.
+    // Обычный удачный скан — подсветка рамки камеры, на весь экран — только итог выдачи и ошибки.
+    ok: function () { this.play('ok'); ping('ok'); },
     done: function () { this.play('done'); flash('ok'); },
     error: function () { this.play('error'); flash('error'); },
-    warn: function () { this.play('warn'); flash('warn'); },
-    scan: function () { this.play('scan'); }
+    warn: function () { this.play('warn'); ping('warn'); }
   };
 })(window);

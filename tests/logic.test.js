@@ -265,3 +265,51 @@ test('частичная загрузка: файл только с инвент
 });
 
 function AB_setPin(pin) { return db.setSettings({ adminPin: pin }); }
+
+test('отмена выдачи: инструменты и расходники возвращаются, отчёты её не считают', async () => {
+  const r = await L.issue(futurum.id, ['TSIRPIL-01', 'AKKU18V-01'], [{ id: screws.id, qty: 3 }]);
+  await L.undoOperation(r.undoRef);
+  const s = await L.snapshot();
+  assert.equal(s.items.filter((i) => i.status === 'out').length, 0);
+  assert.equal(s.consumables[0].stock, 10);
+  assert.ok(s.ops.filter((o) => o.batchId === r.batchId).every((o) => o.undone));
+  assert.equal(s.ops.filter((o) => o.op === 'undo').length, 1);
+  const team = L.reportTeams(s).find((t) => t.teamId === futurum.id);
+  assert.equal(team.issuedTotal, 0, 'отменённая выдача не считается');
+  assert.deepEqual(team.consumables, {});
+  assert.equal(L.reportConsumables(s)[0].consumed, 0);
+  assert.match(L.CSV.operations(s), /Выдача \(отменена\)/);
+  await rejectsWith(L.undoOperation(r.undoRef), 'UNDO_DONE');
+});
+
+test('отмена возврата и передачи восстанавливает команду и время', async () => {
+  await L.issue(futurum.id, ['TSIRPIL-01']);
+  const issuedAt = (await db.getOne('items', 'TSIRPIL-01')).issuedAt;
+  const ret = await L.returnItem('TSIRPIL-01');
+  await L.undoOperation(ret.undoRef);
+  let item = await db.getOne('items', 'TSIRPIL-01');
+  assert.equal(item.status, 'out');
+  assert.equal(item.holderTeamId, futurum.id);
+  assert.equal(item.issuedAt, issuedAt, 'время выдачи прежнее');
+
+  const tr = await L.transferItem('TSIRPIL-01', archistra.id);
+  await L.undoOperation(tr.undoRef);
+  item = await db.getOne('items', 'TSIRPIL-01');
+  assert.equal(item.holderTeamId, futurum.id);
+  assert.equal(item.issuedAt, issuedAt);
+  const t = L.reportTeams(await L.snapshot()).find((x) => x.teamId === archistra.id);
+  assert.equal(t.transferredIn, 0);
+});
+
+test('отмена невозможна, если предмет уже изменился', async () => {
+  const r = await L.issue(futurum.id, ['TSIRPIL-01']);
+  await L.returnItem('TSIRPIL-01');
+  await rejectsWith(L.undoOperation(r.undoRef), 'UNDO_STALE');
+  assert.equal((await db.getOne('items', 'TSIRPIL-01')).status, 'in', 'ничего не поменялось');
+  // возврат, после которого инструмент снова взяли, тоже не отменить
+  await L.issue(archistra.id, ['TSIRPIL-01']);
+  const s = await L.snapshot();
+  const lastReturn = s.ops.filter((o) => o.op === 'return').pop();
+  await rejectsWith(L.undoOperation({ opId: lastReturn.id }), 'UNDO_STALE');
+  assert.equal((await db.getOne('items', 'TSIRPIL-01')).holderTeamId, archistra.id);
+});

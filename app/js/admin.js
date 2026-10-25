@@ -169,7 +169,7 @@
       '<span class="spacer"></span>' + csvButton('operations', 'CSV — весь журнал') + '</div>' +
       '<table><thead><tr><th>Время</th><th>Операция</th><th>Команда</th><th>Инструмент / расходник</th><th class="num">Кол-во</th><th>Примечание</th></tr></thead><tbody>' +
       shown.map(function (o) {
-        return '<tr><td>' + L.fmtTime(o.ts) + '</td><td>' + esc(L.OP_NAMES[o.op] || o.op) + '</td><td>' +
+        return '<tr><td>' + L.fmtTime(o.ts) + '</td><td>' + esc(L.OP_NAMES[o.op] || o.op) + (o.undone ? ' <span class="pill">отменена</span>' : '') + '</td><td>' +
           (o.op === 'transfer' ? esc(o.fromTeamName || '') + ' → <b>' + esc(o.teamName || '') + '</b>' : esc(o.teamName || '')) + '</td>' +
           '<td>' + esc(o.itemLabel || o.consumableName || '') + (o.itemId ? ' <code>' + esc(o.itemId) + '</code>' : '') + '</td>' +
           '<td class="num">' + (o.qty === null || o.qty === undefined ? '' : o.qty) + '</td><td>' + esc(o.note || '') + '</td></tr>';

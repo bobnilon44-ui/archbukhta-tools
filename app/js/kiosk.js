@@ -14,6 +14,13 @@
   var deadline = 0;
   var scanner = null;
   var busy = false;
+  var scanQueue = []; // сканы, пришедшие, пока касса обрабатывала предыдущий
+
+  /** Снять занятость и обработать то, что успели отсканировать за это время. */
+  function release() {
+    busy = false;
+    if (scanQueue.length) onScan(scanQueue.shift());
+  }
 
   var screenEl = ui.$('#screen');
   var boardEl = ui.$('#board');
@@ -67,6 +74,7 @@
   }
 
   function onTick() {
+    renderUndoLeft();
     if (deadline && Date.now() >= deadline) {
       toast('warn', 'Время вышло — операция отменена.');
       goIdle();
@@ -83,23 +91,51 @@
     timers.toast = setTimeout(function () { el.classList.remove('show'); }, ms || (kind === 'error' ? 5000 : 3000));
   }
 
+  var INLINE_SCREENS = { cart: 1, consumables: 1, itemAction: 1, transferScan: 1 };
+
   function fail(err) {
     console.warn(err);
     fb.error();
-    toast('error', err && err.message ? err.message : String(err), err && err.code === 'LIMIT' ? 7000 : 5000);
+    var text = err && err.message ? err.message : String(err);
+    if (INLINE_SCREENS[state.screen]) {
+      // сообщение рядом с тем, что его вызвало, и не закрывает кнопки
+      state.notice = { kind: 'error', text: text };
+      hideToast();
+      render();
+    } else {
+      toast('error', text, err && err.code === 'LIMIT' ? 7000 : 5000);
+    }
+  }
+
+  /** Предупреждение/подсказка: на экранах с кнопками — в панели, иначе всплывающим сообщением. */
+  function notify(kind, text) {
+    if (INLINE_SCREENS[state.screen]) {
+      state.notice = { kind: kind, text: text };
+      render();
+    } else {
+      toast(kind, text, 5000);
+    }
+  }
+
+  function noticeHtml() {
+    var n = state.notice;
+    if (!n) return '';
+    return '<div class="notice notice-' + n.kind + '" role="alert">' + ui.icon('alert') + '<span>' + esc(n.text) + '</span></div>';
   }
 
   /* ---------- обработка сканов ---------- */
 
   async function onScan(text) {
-    if (busy) return;
+    if (busy) {
+      if (scanQueue.length < 5) scanQueue.push(text);
+      return;
+    }
     var code = L.parseCode(text);
     if (!code) {
       fail(new Error('Код не распознан: это не QR АрхБухты.'));
       return;
     }
     busy = true;
-    fb.scan();
     try {
       if (code.kind === 'team') await scanTeam(code.id);
       else if (code.kind === 'item') await scanItem(code.id);
@@ -107,8 +143,8 @@
     } catch (e) {
       fail(e);
     } finally {
-      busy = false;
       touch();
+      release();
     }
   }
 
@@ -121,7 +157,7 @@
       return;
     }
     if (state.screen === 'cart' || state.screen === 'consumables') {
-      if (state.team.id === teamId) { toast('info', 'Корзина команды «' + team.name + '» уже открыта.'); return; }
+      if (state.team.id === teamId) { notify('info', 'Корзина команды «' + team.name + '» уже открыта.'); return; }
       if (state.cart.length || state.consumables.length) {
         throw new Error('Сейчас открыта корзина команды «' + state.team.name + '». Нажмите «Выдать» или «Отмена».');
       }
@@ -134,7 +170,8 @@
 
   async function openCart(team) {
     var held = (await L.holdingsNow()).filter(function (h) { return h.teamId === team.id; });
-    setScreen({ screen: 'cart', team: team, cart: [], consumables: [], held: held });
+    var available = (await AB.db.getAll('consumables')).filter(function (c) { return c.stock > 0; });
+    setScreen({ screen: 'cart', team: team, cart: [], consumables: [], held: held, available: available });
   }
 
   async function scanItem(itemId) {
@@ -143,6 +180,8 @@
       var r = await L.checkCandidate(state.team.id, itemId, cartIds);
       state.cart.push({ item: r.item, type: r.type });
       state.screen = 'cart';
+      state.notice = null;
+      state.lastAdded = r.item.id;
       hideToast();
       fb.ok();
       render();
@@ -150,7 +189,7 @@
     }
     if (state.screen === 'transferScan') {
       fb.warn();
-      toast('warn', 'Ждём бейдж команды, которой передаёте «' + state.item.label + '». Или нажмите «Отмена».');
+      notify('warn', 'Ждём бейдж команды, которой передаёте «' + state.item.label + '». Или нажмите «Отмена».');
       return;
     }
     // вне корзины скан инструмента = вернуть на склад или передать другой команде
@@ -182,6 +221,7 @@
 
   function removeFromCart(itemId) {
     state.cart = state.cart.filter(function (c) { return c.item.id !== itemId; });
+    state.notice = null;
     render();
   }
 
@@ -192,14 +232,70 @@
 
   async function goNext() {
     var all = (await AB.db.getAll('consumables')).filter(function (c) { return c.stock > 0; });
+    state.available = all;
     // шаг расходников показываем, только если на складе что-то есть
     if (state.screen === 'cart' && all.length) {
       state.screen = 'consumables';
-      state.available = all;
+      state.notice = null;
       render();
       return;
     }
     await doIssue();
+  }
+
+  /** Подпись главной кнопки корзины называет то, что произойдёт по нажатию. */
+  function cartPrimaryLabel() {
+    if (state.available && state.available.length) return 'Далее: расходники →';
+    return 'Выдать' + (state.cart.length ? ' · ' + state.cart.length + ' шт' : '');
+  }
+
+  // Экран результата висит UNDO_MS: всё это время операцию можно отменить.
+  var UNDO_MS = 10000;
+
+  function showResult(screen, result) {
+    setScreen({ screen: screen, result: result, undoUntil: Date.now() + UNDO_MS });
+    backToIdleIn(UNDO_MS);
+  }
+
+  function undoButton() {
+    var left = Math.ceil((state.undoUntil - Date.now()) / 1000);
+    if (!state.result || !state.result.undoRef || left <= 0) return '';
+    return '<button class="btn btn-ghost btn-undo" data-act="undo">↶ Отменить <span class="undo-left">' + left + ' с</span></button>';
+  }
+
+  function renderUndoLeft() {
+    var el = ui.$('.undo-left');
+    if (!el) return;
+    var left = Math.ceil((state.undoUntil - Date.now()) / 1000);
+    if (left <= 0) { var b = el.closest('button'); if (b) b.remove(); return; }
+    el.textContent = left + ' с';
+  }
+
+  var UNDO_TITLES = {
+    done: 'Выдача отменена', returned: 'Возврат отменён', transferred: 'Передача отменена'
+  };
+
+  async function doUndo() {
+    if (busy || !state.result || !state.result.undoRef) return;
+    busy = true;
+    var screen = state.screen, result = state.result;
+    try {
+      await L.undoOperation(result.undoRef);
+      fb.warn();
+      var after = screen === 'done'
+        ? 'Инструмент снова в комнате, за командой «' + result.team.name + '» не числится.'
+        : screen === 'returned'
+          ? '«' + result.item.label + '» снова числится за командой «' + (result.team ? result.team.name : '') + '».'
+          : '«' + result.item.label + '» снова у команды «' + result.from.name + '».';
+      setScreen({ screen: 'undone', title: UNDO_TITLES[screen], text: after });
+      backToIdleIn(5000);
+      renderBoard();
+    } catch (e) {
+      fail(e);
+      goIdle();
+    } finally {
+      release();
+    }
   }
 
   async function doIssue() {
@@ -214,8 +310,7 @@
         state.cart.map(function (c) { return c.item.id; }),
         state.consumables.map(function (c) { return { id: c.consumable.id, qty: c.qty }; }));
       fb.done();
-      setScreen({ screen: 'done', result: res });
-      backToIdleIn(6000);
+      showResult('done', res);
       markFresh(res.issued.map(function (x) { return x.item.id; }));
     } catch (e) {
       fail(e);
@@ -223,7 +318,7 @@
       if (state.team) state.held = (await L.holdingsNow()).filter(function (h) { return h.teamId === state.team.id; });
       render();
     } finally {
-      busy = false;
+      release();
     }
   }
 
@@ -233,14 +328,13 @@
     try {
       var r = await L.returnItem(state.item.id);
       if (r.chargeReminder) fb.warn(); else fb.done();
-      setScreen({ screen: 'returned', result: r });
-      backToIdleIn(r.chargeReminder ? 10000 : 5000);
+      showResult('returned', r);
       renderBoard();
     } catch (e) {
       fail(e);
       goIdle();
     } finally {
-      busy = false;
+      release();
     }
   }
 
@@ -254,8 +348,7 @@
       var r = await L.transferItem(state.item.id, toTeam.id);
       closeModal();
       fb.done();
-      setScreen({ screen: 'transferred', result: r });
-      backToIdleIn(7000);
+      showResult('transferred', r);
       markFresh([r.item.id]);
     } catch (e) {
       fail(e);
@@ -440,11 +533,13 @@
       html =
         '<div class="panel panel-team">' +
         '<div class="team-head"><span class="eyebrow">Корзина команды</span><h1>' + esc(s.team.name) + '</h1></div>' +
-        '<p class="instr">Сканируйте QR на каждом инструменте и аккумуляторе, затем нажмите <b>«Далее»</b>.</p>' +
+        '<p class="instr">Сканируйте QR на каждом инструменте и аккумуляторе, затем нажмите <b>«' +
+        (s.available && s.available.length ? 'Далее' : 'Выдать') + '»</b>.</p>' +
+        noticeHtml() +
         '<ul class="cart-list">' +
         (s.cart.length ? s.cart.map(function (c) {
           var lim = L.effectiveLimit(c.type, settings);
-          return '<li><span class="ico">' + ui.icon(c.type && c.type.kind === 'battery' ? 'battery' : 'tool') + '</span>' +
+          return '<li' + (c.item.id === s.lastAdded ? ' class="fresh"' : '') + '><span class="ico">' + ui.icon(c.type && c.type.kind === 'battery' ? 'battery' : 'tool') + '</span>' +
             '<span class="name">' + esc(c.item.label) + '<small>' + esc(c.item.id) +
             (lim !== Infinity ? ' · будет на руках ' + counts[c.item.typeId] + ' из ' + lim : '') + '</small></span>' +
             '<button class="btn-x" data-remove="' + esc(c.item.id) + '" aria-label="Убрать">✕</button></li>';
@@ -460,7 +555,8 @@
           '</ul></details>' : '') +
         '<div class="actions">' +
         '<button class="btn btn-ghost" data-act="cancel">Отмена</button>' +
-        '<button class="btn btn-go" data-act="next">Далее →</button>' +
+        '<button class="btn btn-go" data-act="next"' + (!s.cart.length && !(s.available && s.available.length) ? ' disabled' : '') + '>' +
+        esc(cartPrimaryLabel()) + '</button>' +
         '</div><div id="countdown"></div></div>';
     }
 
@@ -469,6 +565,7 @@
         '<div class="panel panel-team">' +
         '<div class="team-head"><span class="eyebrow">Команда</span><h1>' + esc(s.team.name) + '</h1></div>' +
         '<h2>Берёте расходники?</h2><p class="instr">Нажмите на нужный и введите количество. Если не нужны — нажмите <b>«Выдать»</b>.</p>' +
+        noticeHtml() +
         '<div class="cons-grid">' + s.available.map(function (c) {
           var inCart = s.consumables.filter(function (x) { return x.consumable.id === c.id; })[0];
           return '<button class="cons" data-cons="' + esc(c.id) + '"><b>' + esc(c.name) + '</b>' +
@@ -490,7 +587,7 @@
         r.issued.map(function (x) { return '<li>' + esc(x.item.label) + '</li>'; }).join('') +
         r.consumables.map(function (x) { return '<li>' + esc(x.consumable.name) + ': ' + x.qty + ' ' + esc(x.consumable.unit) + '</li>'; }).join('') +
         '</ul><p>Инструмент числится за вашей командой, пока вы не вернёте его сюда или не передадите другой команде.</p>' +
-        '<button class="btn btn-ghost" data-act="home">Готово</button></div>';
+        '<div class="result-actions"><button class="btn btn-ghost" data-act="home">Готово</button>' + undoButton() + '</div></div>';
     }
 
     else if (s.screen === 'itemAction') {
@@ -500,6 +597,7 @@
         '<h1 style="margin-top:10px">' + esc(s.item.label) + '</h1>' +
         '<p class="big">Числится за командой <b>«' + esc(s.team ? s.team.name : s.item.holderTeamId) + '»</b>' +
         (held ? '<br><span class="muted">у неё ' + held + '</span>' : '') + '</p>' +
+        noticeHtml() +
         '<div class="actions actions-col">' +
         '<button class="btn btn-go" data-act="return">' + ui.icon('down') + 'Вернуть на склад</button>' +
         '<button class="btn btn-transfer" data-act="transfer">' + ui.icon('swap') + 'Передать другой команде</button>' +
@@ -513,6 +611,7 @@
         '<h1>' + esc(s.item.label) + '</h1>' +
         '<p class="big">Сейчас у «' + esc(s.team ? s.team.name : s.item.holderTeamId) + '».</p>' +
         '<div class="scan-prompt">' + ui.icon('badge') + '<span>Поднесите к камере <b>бейдж команды, которая забирает</b> инструмент</span></div>' +
+        noticeHtml() +
         '<p class="muted">После передачи за инструмент отвечает новая команда.</p>' +
         '<div class="actions"><button class="btn btn-ghost" data-act="cancel">Отмена</button></div>' +
         '<div id="countdown"></div></div>';
@@ -525,7 +624,7 @@
         '<h1>' + esc(tr.item.label) + ' передан(а)</h1>' +
         '<p class="big">«' + esc(tr.from.name) + '» → <b>«' + esc(tr.to.name) + '»</b></p>' +
         '<p>Теперь за инструмент отвечает команда «' + esc(tr.to.name) + '».</p>' +
-        '<button class="btn btn-ghost" data-act="home">Готово</button></div>';
+        '<div class="result-actions"><button class="btn btn-ghost" data-act="home">Готово</button>' + undoButton() + '</div></div>';
     }
 
     else if (s.screen === 'returned') {
@@ -536,10 +635,19 @@
         '<h1>Возвращено: ' + esc(rr.item.label) + '</h1>' +
         '<p>Снято с команды «' + esc(rr.team ? rr.team.name : '') + '».</p>' +
         (rr.chargeReminder ? '<div class="charge">' + ui.icon('plug') + 'Поставьте аккумулятор на зарядку!</div>' : '<p>Положите инструмент на место.</p>') +
-        '<button class="btn btn-ghost" data-act="home">' + (rr.chargeReminder ? 'Поставил(а) на зарядку' : 'Готово') + '</button></div>';
+        '<div class="result-actions"><button class="btn btn-ghost" data-act="home">' + (rr.chargeReminder ? 'Поставил(а) на зарядку' : 'Готово') + '</button>' +
+        undoButton() + '</div></div>';
+    }
+
+    else if (s.screen === 'undone') {
+      html =
+        '<div class="panel panel-warn"><div class="big-icon">↶</div>' +
+        '<h1>' + esc(s.title) + '</h1><p class="big">' + esc(s.text) + '</p>' +
+        '<div class="result-actions"><button class="btn btn-ghost" data-act="home">Готово</button></div></div>';
     }
 
     screenEl.innerHTML = html;
+    if (s.lastAdded) s.lastAdded = null; // подсветка новой строки — один раз, не при каждой перерисовке
     renderCountdown();
     // подсветка текущей команды на табло
     var cur = (s.screen === 'cart' || s.screen === 'consumables') ? s.team.id : null;
@@ -575,6 +683,7 @@
       case 'issue': return doIssue();
       case 'return': return doReturn();
       case 'transfer': return startTransfer();
+      case 'undo': return doUndo();
     }
   });
 

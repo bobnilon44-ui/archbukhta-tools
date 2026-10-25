@@ -1,6 +1,6 @@
 /* Офлайн-кэш: после первого открытия приложение работает без сети и даже без локального сервера.
  * При изменении файлов увеличьте VERSION. */
-var VERSION = 'ab-tools-v3';
+var VERSION = 'ab-tools-v4';
 var FILES = [
   './', 'index.html', 'admin.html', 'labels.html', 'manifest.webmanifest', 'icon.svg',
   'css/app.css', 'css/admin.css', 'css/labels.css',
