@@ -44,8 +44,20 @@ python3 -m http.server 8000
 4. **SEO.** Замените `ВАШ-ДОМЕН.ru` в `robots.txt` и `sitemap.xml`. Добавьте сайт в Яндекс Вебмастер и Google Search Console.
 
 ## Публикация
-Подойдёт любой статический хостинг: GitHub Pages, Netlify, Cloudflare Pages или обычный хостинг с вашим доменом.
-Для РСЯ нужен собственный домен.
+Сайт публикуется на GitHub Pages автоматически при каждом изменении в ветке `main`
+(`.github/workflows/pages.yml`).
+
+Первый запуск:
+1. Settings → Pages → Build and deployment → Source: **GitHub Actions**.
+2. Влейте изменения в `main`. Через 1–2 минуты сайт откроется по адресу
+   https://bobnilon44-ui.github.io/archbukhta-tools/
+
+### Свой домен (нужен для РСЯ)
+1. Купите домен `.ru` (reg.ru, nic.ru и т. п.).
+2. У регистратора добавьте DNS-запись `CNAME` для `www` → `bobnilon44-ui.github.io`
+   и записи `A` для корня домена: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`.
+3. Settings → Pages → Custom domain: впишите домен и включите **Enforce HTTPS**.
+4. Замените `ВАШ-ДОМЕН.ru` в `robots.txt` и `sitemap.xml`.
 
 ## Как добавить калькулятор
 Скопируйте любую страницу и поменяйте форму и функцию в `autoCalc(...)`.
