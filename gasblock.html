@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Калькулятор газобетона — сколько блоков нужно на дом</title>
+<meta name="description" content="Рассчитайте количество газобетонных или газосиликатных блоков, объём в кубах и клей для кладки стен.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="assets/icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2a6df4">
+<!-- Сюда вставить счётчик Яндекс Метрики -->
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="logo" href="index.html">Арх<span>Бухта</span></a>
+  <nav class="main">
+    <a href="index.html#remont">Ремонт и стройка</a>
+    <a href="index.html#dengi">Налоги и деньги</a>
+  </nav>
+</div></header>
+<main class="wrap">
+<h1>Калькулятор газобетона</h1>
+<p class="lead">Количество блоков, кубы и клей для стен из газобетона или газосиликата.</p>
+
+<div class="ad-slot" data-ad="top"></div>
+
+<form class="card" id="f">
+  <div class="grid">
+    <div><label for="len">Общая длина стен, м</label><input id="len" inputmode="decimal" value="40"></div>
+    <div><label for="hgt">Высота стен, м</label><input id="hgt" inputmode="decimal" value="3"></div>
+    <div><label for="open">Площадь окон и дверей, м²</label><input id="open" inputmode="decimal" value="15"></div>
+    <div><label for="bl">Длина блока, мм</label><input id="bl" inputmode="decimal" value="600"></div>
+    <div><label for="bh">Высота блока, мм</label><input id="bh" inputmode="decimal" value="250"></div>
+    <div><label for="bw">Толщина блока (стены), мм</label>
+      <select id="bw"><option>100</option><option>150</option><option>200</option><option>250</option><option selected>300</option><option>375</option><option>400</option></select></div>
+    <div><label for="price">Цена за м³, ₽ (необязательно)</label><input id="price" inputmode="decimal" value=""></div>
+  </div>
+  <div class="result" id="out"></div>
+  <div data-partner="gasblock"></div>
+</form>
+
+<div class="ad-slot" data-ad="result"></div>
+
+<h2>Как считается</h2>
+<p>Площадь стен минус проёмы делим на площадь лицевой стороны блока и добавляем 5% на подрезку.
+Объём кладки — площадь × толщина блока: газобетон обычно продают кубами.</p>
+<p>Блоки кладут на тонкошовный клей — около 25 кг на 1 м³ кладки. Первый ряд выкладывают
+на цементно-песчаный раствор для выравнивания.</p>
+
+<h2>Другие калькуляторы</h2>
+<div class="tiles">
+  <a class="tile" href="tile.html"><span class="ico">🧱</span><b>Калькулятор плитки</b><small>Пол и стены, с учётом шва, запаса и упаковок</small></a>
+  <a class="tile" href="wallpaper.html"><span class="ico">🧻</span><b>Калькулятор обоев</b><small>Сколько рулонов нужно на комнату с учётом раппорта</small></a>
+  <a class="tile" href="laminate.html"><span class="ico">🪵</span><b>Калькулятор ламината</b><small>Упаковки, подложка и плинтус</small></a>
+  <a class="tile" href="paint.html"><span class="ico">🎨</span><b>Калькулятор краски</b><small>Литры и банки краски для стен и потолка</small></a>
+  <a class="tile" href="plaster.html"><span class="ico">🪣</span><b>Калькулятор штукатурки</b><small>Мешки гипсовой и цементной штукатурки</small></a>
+  <a class="tile" href="concrete.html"><span class="ico">🏗️</span><b>Калькулятор бетона</b><small>Кубы бетона для плиты и ленточного фундамента, цемент в мешках</small></a>
+  <a class="tile" href="brick.html"><span class="ico">🧱</span><b>Калькулятор кирпича</b><small>Кирпич и раствор на стены с учётом толщины кладки</small></a>
+  <a class="tile" href="insulation.html"><span class="ico">🧶</span><b>Калькулятор утеплителя</b><small>Упаковки минваты или пенополистирола</small></a>
+</div>
+
+<div class="ad-slot" data-ad="bottom"></div>
+</main>
+<footer class="site"><div class="wrap">
+  © АрхБухта. Расчёты ориентировочные и не заменяют консультацию специалиста.
+  Сайт может содержать рекламу и партнёрские ссылки.
+</div></footer>
+<script src="assets/app.js"></script>
+<script>
+autoCalc("f", () => {
+  const out = document.getElementById("out");
+  const area = Math.max(0, num("len") * num("hgt") - num("open"));
+  const face = num("bl") * num("bh") / 1e6;
+  if (!area || !face) { out.innerHTML = "Заполните размеры стен и блока."; return; }
+  const count = Math.ceil(area / face * 1.05);
+  const vol = count * face * num("bw") / 1000;
+  const glue = vol * 25;
+  out.innerHTML = `Нужно блоков: <div class="big">${fmt(count)} шт.</div>
+    <ul>
+      <li>Объём: <b>${fmt(vol, 2)} м³</b> (площадь кладки ${fmt(area, 1)} м²)</li>
+      <li>Клей: ~${fmt(glue)} кг ≈ ${Math.ceil(glue / 25)} мешк. по 25 кг</li>
+      ${num("price") ? `<li>Стоимость блоков: ~${rub(vol * num("price"))}</li>` : ""}
+    </ul>`;
+});
+</script>
+</body>
+</html>
