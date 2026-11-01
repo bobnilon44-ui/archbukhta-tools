@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Калькулятор штукатурки — сколько мешков штукатурки нужно на стены</title>
+<meta name="description" content="Рассчитайте расход гипсовой или цементной штукатурки по площади стен и толщине слоя. Количество мешков.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="assets/icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2a6df4">
+<!-- Сюда вставить счётчик Яндекс Метрики -->
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="logo" href="index.html">Арх<span>Бухта</span></a>
+  <nav class="main">
+    <a href="index.html#remont">Ремонт и стройка</a>
+    <a href="index.html#dengi">Налоги и деньги</a>
+  </nav>
+</div></header>
+<main class="wrap">
+<h1>Калькулятор штукатурки</h1>
+<p class="lead">Сколько мешков гипсовой или цементной штукатурки нужно на стены.</p>
+
+<div class="ad-slot" data-ad="top"></div>
+
+<form class="card" id="f">
+  <div class="grid">
+    <div><label for="area">Площадь стен, м²</label><input id="area" inputmode="decimal" value="40"></div>
+    <div><label for="thk">Средняя толщина слоя, мм</label><input id="thk" inputmode="decimal" value="15"></div>
+    <div><label for="kind">Тип штукатурки</label>
+      <select id="kind"><option value="0.9">Гипсовая (~0,9 кг/м² на 1 мм)</option><option value="1.7">Цементная (~1,7 кг/м² на 1 мм)</option></select></div>
+    <div><label for="rate">Или свой расход, кг/м² на 1 мм</label><input id="rate" inputmode="decimal" value="" placeholder="с упаковки"></div>
+    <div><label for="bag">Вес мешка, кг</label>
+      <select id="bag"><option value="25">25 кг</option><option value="30" selected>30 кг</option><option value="40">40 кг</option></select></div>
+  </div>
+  <div class="result" id="out"></div>
+  <div data-partner="plaster"></div>
+</form>
+
+<div class="ad-slot" data-ad="result"></div>
+
+<h2>Как определить толщину слоя</h2>
+<p>Повесьте маяки или натяните нить и измерьте отклонение стены в нескольких точках. Средняя толщина —
+среднее этих значений плюс 5–10 мм. Для гипсовой штукатурки слой обычно 5–30 мм, для цементной — 10–40 мм.</p>
+<p>Расход на упаковке указывают на 1 м² при толщине 1 мм или 10 мм — не перепутайте. Добавлено 10% запаса.</p>
+
+<h2>Другие калькуляторы</h2>
+<div class="tiles">
+  <a class="tile" href="tile.html"><span class="ico">🧱</span><b>Калькулятор плитки</b><small>Пол и стены, с учётом шва, запаса и упаковок</small></a>
+  <a class="tile" href="wallpaper.html"><span class="ico">🧻</span><b>Калькулятор обоев</b><small>Сколько рулонов нужно на комнату с учётом раппорта</small></a>
+  <a class="tile" href="laminate.html"><span class="ico">🪵</span><b>Калькулятор ламината</b><small>Упаковки, подложка и плинтус</small></a>
+  <a class="tile" href="paint.html"><span class="ico">🎨</span><b>Калькулятор краски</b><small>Литры и банки краски для стен и потолка</small></a>
+  <a class="tile" href="concrete.html"><span class="ico">🏗️</span><b>Калькулятор бетона</b><small>Кубы бетона для плиты и ленточного фундамента, цемент в мешках</small></a>
+  <a class="tile" href="brick.html"><span class="ico">🧱</span><b>Калькулятор кирпича</b><small>Кирпич и раствор на стены с учётом толщины кладки</small></a>
+  <a class="tile" href="gasblock.html"><span class="ico">🔲</span><b>Калькулятор газобетона</b><small>Блоки, кубы и клей для стен из газобетона</small></a>
+  <a class="tile" href="insulation.html"><span class="ico">🧶</span><b>Калькулятор утеплителя</b><small>Упаковки минваты или пенополистирола</small></a>
+</div>
+
+<div class="ad-slot" data-ad="bottom"></div>
+</main>
+<footer class="site"><div class="wrap">
+  © АрхБухта. Расчёты ориентировочные и не заменяют консультацию специалиста.
+  Сайт может содержать рекламу и партнёрские ссылки.
+</div></footer>
+<script src="assets/app.js"></script>
+<script>
+autoCalc("f", () => {
+  const area = num("area"), thk = num("thk");
+  const rate = num("rate") || num("kind");
+  const out = document.getElementById("out");
+  if (!area || !thk) { out.innerHTML = "Заполните площадь и толщину слоя."; return; }
+  const kg = area * thk * rate * 1.1;
+  const bag = num("bag");
+  out.innerHTML = `Нужно штукатурки: <div class="big">${Math.ceil(kg / bag)} мешк. по ${bag} кг</div>
+    <ul>
+      <li>Всего: ~${fmt(kg)} кг (с запасом 10%)</li>
+      <li>Расход: ${fmt(rate, 2)} кг/м² на 1 мм</li>
+    </ul>`;
+});
+</script>
+</body>
+</html>

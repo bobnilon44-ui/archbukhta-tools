@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Калькулятор налогов ИП на УСН 2026: 6% и 15%, страховые взносы</title>
+<meta name="description" content="Рассчитайте налог ИП на упрощёнке (УСН 6% «доходы» и 15% «доходы минус расходы») и страховые взносы за себя в 2026 году.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="assets/icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2a6df4">
+<!-- Сюда вставить счётчик Яндекс Метрики -->
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="logo" href="index.html">Арх<span>Бухта</span></a>
+  <nav class="main">
+    <a href="index.html#remont">Ремонт и стройка</a>
+    <a href="index.html#dengi">Налоги и деньги</a>
+  </nav>
+</div></header>
+<main class="wrap">
+<h1>Калькулятор налогов ИП на УСН</h1>
+<p class="lead">Налог и страховые взносы ИП без работников за год, и сколько останется на руках.</p>
+
+<div class="ad-slot" data-ad="top"></div>
+
+<form class="card" id="f">
+  <div class="grid">
+    <div><label for="mode">Объект налогообложения</label>
+      <select id="mode"><option value="6">УСН «Доходы» 6%</option><option value="15">УСН «Доходы минус расходы» 15%</option></select></div>
+    <div><label for="inc">Доход за год, ₽</label><input id="inc" inputmode="decimal" value="2000000"></div>
+    <div class="exp-only"><label for="exp">Расходы за год, ₽</label><input id="exp" inputmode="decimal" value="800000"></div>
+  </div>
+  <div class="result" id="out"></div>
+  <div data-partner="usn"></div>
+</form>
+
+<div class="ad-slot" data-ad="result"></div>
+
+<h2>Как считается (2026 год)</h2>
+<ul>
+  <li><b>Фиксированные взносы ИП «за себя»</b> — 57 390 ₽ за год.</li>
+  <li><b>Дополнительный взнос 1%</b> с дохода свыше 300 000 ₽ (на УСН 15% — с разницы доходов и расходов),
+    но не более 321 818 ₽.</li>
+  <li><b>УСН 6%:</b> ИП без работников уменьшает налог на всю сумму уплаченных взносов.</li>
+  <li><b>УСН 15%:</b> взносы включаются в расходы. Если налог получился меньше 1% от доходов,
+    платится минимальный налог 1% от доходов.</li>
+</ul>
+<p>С 2026 года при доходе свыше 20 млн ₽ ИП на УСН становится плательщиком НДС — этот калькулятор НДС не считает.
+Во многих регионах действуют пониженные ставки УСН — проверьте закон своего региона.</p>
+<p class="note">Расчёт ориентировочный и не является налоговой консультацией. Проверяйте актуальные значения на nalog.gov.ru.</p>
+
+<h2>Другие калькуляторы</h2>
+<div class="tiles">
+  <a class="tile" href="mortgage.html"><span class="ico">🏦</span><b>Ипотечный калькулятор</b><small>Платёж, переплата и нужный доход</small></a>
+  <a class="tile" href="credit.html"><span class="ico">💳</span><b>Кредитный калькулятор</b><small>Аннуитетный и дифференцированный платёж, график</small></a>
+  <a class="tile" href="deposit.html"><span class="ico">💰</span><b>Калькулятор вклада</b><small>Доход с капитализацией и налог на проценты</small></a>
+  <a class="tile" href="ndfl.html"><span class="ico">💼</span><b>Калькулятор НДФЛ и зарплаты</b><small>Зарплата на руки по прогрессивной шкале 13–22%</small></a>
+  <a class="tile" href="vacation.html"><span class="ico">🏖️</span><b>Калькулятор отпускных</b><small>Средний дневной заработок и сумма отпускных</small></a>
+  <a class="tile" href="sick.html"><span class="ico">🤒</span><b>Калькулятор больничного</b><small>Пособие по стажу, лимиты 2026 года</small></a>
+  <a class="tile" href="property.html"><span class="ico">🏠</span><b>Вычет за квартиру</b><small>Сколько НДФЛ вернут за покупку жилья и проценты по ипотеке</small></a>
+  <a class="tile" href="alimony.html"><span class="ico">👨‍👧</span><b>Калькулятор алиментов</b><small>Сумма алиментов от зарплаты на 1–3 детей</small></a>
+  <a class="tile" href="npd.html"><span class="ico">🧾</span><b>Налог самозанятого (НПД)</b><small>4% и 6% с учётом налогового вычета</small></a>
+</div>
+
+<div class="ad-slot" data-ad="bottom"></div>
+</main>
+<footer class="site"><div class="wrap">
+  © АрхБухта. Расчёты ориентировочные и не заменяют консультацию специалиста.
+  Сайт может содержать рекламу и партнёрские ссылки.
+</div></footer>
+<script src="assets/app.js"></script>
+<script>
+const FIXED = 57390, ONE_PCT_CAP = 321818, ONE_PCT_FROM = 300000;
+autoCalc("f", () => {
+  const is15 = document.getElementById("mode").value === "15";
+  document.querySelectorAll(".exp-only").forEach(e => e.style.display = is15 ? "" : "none");
+  const inc = num("inc"), exp = is15 ? num("exp") : 0;
+  const base1 = is15 ? inc - exp : inc;
+  const extra = Math.min(Math.max(0, (base1 - ONE_PCT_FROM) * 0.01), ONE_PCT_CAP);
+  const contrib = FIXED + extra;
+  let tax, note = "";
+  if (is15) {
+    const calc = Math.max(0, inc - exp - contrib) * 0.15;
+    const min = inc * 0.01;
+    tax = Math.max(calc, min);
+    if (min > calc) note = `<li>Применён минимальный налог 1% от доходов</li>`;
+  } else {
+    tax = Math.max(0, inc * 0.06 - contrib);
+  }
+  const vat = inc > 20000000 ? `<li><b>Внимание:</b> доход свыше 20 млн ₽ — возникает обязанность по НДС.</li>` : "";
+  document.getElementById("out").innerHTML = `Налог + взносы за год: <div class="big">${rub(tax + contrib)}</div>
+    <ul>
+      <li>Налог УСН к уплате: ${rub(tax)}</li>
+      <li>Фиксированные взносы: ${rub(FIXED)}</li>
+      <li>Взнос 1% с превышения: ${rub(extra)}</li>
+      ${note}
+      <li>Чистый доход: <b>${rub(inc - exp - tax - contrib)}</b> (≈ ${rub((inc - exp - tax - contrib) / 12)} в месяц)</li>
+      ${vat}
+    </ul>`;
+});
+</script>
+</body>
+</html>

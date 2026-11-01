@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Калькулятор кирпича — сколько кирпича нужно на дом, стену, забор</title>
+<meta name="description" content="Рассчитайте количество кирпича и раствора для кладки стен: одинарный, полуторный и двойной кирпич, кладка в полкирпича, кирпич, полтора и два.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="assets/icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2a6df4">
+<!-- Сюда вставить счётчик Яндекс Метрики -->
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="logo" href="index.html">Арх<span>Бухта</span></a>
+  <nav class="main">
+    <a href="index.html#remont">Ремонт и стройка</a>
+    <a href="index.html#dengi">Налоги и деньги</a>
+  </nav>
+</div></header>
+<main class="wrap">
+<h1>Калькулятор кирпича</h1>
+<p class="lead">Сколько кирпича и раствора нужно на стены дома, гаража или забор.</p>
+
+<div class="ad-slot" data-ad="top"></div>
+
+<form class="card" id="f">
+  <div class="grid">
+    <div><label for="len">Общая длина стен, м</label><input id="len" inputmode="decimal" value="36"></div>
+    <div><label for="hgt">Высота стен, м</label><input id="hgt" inputmode="decimal" value="3"></div>
+    <div><label for="open">Площадь окон и дверей, м²</label><input id="open" inputmode="decimal" value="12"></div>
+    <div><label for="brick">Кирпич</label>
+      <select id="brick"><option value="0">Одинарный 250×120×65</option><option value="1">Полуторный 250×120×88</option><option value="2">Двойной 250×120×138</option></select></div>
+    <div><label for="thk">Толщина кладки</label>
+      <select id="thk"><option value="1">В полкирпича (12 см)</option><option value="2" selected>В кирпич (25 см)</option><option value="3">В полтора (38 см)</option><option value="4">В два кирпича (51 см)</option></select></div>
+    <div><label for="res">Запас на бой, %</label><input id="res" inputmode="decimal" value="5"></div>
+  </div>
+  <div class="result" id="out"></div>
+  <div data-partner="brick"></div>
+</form>
+
+<div class="ad-slot" data-ad="result"></div>
+
+<h2>Как считается</h2>
+<p>Площадь кладки = длина стен × высота − проёмы. На 1 м² кладки в полкирпича с учётом швов 10 мм уходит
+51 одинарный, 39 полуторных или 26 двойных кирпичей; для более толстой стены число умножается
+на количество полукирпичей в толщине.</p>
+<p>Раствор — ориентировочно 0,24 м³ на 1 м³ кладки из одинарного кирпича, 0,2 — из полуторного и 0,16 — из двойного.</p>
+
+<h2>Другие калькуляторы</h2>
+<div class="tiles">
+  <a class="tile" href="tile.html"><span class="ico">🧱</span><b>Калькулятор плитки</b><small>Пол и стены, с учётом шва, запаса и упаковок</small></a>
+  <a class="tile" href="wallpaper.html"><span class="ico">🧻</span><b>Калькулятор обоев</b><small>Сколько рулонов нужно на комнату с учётом раппорта</small></a>
+  <a class="tile" href="laminate.html"><span class="ico">🪵</span><b>Калькулятор ламината</b><small>Упаковки, подложка и плинтус</small></a>
+  <a class="tile" href="paint.html"><span class="ico">🎨</span><b>Калькулятор краски</b><small>Литры и банки краски для стен и потолка</small></a>
+  <a class="tile" href="plaster.html"><span class="ico">🪣</span><b>Калькулятор штукатурки</b><small>Мешки гипсовой и цементной штукатурки</small></a>
+  <a class="tile" href="concrete.html"><span class="ico">🏗️</span><b>Калькулятор бетона</b><small>Кубы бетона для плиты и ленточного фундамента, цемент в мешках</small></a>
+  <a class="tile" href="gasblock.html"><span class="ico">🔲</span><b>Калькулятор газобетона</b><small>Блоки, кубы и клей для стен из газобетона</small></a>
+  <a class="tile" href="insulation.html"><span class="ico">🧶</span><b>Калькулятор утеплителя</b><small>Упаковки минваты или пенополистирола</small></a>
+</div>
+
+<div class="ad-slot" data-ad="bottom"></div>
+</main>
+<footer class="site"><div class="wrap">
+  © АрхБухта. Расчёты ориентировочные и не заменяют консультацию специалиста.
+  Сайт может содержать рекламу и партнёрские ссылки.
+</div></footer>
+<script src="assets/app.js"></script>
+<script>
+const PER_M2 = [51, 39, 26], MORTAR = [0.24, 0.2, 0.16];
+autoCalc("f", () => {
+  const out = document.getElementById("out");
+  const area = Math.max(0, num("len") * num("hgt") - num("open"));
+  if (!area) { out.innerHTML = "Заполните размеры стен."; return; }
+  const b = +document.getElementById("brick").value, t = num("thk");
+  const count = Math.ceil(area * PER_M2[b] * t * (1 + num("res") / 100));
+  const vol = area * [0, 0.12, 0.25, 0.38, 0.51][t];
+  out.innerHTML = `Нужно кирпича: <div class="big">${fmt(count)} шт.</div>
+    <ul>
+      <li>Площадь кладки: ${fmt(area, 1)} м², объём: ${fmt(vol, 2)} м³</li>
+      <li>Раствор: ~${fmt(vol * MORTAR[b], 2)} м³</li>
+      <li>Поддонов (≈ ${[400, 280, 200][b]} шт. на поддоне): ${Math.ceil(count / [400, 280, 200][b])}</li>
+    </ul>`;
+});
+</script>
+</body>
+</html>

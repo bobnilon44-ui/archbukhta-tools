@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Калькулятор алиментов 2026 — сколько платить на 1, 2, 3 детей</title>
+<meta name="description" content="Рассчитайте размер алиментов в долях от заработка: 25% на одного ребёнка, 33% на двоих, 50% на троих и более.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="assets/icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2a6df4">
+<!-- Сюда вставить счётчик Яндекс Метрики -->
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="logo" href="index.html">Арх<span>Бухта</span></a>
+  <nav class="main">
+    <a href="index.html#remont">Ремонт и стройка</a>
+    <a href="index.html#dengi">Налоги и деньги</a>
+  </nav>
+</div></header>
+<main class="wrap">
+<h1>Калькулятор алиментов</h1>
+<p class="lead">Сколько составят алименты в долях от заработка.</p>
+
+<div class="ad-slot" data-ad="top"></div>
+
+<form class="card" id="f">
+  <div class="grid">
+    <div><label for="sal">Зарплата до вычета НДФЛ, ₽ в месяц</label><input id="sal" inputmode="decimal" value="100000"></div>
+    <div><label for="kids">Количество детей</label>
+      <select id="kids"><option value="0.25">Один — 1/4 (25%)</option><option value="0.3333">Двое — 1/3 (33%)</option><option value="0.5">Трое и больше — 1/2 (50%)</option></select></div>
+  </div>
+  <div class="result" id="out"></div>
+  <div data-partner="alimony"></div>
+</form>
+
+<div class="ad-slot" data-ad="result"></div>
+
+<h2>Как считаются алименты</h2>
+<p>По Семейному кодексу алименты на несовершеннолетних детей удерживаются из заработка после вычета НДФЛ:
+1/4 — на одного ребёнка, 1/3 — на двух, 1/2 — на трёх и более. Суд может изменить долю с учётом
+обстоятельств или назначить твёрдую сумму, если доход нерегулярный.</p>
+<p>Удерживают с зарплаты, премий, отпускных, больничных и других доходов. Удержание не может превышать 70%
+заработка (по алиментам на детей).</p>
+<p class="note">Расчёт ориентировочный и не заменяет консультацию юриста.</p>
+
+<h2>Другие калькуляторы</h2>
+<div class="tiles">
+  <a class="tile" href="mortgage.html"><span class="ico">🏦</span><b>Ипотечный калькулятор</b><small>Платёж, переплата и нужный доход</small></a>
+  <a class="tile" href="credit.html"><span class="ico">💳</span><b>Кредитный калькулятор</b><small>Аннуитетный и дифференцированный платёж, график</small></a>
+  <a class="tile" href="deposit.html"><span class="ico">💰</span><b>Калькулятор вклада</b><small>Доход с капитализацией и налог на проценты</small></a>
+  <a class="tile" href="ndfl.html"><span class="ico">💼</span><b>Калькулятор НДФЛ и зарплаты</b><small>Зарплата на руки по прогрессивной шкале 13–22%</small></a>
+  <a class="tile" href="vacation.html"><span class="ico">🏖️</span><b>Калькулятор отпускных</b><small>Средний дневной заработок и сумма отпускных</small></a>
+  <a class="tile" href="sick.html"><span class="ico">🤒</span><b>Калькулятор больничного</b><small>Пособие по стажу, лимиты 2026 года</small></a>
+  <a class="tile" href="property.html"><span class="ico">🏠</span><b>Вычет за квартиру</b><small>Сколько НДФЛ вернут за покупку жилья и проценты по ипотеке</small></a>
+  <a class="tile" href="npd.html"><span class="ico">🧾</span><b>Налог самозанятого (НПД)</b><small>4% и 6% с учётом налогового вычета</small></a>
+  <a class="tile" href="usn.html"><span class="ico">📊</span><b>Налоги ИП на УСН</b><small>6% или 15%, страховые взносы, чистый доход</small></a>
+</div>
+
+<div class="ad-slot" data-ad="bottom"></div>
+</main>
+<footer class="site"><div class="wrap">
+  © АрхБухта. Расчёты ориентировочные и не заменяют консультацию специалиста.
+  Сайт может содержать рекламу и партнёрские ссылки.
+</div></footer>
+<script src="assets/app.js"></script>
+<script>
+autoCalc("f", () => {
+  const out = document.getElementById("out"), s = num("sal");
+  if (!s) { out.innerHTML = "Введите зарплату."; return; }
+  const net = s * 0.87, share = num("kids"), a = net * share;
+  out.innerHTML = `Алименты в месяц: <div class="big">${rub(a)}</div>
+    <ul>
+      <li>Зарплата после НДФЛ 13%: ${rub(net)}</li>
+      <li>Останется плательщику: ${rub(net - a)}</li>
+      <li>За год: ${rub(a * 12)}</li>
+    </ul>`;
+});
+</script>
+</body>
+</html>

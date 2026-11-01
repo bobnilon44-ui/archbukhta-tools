@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ипотечный калькулятор онлайн — ежемесячный платёж и переплата</title>
+<meta name="description" content="Рассчитайте ежемесячный платёж по ипотеке, переплату по процентам и доход, который нужен для одобрения.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="assets/icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2a6df4">
+<!-- Сюда вставить счётчик Яндекс Метрики -->
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="logo" href="index.html">Арх<span>Бухта</span></a>
+  <nav class="main">
+    <a href="index.html#remont">Ремонт и стройка</a>
+    <a href="index.html#dengi">Налоги и деньги</a>
+  </nav>
+</div></header>
+<main class="wrap">
+<h1>Ипотечный калькулятор</h1>
+<p class="lead">Ежемесячный платёж, переплата и какой доход нужен для одобрения.</p>
+
+<div class="ad-slot" data-ad="top"></div>
+
+<form class="card" id="f">
+  <div class="grid">
+    <div><label for="price">Стоимость жилья, ₽</label><input id="price" inputmode="decimal" value="8000000"></div>
+    <div><label for="down">Первоначальный взнос, ₽</label><input id="down" inputmode="decimal" value="2000000"></div>
+    <div><label for="rate">Ставка, % годовых</label><input id="rate" inputmode="decimal" value="6"></div>
+    <div><label for="years">Срок, лет</label><input id="years" inputmode="numeric" value="25"></div>
+  </div>
+  <div class="result" id="out"></div>
+  <div data-partner="mortgage"></div>
+</form>
+
+<div class="ad-slot" data-ad="result"></div>
+
+<h2>Как считается</h2>
+<p>Банки обычно используют аннуитетный платёж — одинаковый каждый месяц:
+платёж = сумма кредита × i ÷ (1 − (1 + i)<sup>−n</sup>), где i — месячная ставка, n — число месяцев.</p>
+<p>Банк, как правило, одобряет ипотеку, если платёж не превышает 40–50% подтверждённого дохода семьи.
+Ставки льготных программ (семейная, IT, дальневосточная) и рыночные заметно отличаются — сравнивайте их в разных банках.</p>
+<p>Не забудьте про дополнительные расходы: страхование (около 0,5–1% от долга в год), оценку и регистрацию.
+С процентов по ипотеке можно вернуть до 390 000 ₽ — посчитайте в <a href="property.html">калькуляторе вычета</a>.</p>
+
+<h2>Другие калькуляторы</h2>
+<div class="tiles">
+  <a class="tile" href="credit.html"><span class="ico">💳</span><b>Кредитный калькулятор</b><small>Аннуитетный и дифференцированный платёж, график</small></a>
+  <a class="tile" href="deposit.html"><span class="ico">💰</span><b>Калькулятор вклада</b><small>Доход с капитализацией и налог на проценты</small></a>
+  <a class="tile" href="ndfl.html"><span class="ico">💼</span><b>Калькулятор НДФЛ и зарплаты</b><small>Зарплата на руки по прогрессивной шкале 13–22%</small></a>
+  <a class="tile" href="vacation.html"><span class="ico">🏖️</span><b>Калькулятор отпускных</b><small>Средний дневной заработок и сумма отпускных</small></a>
+  <a class="tile" href="sick.html"><span class="ico">🤒</span><b>Калькулятор больничного</b><small>Пособие по стажу, лимиты 2026 года</small></a>
+  <a class="tile" href="property.html"><span class="ico">🏠</span><b>Вычет за квартиру</b><small>Сколько НДФЛ вернут за покупку жилья и проценты по ипотеке</small></a>
+  <a class="tile" href="alimony.html"><span class="ico">👨‍👧</span><b>Калькулятор алиментов</b><small>Сумма алиментов от зарплаты на 1–3 детей</small></a>
+  <a class="tile" href="npd.html"><span class="ico">🧾</span><b>Налог самозанятого (НПД)</b><small>4% и 6% с учётом налогового вычета</small></a>
+  <a class="tile" href="usn.html"><span class="ico">📊</span><b>Налоги ИП на УСН</b><small>6% или 15%, страховые взносы, чистый доход</small></a>
+</div>
+
+<div class="ad-slot" data-ad="bottom"></div>
+</main>
+<footer class="site"><div class="wrap">
+  © АрхБухта. Расчёты ориентировочные и не заменяют консультацию специалиста.
+  Сайт может содержать рекламу и партнёрские ссылки.
+</div></footer>
+<script src="assets/app.js"></script>
+<script>
+autoCalc("f", () => {
+  const out = document.getElementById("out");
+  const loan = num("price") - num("down"), n = Math.round(num("years") * 12), i = num("rate") / 1200;
+  if (loan <= 0 || !n) { out.innerHTML = "Проверьте стоимость, взнос и срок."; return; }
+  const pay = i ? loan * i / (1 - Math.pow(1 + i, -n)) : loan / n;
+  const total = pay * n;
+  out.innerHTML = `Ежемесячный платёж: <div class="big">${rub(pay)}</div>
+    <ul>
+      <li>Сумма кредита: ${rub(loan)} (взнос ${fmt(num("down") / num("price") * 100, 1)}%)</li>
+      <li>Переплата по процентам: <b>${rub(total - loan)}</b></li>
+      <li>Всего выплатите банку: ${rub(total)}</li>
+      <li>Нужный доход семьи: от ${rub(pay / 0.5)} в месяц</li>
+    </ul>`;
+});
+</script>
+</body>
+</html>

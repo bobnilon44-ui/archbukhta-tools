@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Кредитный калькулятор — аннуитетный и дифференцированный платёж</title>
+<meta name="description" content="Рассчитайте ежемесячный платёж и переплату по потребительскому кредиту, сравните аннуитетный и дифференцированный платежи, график погашения.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="assets/icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2a6df4">
+<!-- Сюда вставить счётчик Яндекс Метрики -->
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="logo" href="index.html">Арх<span>Бухта</span></a>
+  <nav class="main">
+    <a href="index.html#remont">Ремонт и стройка</a>
+    <a href="index.html#dengi">Налоги и деньги</a>
+  </nav>
+</div></header>
+<main class="wrap">
+<h1>Кредитный калькулятор</h1>
+<p class="lead">Платёж, переплата и график погашения потребительского кредита.</p>
+
+<div class="ad-slot" data-ad="top"></div>
+
+<form class="card" id="f">
+  <div class="grid">
+    <div><label for="sum">Сумма кредита, ₽</label><input id="sum" inputmode="decimal" value="500000"></div>
+    <div><label for="rate">Ставка, % годовых</label><input id="rate" inputmode="decimal" value="25"></div>
+    <div><label for="months">Срок, месяцев</label><input id="months" inputmode="numeric" value="36"></div>
+    <div><label for="type">Тип платежа</label>
+      <select id="type"><option value="ann">Аннуитетный (равные платежи)</option><option value="diff">Дифференцированный (убывающие)</option></select></div>
+  </div>
+  <div class="result" id="out"></div>
+  <div data-partner="credit"></div>
+</form>
+
+<div class="ad-slot" data-ad="result"></div>
+
+<h2>График платежей</h2>
+<div class="card" style="overflow-x:auto"><table id="sched" style="width:100%;border-collapse:collapse;font-size:.9rem"></table></div>
+
+<h2>Аннуитет или дифференцированный?</h2>
+<p>При аннуитете платёж одинаковый весь срок, но в начале большая часть уходит на проценты. При дифференцированной
+схеме основной долг гасится равными долями, а проценты начисляются на остаток — платежи сначала выше, потом уменьшаются,
+а общая переплата меньше. Большинство банков по умолчанию выдают аннуитетные кредиты.</p>
+<p>Досрочное погашение в первые месяцы экономит больше всего процентов.</p>
+
+<h2>Другие калькуляторы</h2>
+<div class="tiles">
+  <a class="tile" href="mortgage.html"><span class="ico">🏦</span><b>Ипотечный калькулятор</b><small>Платёж, переплата и нужный доход</small></a>
+  <a class="tile" href="deposit.html"><span class="ico">💰</span><b>Калькулятор вклада</b><small>Доход с капитализацией и налог на проценты</small></a>
+  <a class="tile" href="ndfl.html"><span class="ico">💼</span><b>Калькулятор НДФЛ и зарплаты</b><small>Зарплата на руки по прогрессивной шкале 13–22%</small></a>
+  <a class="tile" href="vacation.html"><span class="ico">🏖️</span><b>Калькулятор отпускных</b><small>Средний дневной заработок и сумма отпускных</small></a>
+  <a class="tile" href="sick.html"><span class="ico">🤒</span><b>Калькулятор больничного</b><small>Пособие по стажу, лимиты 2026 года</small></a>
+  <a class="tile" href="property.html"><span class="ico">🏠</span><b>Вычет за квартиру</b><small>Сколько НДФЛ вернут за покупку жилья и проценты по ипотеке</small></a>
+  <a class="tile" href="alimony.html"><span class="ico">👨‍👧</span><b>Калькулятор алиментов</b><small>Сумма алиментов от зарплаты на 1–3 детей</small></a>
+  <a class="tile" href="npd.html"><span class="ico">🧾</span><b>Налог самозанятого (НПД)</b><small>4% и 6% с учётом налогового вычета</small></a>
+  <a class="tile" href="usn.html"><span class="ico">📊</span><b>Налоги ИП на УСН</b><small>6% или 15%, страховые взносы, чистый доход</small></a>
+</div>
+
+<div class="ad-slot" data-ad="bottom"></div>
+</main>
+<footer class="site"><div class="wrap">
+  © АрхБухта. Расчёты ориентировочные и не заменяют консультацию специалиста.
+  Сайт может содержать рекламу и партнёрские ссылки.
+</div></footer>
+<script src="assets/app.js"></script>
+<script>
+autoCalc("f", () => {
+  const out = document.getElementById("out"), tbl = document.getElementById("sched");
+  const S = num("sum"), n = Math.round(num("months")), i = num("rate") / 1200;
+  if (!S || !n) { out.innerHTML = "Заполните сумму и срок."; tbl.innerHTML = ""; return; }
+  const ann = document.getElementById("type").value === "ann";
+  const A = i ? S * i / (1 - Math.pow(1 + i, -n)) : S / n;
+  let rest = S, total = 0, rows = [];
+  for (let k = 1; k <= n; k++) {
+    const pct = rest * i, body = ann ? A - pct : S / n, pay = body + pct;
+    rest = Math.max(0, rest - body); total += pay;
+    rows.push(`<tr><td>${k}</td><td>${rub(pay)}</td><td>${rub(body)}</td><td>${rub(pct)}</td><td>${rub(rest)}</td></tr>`);
+  }
+  const first = ann ? A : S / n + S * i, last = ann ? A : (S / n) * (1 + i);
+  out.innerHTML = `${ann ? "Ежемесячный платёж" : "Первый платёж"}: <div class="big">${rub(first)}</div>
+    <ul>
+      ${ann ? "" : `<li>Последний платёж: ${rub(last)}</li>`}
+      <li>Переплата: <b>${rub(total - S)}</b></li>
+      <li>Всего выплатите: ${rub(total)}</li>
+    </ul>`;
+  tbl.innerHTML = `<tr style="text-align:left"><th>№</th><th>Платёж</th><th>Долг</th><th>Проценты</th><th>Остаток</th></tr>` + rows.join("");
+});
+</script>
+</body>
+</html>

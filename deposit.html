@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Калькулятор вклада с капитализацией и налогом на проценты</title>
+<meta name="description" content="Посчитайте доход по банковскому вкладу с ежемесячной капитализацией и пополнением, а также налог на проценты.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="assets/icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2a6df4">
+<!-- Сюда вставить счётчик Яндекс Метрики -->
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="logo" href="index.html">Арх<span>Бухта</span></a>
+  <nav class="main">
+    <a href="index.html#remont">Ремонт и стройка</a>
+    <a href="index.html#dengi">Налоги и деньги</a>
+  </nav>
+</div></header>
+<main class="wrap">
+<h1>Калькулятор вклада</h1>
+<p class="lead">Доход по вкладу с капитализацией, пополнением и налогом на проценты.</p>
+
+<div class="ad-slot" data-ad="top"></div>
+
+<form class="card" id="f">
+  <div class="grid">
+    <div><label for="sum">Сумма вклада, ₽</label><input id="sum" inputmode="decimal" value="1000000"></div>
+    <div><label for="rate">Ставка, % годовых</label><input id="rate" inputmode="decimal" value="16"></div>
+    <div><label for="months">Срок, месяцев</label><input id="months" inputmode="numeric" value="12"></div>
+    <div><label for="add">Пополнение каждый месяц, ₽</label><input id="add" inputmode="decimal" value="0"></div>
+    <div><label for="cap">Проценты</label>
+      <select id="cap"><option value="1">Капитализация ежемесячно</option><option value="0">Выплата без капитализации</option></select></div>
+    <div><label for="key">Макс. ключевая ставка ЦБ за год, %</label><input id="key" inputmode="decimal" value="16.5"></div>
+  </div>
+  <div class="result" id="out"></div>
+  <div data-partner="deposit"></div>
+</form>
+
+<div class="ad-slot" data-ad="result"></div>
+
+<h2>Налог на проценты по вкладам</h2>
+<p>Проценты по всем вкладам за год облагаются НДФЛ только в части, превышающей необлагаемую сумму:
+1 000 000 ₽ × максимальная ключевая ставка ЦБ в этом году. Налог считает и присылает ФНС в следующем году,
+ставка — 13% (15% для части доходов свыше 2,4 млн ₽).</p>
+<p>Калькулятор считает налог только по этому вкладу. Если вкладов несколько, проценты по ним складываются.
+Вклады до 1,4 млн ₽ в одном банке застрахованы государством.</p>
+
+<h2>Другие калькуляторы</h2>
+<div class="tiles">
+  <a class="tile" href="mortgage.html"><span class="ico">🏦</span><b>Ипотечный калькулятор</b><small>Платёж, переплата и нужный доход</small></a>
+  <a class="tile" href="credit.html"><span class="ico">💳</span><b>Кредитный калькулятор</b><small>Аннуитетный и дифференцированный платёж, график</small></a>
+  <a class="tile" href="ndfl.html"><span class="ico">💼</span><b>Калькулятор НДФЛ и зарплаты</b><small>Зарплата на руки по прогрессивной шкале 13–22%</small></a>
+  <a class="tile" href="vacation.html"><span class="ico">🏖️</span><b>Калькулятор отпускных</b><small>Средний дневной заработок и сумма отпускных</small></a>
+  <a class="tile" href="sick.html"><span class="ico">🤒</span><b>Калькулятор больничного</b><small>Пособие по стажу, лимиты 2026 года</small></a>
+  <a class="tile" href="property.html"><span class="ico">🏠</span><b>Вычет за квартиру</b><small>Сколько НДФЛ вернут за покупку жилья и проценты по ипотеке</small></a>
+  <a class="tile" href="alimony.html"><span class="ico">👨‍👧</span><b>Калькулятор алиментов</b><small>Сумма алиментов от зарплаты на 1–3 детей</small></a>
+  <a class="tile" href="npd.html"><span class="ico">🧾</span><b>Налог самозанятого (НПД)</b><small>4% и 6% с учётом налогового вычета</small></a>
+  <a class="tile" href="usn.html"><span class="ico">📊</span><b>Налоги ИП на УСН</b><small>6% или 15%, страховые взносы, чистый доход</small></a>
+</div>
+
+<div class="ad-slot" data-ad="bottom"></div>
+</main>
+<footer class="site"><div class="wrap">
+  © АрхБухта. Расчёты ориентировочные и не заменяют консультацию специалиста.
+  Сайт может содержать рекламу и партнёрские ссылки.
+</div></footer>
+<script src="assets/app.js"></script>
+<script>
+autoCalc("f", () => {
+  const out = document.getElementById("out");
+  const n = Math.round(num("months")), i = num("rate") / 1200, add = num("add"), cap = document.getElementById("cap").value === "1";
+  let bal = num("sum"), interest = 0, put = num("sum");
+  if (!bal || !n) { out.innerHTML = "Заполните сумму и срок."; return; }
+  for (let k = 1; k <= n; k++) {
+    const p = bal * i; interest += p;
+    if (cap) bal += p;
+    if (k < n) { bal += add; put += add; }
+  }
+  const free = 1000000 * num("key") / 100;
+  const perYear = interest * Math.min(1, 12 / n);
+  const tax = Math.max(0, perYear - free) * 0.13 * Math.max(1, n / 12);
+  out.innerHTML = `Доход по процентам: <div class="big">${rub(interest)}</div>
+    <ul>
+      <li>Внесено: ${rub(put)}, в конце срока: ${rub(put + interest)}</li>
+      <li>Эффективная доходность: ${fmt(interest / put * 12 / n * 100, 2)}% годовых</li>
+      <li>Необлагаемый доход за год: ${rub(free)}</li>
+      <li>Налог на проценты: ${tax ? `<b>${rub(tax)}</b>` : "не возникает"}</li>
+    </ul>`;
+});
+</script>
+</body>
+</html>
