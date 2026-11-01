@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Английский: программа на 12 месяцев</title>
+<style>
+:root{--bg:#f7f6f2;--card:#fff;--ink:#1d1d1f;--muted:#6b6b70;--line:#e3e1da;--acc:#2f6fdb;--ok:#2e8b57;--warn:#c47f17;--bad:#c0392b}
+@media (prefers-color-scheme:dark){:root{--bg:#141416;--card:#1e1e22;--ink:#ececef;--muted:#9a9aa2;--line:#2e2e34;--acc:#6fa0ff;--ok:#5cc28a;--warn:#e0a84a;--bad:#ff7a6b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{padding:28px 20px 8px;max-width:960px;margin:auto}
+h1{font-size:28px;margin:0 0 6px}
+h2{font-size:21px;margin:0 0 12px}
+h3{font-size:17px;margin:14px 0 6px}
+.sub{color:var(--muted);margin:0}
+nav{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);z-index:5}
+nav .in{max-width:960px;margin:auto;display:flex;gap:4px;overflow-x:auto;padding:8px 14px}
+nav button{border:0;background:none;color:var(--muted);font:inherit;padding:8px 12px;border-radius:8px;cursor:pointer;white-space:nowrap}
+nav button.on{background:var(--card);color:var(--ink);font-weight:600;box-shadow:0 0 0 1px var(--line)}
+main{max-width:960px;margin:auto;padding:18px 14px 60px}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;background:color-mix(in srgb,var(--acc) 15%,transparent);color:var(--acc)}
+ul{padding-left:20px;margin:6px 0}li{margin:3px 0}
+table{width:100%;border-collapse:collapse;font-size:15px}
+td,th{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:13px}
+.muted{color:var(--muted)}
+a{color:var(--acc)}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;padding:9px 14px;border-radius:10px;cursor:pointer}
+.btn.p{background:var(--acc);border-color:var(--acc);color:#fff}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.check{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.check input{width:20px;height:20px;margin-top:2px;accent-color:var(--ok)}
+.check:last-child{border:0}
+.big{font-size:34px;font-weight:700}
+.fc{min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px}
+.fc .w{font-size:32px;font-weight:700}
+.fc .t{font-size:20px}
+.fc .ex{color:var(--muted);font-style:italic}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok)}
+pre{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:14px}
+.ok{color:var(--ok)}.bad{color:var(--bad)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Английский с нуля до B2</h1>
+  <p class="sub">Программа на 12 месяцев · 45–60 минут в день · метод, который подходит для любого языка</p>
+</header>
+<nav><div class="in" id="tabs"></div></nav>
+<main>
+
+<!-- МЕТОД -->
+<section id="method">
+  <div class="card">
+    <h2>Почему именно так</h2>
+    <p>Лучший способ выучить язык держится на пяти принципах, у которых сильнее всего доказательная база. Всё остальное (приложения, курсы, школы) — это просто упаковка вокруг них.</p>
+    <div class="grid">
+      <div><span class="tag">1</span><h3>Много понятного входа</h3>Слушать и читать материал, где понятно 85–95%. Это главный двигатель. На него идёт половина времени.</div>
+      <div><span class="tag">2</span><h3>Интервальные повторения</h3>Слова учатся карточками (Anki), которые всплывают перед тем, как ты их забудешь. 15 минут в день, без пропусков.</div>
+      <div><span class="tag">3</span><h3>Активное припоминание</h3>Не перечитывать, а вспоминать: закрыть ответ и проговорить. В 2–3 раза эффективнее пассивного повторения.</div>
+      <div><span class="tag">4</span><h3>Говорить с первого месяца</h3>Shadowing (повторять за диктором) каждый день, живой разговор 2 раза в неделю. Речь — отдельный навык, сам он не появится.</div>
+      <div><span class="tag">5</span><h3>Грамматика — по чуть-чуть</h3>Одна тема за 1–2 дня, сразу в упражнениях. Не «выучить все правила», а замечать их в том, что читаешь.</div>
+      <div><span class="tag">!</span><h3>Регулярность важнее объёма</h3>30 минут каждый день лучше, чем 4 часа в субботу. Цепочка дней — главная метрика в первые 3 месяца.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>С чего начать сегодня</h2>
+    <ol>
+      <li>Пройди бесплатный тест уровня: <a href="https://www.efset.org/">efset.org</a> (50 минут) — или, если совсем с нуля, начинай с этапа 1.</li>
+      <li>Поставь <a href="https://apps.ankiweb.net/">Anki</a> (на Android и ПК бесплатно, на iPhone — AnkiMobile или бесплатный AnkiWeb в браузере).</li>
+      <li>Купи или найди <b>English Grammar in Use</b> (Raymond Murphy, синий — для A2–B1; красный «Essential» — для начинающих).</li>
+      <li>Выбери фиксированное время в дне и отмечай выполнение на вкладке «Сегодня».</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ПРОГРАММА -->
+<section id="program">
+  <div class="card">
+    <span class="tag">Этап 1 · недели 1–4 · A0 → A1</span>
+    <h2>Фундамент</h2>
+    <ul>
+      <li><b>Произношение:</b> английские звуки и транскрипция (плейлист Rachel's English или BBC «Pronunciation»). 10 минут в день.</li>
+      <li><b>Слова:</b> 300 самых частых слов + готовые фразы (знакомство, магазин, дорога). Колода «4000 Essential English Words, книга 1» или вкладка «Карточки» здесь.</li>
+      <li><b>Грамматика:</b> to be, Present Simple, артикли a/the, множественное число, have got, there is/are, can, вопросы и отрицания.</li>
+      <li><b>Вход:</b> «Peppa Pig» на английском, видео «Easy English» / «English with Lucy (beginner)».</li>
+      <li><b>Цель этапа:</b> рассказать о себе 1 минуту, понять медленную простую речь.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="tag">Этап 2 · месяцы 2–3 · A1 → A2</span>
+    <h2>Базовое общение</h2>
+    <ul>
+      <li><b>Слова:</b> до 1000 (≈10 новых в день).</li>
+      <li><b>Грамматика:</b> Past Simple, будущее (will / going to), Present Continuous, сравнения, much/many, some/any, модальные глаголы.</li>
+      <li><b>Чтение:</b> адаптированные книги Oxford Bookworms / Penguin Readers уровня 1–2.</li>
+      <li><b>Аудио:</b> подкаст BBC «6 Minute English», «ESL Pod».</li>
+      <li><b>Речь:</b> первый разговор с репетитором или языковым партнёром (italki, Preply, Tandem) — 1–2 раза в неделю по 30 минут.</li>
+      <li><b>Цель:</b> бытовой диалог: заказать, спросить дорогу, рассказать про вчерашний день.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="tag">Этап 3 · месяцы 4–6 · A2 → B1</span>
+    <h2>Самостоятельность</h2>
+    <ul>
+      <li><b>Слова:</b> до 2000 + свои слова из книг и сериалов (добавляй в Anki с примером).</li>
+      <li><b>Грамматика:</b> Present Perfect, Past Continuous, условные предложения 0/1/2, пассив, used to, герундий/инфинитив.</li>
+      <li><b>Видео:</b> сериалы с английскими субтитрами: «Friends», «Modern Family», «Ted Lasso». Одна серия — 2 раза.</li>
+      <li><b>Письмо:</b> 3 раза в неделю по 5–10 предложений (дневник), проверять через ИИ или репетитора.</li>
+      <li><b>Цель:</b> смотреть простые сериалы с англ. субтитрами, понимать ~70%.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="tag">Этап 4 · месяцы 7–12 · B1 → B2</span>
+    <h2>Свободное общение</h2>
+    <ul>
+      <li><b>Слова:</b> 3000–4000, фразовые глаголы, коллокации (сочетания слов).</li>
+      <li><b>Грамматика:</b> все времена, условные 3-го типа, косвенная речь, модальные в прошедшем — синий Murphy целиком.</li>
+      <li><b>Вход:</b> обычные подкасты и YouTube по твоим интересам, книги без адаптации, фильмы.</li>
+      <li><b>Речь:</b> 2–3 разговора в неделю, обсуждение тем, пересказы.</li>
+      <li><b>Цель:</b> тест EF SET на B2, свободный разговор на большинство тем.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- НЕДЕЛЯ -->
+<section id="week">
+  <div class="card">
+    <h2>Ежедневная схема (≈50 мин)</h2>
+    <table>
+      <tr><th>Блок</th><th>Время</th><th>Что делать</th></tr>
+      <tr><td>Карточки</td><td>15 мин</td><td>Anki: сначала повторения, потом 10 новых слов. Вслух.</td></tr>
+      <tr><td>Вход</td><td>20 мин</td><td>Подкаст, видео или книга своего уровня. Можно в дороге.</td></tr>
+      <tr><td>Грамматика</td><td>10 мин</td><td>1 разворот Murphy: прочитать правило, сделать упражнения.</td></tr>
+      <tr><td>Shadowing</td><td>5 мин</td><td>Взять 1–2 минуты аудио, повторять за диктором с той же интонацией.</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h2>Неделя</h2>
+    <table>
+      <tr><th>День</th><th>Акцент (сверх ежедневной схемы)</th></tr>
+      <tr><td>Пн</td><td>Новая тема грамматики</td></tr>
+      <tr><td>Вт</td><td>Разговор 30 мин (репетитор / партнёр / ИИ)</td></tr>
+      <tr><td>Ср</td><td>Письмо: 10 предложений по теме недели</td></tr>
+      <tr><td>Чт</td><td>Разговор 30 мин</td></tr>
+      <tr><td>Пт</td><td>Письмо + повтор грамматики недели</td></tr>
+      <tr><td>Сб</td><td>Длинный вход: фильм / 2 серии / глава книги (по желанию)</td></tr>
+      <tr><td>Вс</td><td>Лёгкий день: только карточки. Итог недели: что запомнил, что было трудно.</td></tr>
+    </table>
+    <p class="muted">Нет времени? Минимум — 15 минут карточек. Главное — не разрывать цепочку.</p>
+  </div>
+</section>
+
+<!-- СЕГОДНЯ -->
+<section id="today">
+  <div class="card">
+    <div class="row" style="justify-content:space-between">
+      <h2 style="margin:0">Сегодня, <span id="dateLbl"></span></h2>
+      <div><span class="muted">Дней подряд:</span> <span class="big" id="streak">0</span></div>
+    </div>
+    <div id="checks" style="margin-top:10px"></div>
+    <p class="muted" id="storeNote" style="font-size:13px">Отметки хранятся только в этом браузере на этом устройстве.</p>
+  </div>
+  <div class="card">
+    <h2>Последние 28 дней</h2>
+    <div id="heat" style="display:grid;grid-template-columns:repeat(14,1fr);gap:4px"></div>
+  </div>
+</section>
+
+<!-- КАРТОЧКИ -->
+<section id="cards">
+  <div class="card">
+    <div class="row" style="justify-content:space-between">
+      <h2 style="margin:0">Карточки: 124 первых слова</h2>
+      <div class="row">
+        <button class="btn" id="dirBtn">EN → RU</button>
+        <button class="btn" id="resetBtn">Сбросить</button>
+      </div>
+    </div>
+    <p class="muted" style="margin:6px 0 10px">Система Лейтнера: «Знаю» отправляет слово в следующую коробку, и оно вернётся позже; «Не помню» — снова в первую. Сначала вспомни сам, потом открой ответ.</p>
+    <div class="bar"><i id="prog"></i></div>
+    <p class="muted" id="stat" style="font-size:13px"></p>
+    <div class="fc" id="fc"></div>
+    <div class="row" style="justify-content:center" id="fcBtns"></div>
+  </div>
+</section>
+
+<!-- РАЗГОВОР С ИИ -->
+<section id="ai">
+  <div class="card">
+    <h2>Разговорная практика с ИИ</h2>
+    <p>Между уроками с живым человеком можно тренироваться с Claude голосом или текстом. Скопируй промпт, вставь в новый чат и поменяй уровень и тему.</p>
+    <pre id="prompt">You are my English conversation partner. My level is A2.
+Rules:
+1. Talk with me about: my day, work, hobbies, travel (pick one, change topics every ~10 messages).
+2. Use simple words and short sentences at my level. Ask me one question at a time.
+3. After each of my messages, first reply naturally, then add a short block "Corrections:" with my mistakes and the correct version. If there are no mistakes, write "Corrections: none".
+4. Once in a while, teach me one useful phrase that fits the conversation.
+5. If I write in Russian, help me say it in English and ask me to repeat it.
+Start by asking me how my day was.</pre>
+    <button class="btn p" id="copyBtn">Скопировать</button> <span id="copyMsg" class="muted"></span>
+  </div>
+</section>
+
+<!-- РЕСУРСЫ -->
+<section id="res">
+  <div class="card">
+    <h2>Ресурсы (в основном бесплатные)</h2>
+    <table>
+      <tr><th>Задача</th><th>Ресурс</th></tr>
+      <tr><td>Тест уровня</td><td><a href="https://www.efset.org/">EF SET</a>, <a href="https://www.cambridgeenglish.org/test-your-english/">Cambridge test</a></td></tr>
+      <tr><td>Карточки</td><td><a href="https://apps.ankiweb.net/">Anki</a> + готовые колоды «4000 Essential English Words»</td></tr>
+      <tr><td>Грамматика</td><td>Murphy «Essential / English Grammar in Use», <a href="https://learnenglish.britishcouncil.org/grammar">British Council Grammar</a></td></tr>
+      <tr><td>Аудио</td><td><a href="https://www.bbc.co.uk/learningenglish/">BBC Learning English</a> (6 Minute English), подкаст «Easy English»</td></tr>
+      <tr><td>Произношение</td><td>Rachel's English (YouTube), <a href="https://youglish.com/">YouGlish</a> — как слово звучит в живой речи</td></tr>
+      <tr><td>Словарь</td><td><a href="https://dictionary.cambridge.org/">Cambridge Dictionary</a> (есть англо-русский и аудио)</td></tr>
+      <tr><td>Чтение</td><td>Oxford Bookworms, Penguin Readers (адаптированные книги по уровням)</td></tr>
+      <tr><td>Разговор</td><td>italki / Preply (репетиторы), Tandem / HelloTalk (бесплатные партнёры), ИИ</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h2>Для любого другого языка</h2>
+    <p>Схема та же: тест уровня → ежедневные карточки (Anki) → понятный вход своего уровня → грамматика маленькими порциями → shadowing → разговор 2 раза в неделю. Меняются только ресурсы: свой учебник грамматики, свои подкасты для изучающих, своя колода частотных слов.</p>
+  </div>
+</section>
+</main>
+
+<script>
+const TABS=[["method","Метод"],["program","Программа"],["week","Неделя"],["today","Сегодня"],["cards","Карточки"],["ai","Разговор с ИИ"],["res","Ресурсы"]];
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const tabsEl=document.getElementById('tabs');
+TABS.forEach(([id,n])=>{const b=document.createElement('button');b.textContent=n;b.dataset.id=id;b.onclick=()=>{location.hash=id};tabsEl.appendChild(b)});
+function route(){const id=(location.hash||'#method').slice(1);const ok=TABS.some(t=>t[0]===id)?id:'method';
+  document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===ok));
+  tabsEl.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.id===ok));}
+addEventListener('hashchange',route);route();
+
+/* СЕГОДНЯ */
+const TASKS=["Карточки 15 минут (повторения + 10 новых)","Вход 20 минут (подкаст / видео / книга)","Грамматика 10 минут (1 разворот Murphy)","Shadowing 5 минут","Разговор или письмо (по плану недели)"];
+const key=d=>d.toISOString().slice(0,10);
+const today=new Date();const tk=key(today);
+document.getElementById('dateLbl').textContent=today.toLocaleDateString('ru-RU',{day:'numeric',month:'long'});
+let log=store.get('en_log',{});
+function renderToday(){
+  const done=log[tk]||[];const box=document.getElementById('checks');box.innerHTML='';
+  TASKS.forEach((t,i)=>{const l=document.createElement('label');l.className='check';
+    l.innerHTML=`<input type="checkbox" ${done.includes(i)?'checked':''}><span>${t}</span>`;
+    l.querySelector('input').onchange=e=>{let d=log[tk]||[];d=e.target.checked?[...new Set([...d,i])]:d.filter(x=>x!==i);log[tk]=d;store.set('en_log',log);renderToday()};
+    box.appendChild(l)});
+  // streak: день засчитан, если выполнены карточки (минимум)
+  let s=0;const c=new Date(today);if(!(log[key(c)]||[]).includes(0))c.setDate(c.getDate()-1);
+  while((log[key(c)]||[]).includes(0)){s++;c.setDate(c.getDate()-1)}
+  document.getElementById('streak').textContent=s;
+  const h=document.getElementById('heat');h.innerHTML='';
+  for(let i=27;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);const n=(log[key(d)]||[]).length;
+    const el=document.createElement('div');el.title=d.toLocaleDateString('ru-RU')+': '+n+'/'+TASKS.length;
+    el.style.cssText=`aspect-ratio:1;border-radius:4px;background:${n?`color-mix(in srgb,var(--ok) ${30+n*14}%,transparent)`:'var(--line)'}`;h.appendChild(el)}
+}
+renderToday();
+
+/* КАРТОЧКИ */
+const W=`I|я|I am at home.
+you|ты, вы|You are right.
+he / she|он / она|She is my sister.
+we / they|мы / они|They live here.
+be (am, is, are)|быть|I am tired.
+have|иметь|I have a car.
+do|делать|What do you do?
+go|идти, ехать|Let's go home.
+come|приходить|Come here, please.
+get|получать, становиться|I get up at seven.
+make|делать, создавать|She makes coffee.
+know|знать|I don't know.
+think|думать|I think so.
+take|брать|Take this bag.
+see|видеть|See you tomorrow!
+want|хотеть|I want some water.
+look|смотреть, выглядеть|Look at this!
+use|использовать|Can I use your phone?
+find|находить|I can't find my keys.
+give|давать|Give me a minute.
+tell|рассказывать, сказать|Tell me about you.
+work|работать, работа|I work in an office.
+call|звонить, звать|Call me later.
+try|пытаться, пробовать|Try again.
+ask|спрашивать, просить|Can I ask a question?
+need|нуждаться|I need help.
+feel|чувствовать|I feel good.
+leave|уходить, оставлять|I leave at six.
+put|класть|Put it on the table.
+mean|значить|What does it mean?
+like|нравиться|I like music.
+love|любить|I love my family.
+help|помогать|Can you help me?
+talk|разговаривать|Let's talk.
+speak|говорить (на языке)|Do you speak English?
+say|сказать|What did you say?
+eat|есть|Let's eat something.
+drink|пить|I drink tea.
+sleep|спать|I sleep eight hours.
+buy|покупать|I want to buy this.
+pay|платить|Can I pay by card?
+open / close|открывать / закрывать|Close the door.
+start / finish|начинать / заканчивать|The film starts at nine.
+wait|ждать|Wait for me.
+understand|понимать|I don't understand.
+remember|помнить|I remember you.
+forget|забывать|Don't forget!
+learn|учить(ся)|I learn English.
+read / write|читать / писать|I read every day.
+live|жить|Where do you live?
+time|время|What time is it?
+day|день|Have a nice day!
+week|неделя|See you next week.
+year|год|I'm 30 years old.
+today|сегодня|I'm busy today.
+tomorrow|завтра|See you tomorrow.
+yesterday|вчера|I was there yesterday.
+now|сейчас|I'm busy now.
+always / never|всегда / никогда|I always drink coffee.
+often / sometimes|часто / иногда|I sometimes read.
+people|люди|Many people live here.
+man / woman|мужчина / женщина|That man is my boss.
+child (children)|ребёнок (дети)|I have two children.
+friend|друг|He is my friend.
+family|семья|My family is big.
+home|дом (свой)|I'm at home.
+house|дом (здание)|This is my house.
+room|комната|My room is small.
+city|город|I live in a big city.
+country|страна|What country are you from?
+street|улица|It's on this street.
+shop|магазин|The shop is open.
+money|деньги|I need money.
+food|еда|The food is good.
+water|вода|A glass of water, please.
+car|машина|My car is old.
+job|работа (должность)|I like my job.
+question / answer|вопрос / ответ|Good question!
+problem|проблема|No problem.
+way|путь, способ|This way, please.
+thing|вещь|One more thing.
+place|место|Nice place!
+good / bad|хороший / плохой|Good idea.
+big / small|большой / маленький|A small house.
+new / old|новый / старый|A new phone.
+long / short|длинный / короткий|A long day.
+easy / difficult|лёгкий / трудный|English is not difficult.
+happy|счастливый|I'm happy.
+tired|уставший|I'm very tired.
+busy|занятой|Are you busy?
+free|свободный, бесплатный|Are you free tonight?
+ready|готовый|I'm ready.
+right / wrong|правильный / неправильный|You are right.
+first / last|первый / последний|My first day.
+other|другой|The other one.
+same|тот же|Same here.
+very|очень|Very good.
+really|действительно|Really?
+too|тоже, слишком|Me too.
+also|также|I also work.
+only|только|Only one.
+here / there|здесь / там|Come here.
+where|где, куда|Where are you?
+when|когда|When is the meeting?
+why|почему|Why not?
+how|как|How are you?
+what|что, какой|What is this?
+who|кто|Who is it?
+which|который|Which one?
+how much|сколько стоит|How much is it?
+because|потому что|I stay because I'm tired.
+but|но|I want to, but I can't.
+and / or|и / или|Tea or coffee?
+if|если|If you want.
+with / without|с / без|Coffee without sugar.
+about|о, про|Tell me about it.
+before / after|до / после|After work.
+please|пожалуйста (просьба)|Help me, please.
+thank you|спасибо|Thank you very much!
+sorry|извините|Sorry, I'm late.
+excuse me|простите (привлечь внимание)|Excuse me, where is the station?
+of course|конечно|Of course!
+maybe|может быть|Maybe later.
+let's|давай(те)|Let's start!`.split('\n').map(l=>{const[w,t,e]=l.split('|');return{w,t,e}});
+const INT=[0,1,2,4,8,16]; // интервал (в днях) по коробкам
+let st=store.get('en_cards',{}),dir=store.get('en_dir','en');
+const dayNum=()=>Math.floor(Date.now()/864e5);
+function due(){const n=dayNum();return W.map((c,i)=>i).filter(i=>{const s=st[i];return !s||s.next<=n})}
+let cur=null,shown=false;
+function pick(){const d=due();const seen=d.filter(i=>st[i]);const fresh=d.filter(i=>!st[i]);
+  const newToday=Object.values(st).filter(s=>s.added===dayNum()).length;
+  const pool=seen.length?seen:(newToday<15?fresh:[]);
+  cur=pool.length?pool[Math.floor(Math.random()*pool.length)]:null;shown=false;renderCard()}
+function renderCard(){
+  const learned=Object.values(st).filter(s=>s.box>=3).length;
+  document.getElementById('prog').style.width=(learned/W.length*100)+'%';
+  const dueSeen=due().filter(i=>st[i]).length;
+  document.getElementById('stat').textContent=`Выучено (коробка 3+): ${learned} из ${W.length} · на повторение сегодня: ${dueSeen} · новых в день: до 15`;
+  document.getElementById('dirBtn').textContent=dir==='en'?'EN → RU':'RU → EN';
+  const fc=document.getElementById('fc'),b=document.getElementById('fcBtns');
+  if(cur===null){fc.innerHTML='<div class="t">На сегодня всё 🎉</div><div class="muted">Возвращайся завтра — слова ждут повторения.</div>';b.innerHTML='';return}
+  const c=W[cur],front=dir==='en'?c.w:c.t,back=dir==='en'?c.t:c.w;
+  fc.innerHTML=`<div class="w">${front}</div>`+(shown?`<div class="t">${back}</div><div class="ex">${c.e}</div>`:'<div class="muted">вспомни ответ вслух</div>');
+  b.innerHTML=shown?'<button class="btn" id="no">Не помню</button><button class="btn p" id="yes">Знаю</button>':'<button class="btn p" id="show">Показать ответ</button>';
+  if(shown){document.getElementById('no').onclick=()=>grade(false);document.getElementById('yes').onclick=()=>grade(true)}
+  else document.getElementById('show').onclick=()=>{shown=true;renderCard()};
+}
+function grade(ok){const s=st[cur]||{box:0,added:dayNum()};s.box=ok?Math.min(s.box+1,5):0;s.next=dayNum()+(ok?INT[s.box]:0);st[cur]=s;store.set('en_cards',st);
+  if(!ok){shown=false;const keep=cur;pick();if(cur===null){cur=keep}renderCard();return}pick()}
+document.getElementById('dirBtn').onclick=()=>{dir=dir==='en'?'ru':'en';store.set('en_dir',dir);shown=false;renderCard()};
+let armed=false;document.getElementById('resetBtn').onclick=e=>{if(!armed){armed=true;e.target.textContent='Точно сбросить?';setTimeout(()=>{armed=false;e.target.textContent='Сбросить'},3000);return}
+  st={};store.set('en_cards',st);armed=false;e.target.textContent='Сбросить';pick()};
+pick();
+
+/* КОПИРОВАНИЕ */
+document.getElementById('copyBtn').onclick=async()=>{const m=document.getElementById('copyMsg');
+  try{await navigator.clipboard.writeText(document.getElementById('prompt').textContent);m.textContent='Скопировано'}catch(e){m.textContent='Не получилось — выдели текст и скопируй вручную'}};
+</script>
+</body>
+</html>
