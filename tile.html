@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Калькулятор плитки онлайн — сколько нужно плитки на пол и стены</title>
+<meta name="description" content="Рассчитайте количество плитки для пола или стен ванной и кухни с учётом шва, запаса на подрезку и количества в упаковке.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="assets/icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2a6df4">
+<!-- Сюда вставить счётчик Яндекс Метрики -->
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="logo" href="index.html">Арх<span>Бухта</span></a>
+  <nav class="main">
+    <a href="tile.html">Плитка</a>
+    <a href="wallpaper.html">Обои</a>
+    <a href="laminate.html">Ламинат</a>
+    <a href="npd.html">Налог самозанятого</a>
+    <a href="usn.html">Налоги ИП (УСН)</a>
+  </nav>
+</div></header>
+<main class="wrap">
+<h1>Калькулятор плитки</h1>
+<p class="lead">Сколько плитки нужно на пол или стены — с учётом швов, подрезки и упаковок.</p>
+
+<div class="ad-slot" data-ad="top"></div>
+
+<form class="card" id="f">
+  <div class="grid">
+    <div><label for="mode">Что облицовываем</label>
+      <select id="mode"><option value="floor">Пол</option><option value="wall">Стены</option></select></div>
+    <div><label for="len">Длина помещения, м</label><input id="len" inputmode="decimal" value="3"></div>
+    <div><label for="wid">Ширина помещения, м</label><input id="wid" inputmode="decimal" value="2"></div>
+    <div class="wall-only"><label for="hgt">Высота облицовки, м</label><input id="hgt" inputmode="decimal" value="2.5"></div>
+    <div class="wall-only"><label for="open">Площадь дверей/окон, м²</label><input id="open" inputmode="decimal" value="1.6"></div>
+    <div><label for="tw">Плитка: длина, см</label><input id="tw" inputmode="decimal" value="30"></div>
+    <div><label for="th">Плитка: ширина, см</label><input id="th" inputmode="decimal" value="60"></div>
+    <div><label for="joint">Шов, мм</label><input id="joint" inputmode="decimal" value="2"></div>
+    <div><label for="res">Запас на подрезку, %</label><input id="res" inputmode="decimal" value="10"></div>
+    <div><label for="box">Плиток в упаковке (если знаете)</label><input id="box" inputmode="numeric" value=""></div>
+  </div>
+  <div class="result" id="out"></div>
+  <div data-partner="tile"></div>
+</form>
+
+<div class="ad-slot" data-ad="result"></div>
+
+<h2>Как считается</h2>
+<p>Площадь пола — длина × ширина. Площадь стен — периметр × высота минус двери и окна. Количество плиток —
+площадь, делённая на площадь одной плитки вместе со швом, плюс запас. При прямой укладке берите 5–10% запаса,
+при диагональной или сложной раскладке — 15%.</p>
+<p>Клей для плитки — ориентировочно 5 кг на м² при слое 3–4 мм; точный расход смотрите на упаковке.</p>
+
+<div class="ad-slot" data-ad="bottom"></div>
+</main>
+<footer class="site"><div class="wrap">
+  © АрхБухта. Расчёты ориентировочные и не заменяют консультацию специалиста.
+  Сайт может содержать рекламу и партнёрские ссылки.
+</div></footer>
+<script src="assets/app.js"></script>
+<script>
+autoCalc("f", () => {
+  const wall = document.getElementById("mode").value === "wall";
+  document.querySelectorAll(".wall-only").forEach(e => e.style.display = wall ? "" : "none");
+  const L = num("len"), W = num("wid");
+  let area = wall ? 2 * (L + W) * num("hgt") - num("open") : L * W;
+  area = Math.max(0, area);
+  const j = num("joint") / 10;
+  const tileArea = (num("tw") + j) * (num("th") + j) / 10000;
+  const out = document.getElementById("out");
+  if (!area || !tileArea) { out.innerHTML = "Заполните размеры помещения и плитки."; return; }
+  const count = Math.ceil(area / tileArea * (1 + num("res") / 100));
+  const perBox = Math.floor(num("box"));
+  const glue = area * 5;
+  out.innerHTML = `Нужно плитки: <div class="big">${fmt(count)} шт.</div>
+    <ul>
+      <li>Площадь облицовки: ${fmt(area, 2)} м²</li>
+      ${perBox > 0 ? `<li>Упаковок: <b>${Math.ceil(count / perBox)}</b></li>` : ""}
+      <li>Клей: ~${fmt(glue)} кг (≈ ${Math.ceil(glue / 25)} мешк. по 25 кг)</li>
+    </ul>`;
+});
+</script>
+</body>
+</html>

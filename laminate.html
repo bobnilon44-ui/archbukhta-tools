@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Калькулятор ламината — сколько упаковок нужно на комнату</title>
+<meta name="description" content="Рассчитайте количество упаковок ламината, подложки и плинтуса для комнаты с учётом способа укладки.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="assets/icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2a6df4">
+<!-- Сюда вставить счётчик Яндекс Метрики -->
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="logo" href="index.html">Арх<span>Бухта</span></a>
+  <nav class="main">
+    <a href="tile.html">Плитка</a>
+    <a href="wallpaper.html">Обои</a>
+    <a href="laminate.html">Ламинат</a>
+    <a href="npd.html">Налог самозанятого</a>
+    <a href="usn.html">Налоги ИП (УСН)</a>
+  </nav>
+</div></header>
+<main class="wrap">
+<h1>Калькулятор ламината</h1>
+<p class="lead">Упаковки ламината, подложка и плинтус для комнаты.</p>
+
+<div class="ad-slot" data-ad="top"></div>
+
+<form class="card" id="f">
+  <div class="grid">
+    <div><label for="len">Длина комнаты, м</label><input id="len" inputmode="decimal" value="5"></div>
+    <div><label for="wid">Ширина комнаты, м</label><input id="wid" inputmode="decimal" value="4"></div>
+    <div><label for="pack">Площадь в упаковке, м²</label><input id="pack" inputmode="decimal" value="2.131"></div>
+    <div><label for="lay">Способ укладки</label>
+      <select id="lay"><option value="5">Прямая (+5%)</option><option value="10">Прямая, сложная комната (+10%)</option><option value="15">Диагональная (+15%)</option></select></div>
+    <div><label for="doors">Ширина дверных проёмов, м</label><input id="doors" inputmode="decimal" value="0.8"></div>
+  </div>
+  <div class="result" id="out"></div>
+  <div data-partner="laminate"></div>
+</form>
+
+<div class="ad-slot" data-ad="result"></div>
+
+<h2>Как считается</h2>
+<p>Площадь пола увеличиваем на запас в зависимости от способа укладки и делим на площадь упаковки
+(указана на коробке). Подложку берём по площади пола. Плинтус — периметр комнаты минус дверные проёмы,
+стандартная длина планки 2,5 м.</p>
+
+<div class="ad-slot" data-ad="bottom"></div>
+</main>
+<footer class="site"><div class="wrap">
+  © АрхБухта. Расчёты ориентировочные и не заменяют консультацию специалиста.
+  Сайт может содержать рекламу и партнёрские ссылки.
+</div></footer>
+<script src="assets/app.js"></script>
+<script>
+autoCalc("f", () => {
+  const out = document.getElementById("out");
+  const L = num("len"), W = num("wid"), pack = num("pack");
+  const area = L * W;
+  if (!area || !pack) { out.innerHTML = "Заполните размеры комнаты и упаковки."; return; }
+  const packs = Math.ceil(area * (1 + num("lay") / 100) / pack);
+  const plinth = Math.max(0, 2 * (L + W) - num("doors"));
+  out.innerHTML = `Нужно упаковок: <div class="big">${packs} шт.</div>
+    <ul>
+      <li>Площадь пола: ${fmt(area, 2)} м² (покупаете ${fmt(packs * pack, 2)} м²)</li>
+      <li>Подложка: ${fmt(Math.ceil(area))} м²</li>
+      <li>Плинтус: ${fmt(plinth, 1)} м ≈ ${Math.ceil(plinth / 2.5)} планок по 2,5 м</li>
+    </ul>`;
+});
+</script>
+</body>
+</html>

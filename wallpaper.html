@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Калькулятор обоев — сколько рулонов нужно на комнату</title>
+<meta name="description" content="Онлайн-расчёт количества рулонов обоев по размерам комнаты с учётом дверей, окон, ширины рулона и раппорта.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="assets/icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2a6df4">
+<!-- Сюда вставить счётчик Яндекс Метрики -->
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="logo" href="index.html">Арх<span>Бухта</span></a>
+  <nav class="main">
+    <a href="tile.html">Плитка</a>
+    <a href="wallpaper.html">Обои</a>
+    <a href="laminate.html">Ламинат</a>
+    <a href="npd.html">Налог самозанятого</a>
+    <a href="usn.html">Налоги ИП (УСН)</a>
+  </nav>
+</div></header>
+<main class="wrap">
+<h1>Калькулятор обоев</h1>
+<p class="lead">Сколько рулонов купить на комнату — с учётом окон, дверей и подгонки рисунка.</p>
+
+<div class="ad-slot" data-ad="top"></div>
+
+<form class="card" id="f">
+  <div class="grid">
+    <div><label for="len">Длина комнаты, м</label><input id="len" inputmode="decimal" value="4"></div>
+    <div><label for="wid">Ширина комнаты, м</label><input id="wid" inputmode="decimal" value="3"></div>
+    <div><label for="hgt">Высота стен, м</label><input id="hgt" inputmode="decimal" value="2.7"></div>
+    <div><label for="open">Ширина окон и дверей суммарно, м</label><input id="open" inputmode="decimal" value="2.3"></div>
+    <div><label for="rw">Ширина рулона</label>
+      <select id="rw"><option value="0.53">0,53 м</option><option value="1.06" selected>1,06 м</option><option value="0.7">0,70 м</option></select></div>
+    <div><label for="rl">Длина рулона, м</label><input id="rl" inputmode="decimal" value="10.05"></div>
+    <div><label for="rap">Раппорт (повтор рисунка), см</label><input id="rap" inputmode="decimal" value="0"></div>
+  </div>
+  <div class="result" id="out"></div>
+  <div data-partner="wallpaper"></div>
+</form>
+
+<div class="ad-slot" data-ad="result"></div>
+
+<h2>Как считается</h2>
+<p>Считаем, сколько полос нужно, чтобы покрыть периметр комнаты без окон и дверей, и сколько целых полос
+выходит из одного рулона. Длина полосы — высота стены плюс раппорт и 5 см на подрезку. Обрезки обычно идут
+на участки над дверями и под окнами, поэтому их отдельно не учитываем.</p>
+<p>Совет: возьмите 1 рулон про запас из той же партии — оттенок разных партий может отличаться.</p>
+
+<div class="ad-slot" data-ad="bottom"></div>
+</main>
+<footer class="site"><div class="wrap">
+  © АрхБухта. Расчёты ориентировочные и не заменяют консультацию специалиста.
+  Сайт может содержать рекламу и партнёрские ссылки.
+</div></footer>
+<script src="assets/app.js"></script>
+<script>
+autoCalc("f", () => {
+  const out = document.getElementById("out");
+  const work = 2 * (num("len") + num("wid")) - num("open");
+  const rw = num("rw"), rl = num("rl");
+  const strip = num("hgt") + num("rap") / 100 + 0.05;
+  const perRoll = Math.floor(rl / strip);
+  if (work <= 0 || !rw || !num("hgt")) { out.innerHTML = "Заполните размеры комнаты."; return; }
+  if (perRoll < 1) { out.innerHTML = "Рулон короче высоты стены — проверьте данные."; return; }
+  const strips = Math.ceil(work / rw);
+  out.innerHTML = `Нужно рулонов: <div class="big">${Math.ceil(strips / perRoll)} шт.</div>
+    <ul>
+      <li>Полос: ${strips} (по ${fmt(strip, 2)} м)</li>
+      <li>Полос из одного рулона: ${perRoll}</li>
+      <li>Площадь стен под оклейку: ~${fmt(work * num("hgt"), 1)} м²</li>
+    </ul>`;
+});
+</script>
+</body>
+</html>
