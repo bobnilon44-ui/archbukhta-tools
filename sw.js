@@ -1,7 +1,7 @@
 // Кэш для работы калькуляторов без интернета. При изменении файлов увеличьте версию.
-const CACHE = "archbukhta-v1";
+const CACHE = "archbukhta-v2";
 const FILES = [
-  "./", "index.html", "tile.html", "wallpaper.html", "laminate.html", "npd.html", "usn.html",
+  "./", "index.html", "tile.html", "wallpaper.html", "laminate.html", "paint.html", "concrete.html", "plaster.html", "npd.html", "usn.html", "ndfl.html", "vacation.html", "sick.html", "property.html",
   "assets/style.css", "assets/app.js", "assets/icon.svg", "manifest.webmanifest",
 ];
 

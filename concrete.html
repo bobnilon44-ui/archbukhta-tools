@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Калькулятор бетона — сколько кубов бетона нужно на фундамент и плиту</title>
+<meta name="description" content="Онлайн-расчёт объёма бетона для монолитной плиты и ленточного фундамента, количество цемента, песка и щебня для замеса.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="assets/icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2a6df4">
+<!-- Сюда вставить счётчик Яндекс Метрики -->
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="logo" href="index.html">Арх<span>Бухта</span></a>
+  <nav class="main">
+    <a href="index.html#remont">Ремонт и стройка</a>
+    <a href="index.html#dengi">Налоги и деньги</a>
+  </nav>
+</div></header>
+<main class="wrap">
+<h1>Калькулятор бетона</h1>
+<p class="lead">Объём бетона в кубах для плиты или ленточного фундамента и материалы для замеса своими руками.</p>
+
+<div class="ad-slot" data-ad="top"></div>
+
+<form class="card" id="f">
+  <div class="grid">
+    <div><label for="type">Конструкция</label>
+      <select id="type"><option value="slab">Плита / стяжка / площадка</option><option value="strip">Ленточный фундамент</option></select></div>
+    <div class="slab-only"><label for="len">Длина плиты, м</label><input id="len" inputmode="decimal" value="6"></div>
+    <div class="slab-only"><label for="wid">Ширина плиты, м</label><input id="wid" inputmode="decimal" value="4"></div>
+    <div class="slab-only"><label for="thk">Толщина плиты, см</label><input id="thk" inputmode="decimal" value="20"></div>
+    <div class="strip-only"><label for="plen">Общая длина ленты, м</label><input id="plen" inputmode="decimal" value="40"></div>
+    <div class="strip-only"><label for="sw">Ширина ленты, см</label><input id="sw" inputmode="decimal" value="40"></div>
+    <div class="strip-only"><label for="sh">Высота ленты, см</label><input id="sh" inputmode="decimal" value="80"></div>
+    <div><label for="grade">Марка бетона</label>
+      <select id="grade"><option value="150">М150 (подготовка, дорожки)</option><option value="200">М200 (стяжки, фундаменты)</option><option value="250" selected>М250 (фундаменты, плиты)</option><option value="300">М300 (несущие конструкции)</option></select></div>
+    <div><label for="res">Запас, %</label><input id="res" inputmode="decimal" value="5"></div>
+  </div>
+  <div class="result" id="out"></div>
+  <div data-partner="concrete"></div>
+</form>
+
+<div class="ad-slot" data-ad="result"></div>
+
+<h2>Как считается</h2>
+<p>Объём плиты — длина × ширина × толщина. Объём ленточного фундамента — общая длина ленты (по осям, включая
+внутренние стены) × ширина × высота. Запас 3–5% уходит на неровности основания и потери.</p>
+<p>Расход материалов на 1 м³ дан ориентировочно для цемента М500 и щебня фракции 5–20 мм. Для больших объёмов
+дешевле и надёжнее заказать готовый бетон с завода.</p>
+
+<h2>Другие калькуляторы</h2>
+<div class="tiles">
+  <a class="tile" href="tile.html"><span class="ico">🧱</span><b>Калькулятор плитки</b><small>Пол и стены, с учётом шва, запаса и упаковок</small></a>
+  <a class="tile" href="wallpaper.html"><span class="ico">🧻</span><b>Калькулятор обоев</b><small>Сколько рулонов нужно на комнату с учётом раппорта</small></a>
+  <a class="tile" href="laminate.html"><span class="ico">🪵</span><b>Калькулятор ламината</b><small>Упаковки, подложка и плинтус</small></a>
+  <a class="tile" href="paint.html"><span class="ico">🎨</span><b>Калькулятор краски</b><small>Литры и банки краски для стен и потолка</small></a>
+  <a class="tile" href="plaster.html"><span class="ico">🪣</span><b>Калькулятор штукатурки</b><small>Мешки гипсовой и цементной штукатурки</small></a>
+</div>
+
+<div class="ad-slot" data-ad="bottom"></div>
+</main>
+<footer class="site"><div class="wrap">
+  © АрхБухта. Расчёты ориентировочные и не заменяют консультацию специалиста.
+  Сайт может содержать рекламу и партнёрские ссылки.
+</div></footer>
+<script src="assets/app.js"></script>
+<script>
+// Ориентировочный расход на 1 м³ бетона (цемент М500): цемент, песок, щебень — кг
+const MIX = { 150: [210, 870, 1080], 200: [250, 830, 1080], 250: [290, 790, 1080], 300: [330, 750, 1080] };
+autoCalc("f", () => {
+  const slab = document.getElementById("type").value === "slab";
+  document.querySelectorAll(".slab-only").forEach(e => e.style.display = slab ? "" : "none");
+  document.querySelectorAll(".strip-only").forEach(e => e.style.display = slab ? "none" : "");
+  const v0 = slab ? num("len") * num("wid") * num("thk") / 100 : num("plen") * num("sw") / 100 * num("sh") / 100;
+  const out = document.getElementById("out");
+  if (!v0) { out.innerHTML = "Заполните размеры."; return; }
+  const v = v0 * (1 + num("res") / 100);
+  const [c, s, g] = MIX[document.getElementById("grade").value];
+  out.innerHTML = `Нужно бетона: <div class="big">${fmt(v, 2)} м³</div>
+    <ul>
+      <li>Без запаса: ${fmt(v0, 2)} м³</li>
+      <li>Цемент: ~${fmt(c * v)} кг ≈ <b>${Math.ceil(c * v / 50)} мешк. по 50 кг</b></li>
+      <li>Песок: ~${fmt(s * v / 1000, 1)} т, щебень: ~${fmt(g * v / 1000, 1)} т</li>
+      <li>Вода: ~${fmt(180 * v)} л</li>
+    </ul>`;
+});
+</script>
+</body>
+</html>

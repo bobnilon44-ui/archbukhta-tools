@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Калькулятор больничного 2026 — расчёт пособия по нетрудоспособности</title>
+<meta name="description" content="Рассчитайте больничный в 2026 году: средний заработок за 2024–2025 годы, процент по стажу, минимальный и максимальный размер пособия.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="assets/icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2a6df4">
+<!-- Сюда вставить счётчик Яндекс Метрики -->
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="logo" href="index.html">Арх<span>Бухта</span></a>
+  <nav class="main">
+    <a href="index.html#remont">Ремонт и стройка</a>
+    <a href="index.html#dengi">Налоги и деньги</a>
+  </nav>
+</div></header>
+<main class="wrap">
+<h1>Калькулятор больничного</h1>
+<p class="lead">Пособие по временной нетрудоспособности (болезнь работника) в 2026 году.</p>
+
+<div class="ad-slot" data-ad="top"></div>
+
+<form class="card" id="f">
+  <div class="grid">
+    <div><label for="y1">Заработок за 2024 год, ₽</label><input id="y1" inputmode="decimal" value="900000"></div>
+    <div><label for="y2">Заработок за 2025 год, ₽</label><input id="y2" inputmode="decimal" value="1000000"></div>
+    <div><label for="stazh">Страховой стаж</label>
+      <select id="stazh"><option value="0.6">Менее 5 лет — 60%</option><option value="0.8">От 5 до 8 лет — 80%</option><option value="1" selected>8 лет и больше — 100%</option></select></div>
+    <div><label for="days">Дней на больничном</label><input id="days" inputmode="numeric" value="7"></div>
+  </div>
+  <div class="result" id="out"></div>
+  <div data-partner="sick"></div>
+</form>
+
+<div class="ad-slot" data-ad="result"></div>
+
+<h2>Как считается больничный в 2026 году</h2>
+<ul>
+  <li>Средний дневной заработок = заработок за 2 предыдущих года ÷ 730.</li>
+  <li>Заработок каждого года учитывается не больше предельной базы: 2 225 000 ₽ за 2024 год и 2 759 000 ₽ за 2025 год.
+    Поэтому максимальный дневной заработок — 6 827,40 ₽.</li>
+  <li>Минимум считается от МРОТ 2026 года (27 093 ₽): МРОТ × 24 ÷ 730 = 890,73 ₽ в день.</li>
+  <li>Процент зависит от стажа: менее 5 лет — 60%, 5–8 лет — 80%, от 8 лет — 100%.
+    При стаже меньше 6 месяцев пособие не больше МРОТ за месяц.</li>
+  <li>Первые 3 дня оплачивает работодатель, остальные — Социальный фонд. С пособия удерживают НДФЛ.</li>
+</ul>
+<p class="note">Расчёт ориентировочный. Районные коэффициенты и особые случаи (уход за ребёнком, травма) не учитываются.</p>
+
+<h2>Другие калькуляторы</h2>
+<div class="tiles">
+  <a class="tile" href="npd.html"><span class="ico">🧾</span><b>Налог самозанятого (НПД)</b><small>4% и 6% с учётом налогового вычета</small></a>
+  <a class="tile" href="usn.html"><span class="ico">📊</span><b>Налоги ИП на УСН</b><small>6% или 15%, страховые взносы, чистый доход</small></a>
+  <a class="tile" href="ndfl.html"><span class="ico">💼</span><b>Калькулятор НДФЛ и зарплаты</b><small>Зарплата на руки по прогрессивной шкале 13–22%</small></a>
+  <a class="tile" href="vacation.html"><span class="ico">🏖️</span><b>Калькулятор отпускных</b><small>Средний дневной заработок и сумма отпускных</small></a>
+  <a class="tile" href="property.html"><span class="ico">🏠</span><b>Вычет за квартиру</b><small>Сколько НДФЛ вернут за покупку жилья и проценты по ипотеке</small></a>
+</div>
+
+<div class="ad-slot" data-ad="bottom"></div>
+</main>
+<footer class="site"><div class="wrap">
+  © АрхБухта. Расчёты ориентировочные и не заменяют консультацию специалиста.
+  Сайт может содержать рекламу и партнёрские ссылки.
+</div></footer>
+<script src="assets/app.js"></script>
+<script>
+const CAP_2024 = 2225000, CAP_2025 = 2759000, MROT_2026 = 27093;
+autoCalc("f", () => {
+  const out = document.getElementById("out");
+  const days = Math.floor(num("days"));
+  if (!days) { out.innerHTML = "Укажите количество дней."; return; }
+  const minDay = MROT_2026 * 24 / 730;
+  let avg = (Math.min(num("y1"), CAP_2024) + Math.min(num("y2"), CAP_2025)) / 730;
+  let note = "";
+  if (avg < minDay) { avg = minDay; note = "<li>Заработок ниже минимального — расчёт от МРОТ</li>"; }
+  const daily = Math.max(avg * num("stazh"), minDay);
+  const total = daily * days;
+  const employer = daily * Math.min(days, 3);
+  out.innerHTML = `Больничный на руки: <div class="big">${rub(total * 0.87)}</div>
+    <ul>
+      <li>Начислено: ${rub(total)} (${fmt(daily, 2)} ₽ в день)</li>
+      <li>Оплачивает работодатель (первые 3 дня): ${rub(employer)}</li>
+      <li>Оплачивает Социальный фонд: ${rub(total - employer)}</li>
+      ${note}
+    </ul>`;
+});
+</script>
+</body>
+</html>

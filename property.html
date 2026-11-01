@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Налоговый вычет за квартиру — калькулятор возврата НДФЛ</title>
+<meta name="description" content="Посчитайте, сколько НДФЛ можно вернуть при покупке квартиры или дома и с процентов по ипотеке, и за сколько лет.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="assets/icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2a6df4">
+<!-- Сюда вставить счётчик Яндекс Метрики -->
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="logo" href="index.html">Арх<span>Бухта</span></a>
+  <nav class="main">
+    <a href="index.html#remont">Ремонт и стройка</a>
+    <a href="index.html#dengi">Налоги и деньги</a>
+  </nav>
+</div></header>
+<main class="wrap">
+<h1>Калькулятор вычета за квартиру</h1>
+<p class="lead">Сколько НДФЛ вернут за покупку жилья и проценты по ипотеке, и за сколько лет.</p>
+
+<div class="ad-slot" data-ad="top"></div>
+
+<form class="card" id="f">
+  <div class="grid">
+    <div><label for="price">Стоимость жилья (ваша доля), ₽</label><input id="price" inputmode="decimal" value="7000000"></div>
+    <div><label for="pct">Уплаченные проценты по ипотеке за всё время, ₽</label><input id="pct" inputmode="decimal" value="4000000"></div>
+    <div><label for="inc">Ваш официальный доход в год, ₽</label><input id="inc" inputmode="decimal" value="1200000"></div>
+    <div><label for="used">Остаток вычета, уже полученного ранее, ₽</label><input id="used" inputmode="decimal" value="0" placeholder="0 если не получали"></div>
+  </div>
+  <div class="result" id="out"></div>
+  <div data-partner="property"></div>
+</form>
+
+<div class="ad-slot" data-ad="result"></div>
+
+<h2>Как работает имущественный вычет</h2>
+<ul>
+  <li><b>Основной вычет</b> — с расходов на покупку или строительство жилья, не больше 2 млн ₽. Вернуть можно до 260 000 ₽.
+    Если в прошлый раз вы использовали не всю сумму, остаток можно перенести на другую покупку.</li>
+  <li><b>Вычет по процентам</b> — с процентов по ипотеке, не больше 3 млн ₽ (до 390 000 ₽). Даётся только по одному объекту.</li>
+  <li>За год вернут не больше уплаченного НДФЛ. Остаток переносится на следующие годы.</li>
+  <li>Супруги могут получить вычет каждый за себя — так семья вернёт до 520 000 ₽ за покупку.</li>
+</ul>
+<p>Оформить можно через работодателя (налог перестанут удерживать) или по итогам года через личный кабинет налогоплательщика.</p>
+<p class="note">Расчёт по ставке 13%. С 2025 года вычет предоставляется и в части дохода, облагаемой по 15% и выше, — фактическая сумма может отличаться.</p>
+
+<h2>Другие калькуляторы</h2>
+<div class="tiles">
+  <a class="tile" href="npd.html"><span class="ico">🧾</span><b>Налог самозанятого (НПД)</b><small>4% и 6% с учётом налогового вычета</small></a>
+  <a class="tile" href="usn.html"><span class="ico">📊</span><b>Налоги ИП на УСН</b><small>6% или 15%, страховые взносы, чистый доход</small></a>
+  <a class="tile" href="ndfl.html"><span class="ico">💼</span><b>Калькулятор НДФЛ и зарплаты</b><small>Зарплата на руки по прогрессивной шкале 13–22%</small></a>
+  <a class="tile" href="vacation.html"><span class="ico">🏖️</span><b>Калькулятор отпускных</b><small>Средний дневной заработок и сумма отпускных</small></a>
+  <a class="tile" href="sick.html"><span class="ico">🤒</span><b>Калькулятор больничного</b><small>Пособие по стажу, лимиты 2026 года</small></a>
+</div>
+
+<div class="ad-slot" data-ad="bottom"></div>
+</main>
+<footer class="site"><div class="wrap">
+  © АрхБухта. Расчёты ориентировочные и не заменяют консультацию специалиста.
+  Сайт может содержать рекламу и партнёрские ссылки.
+</div></footer>
+<script src="assets/app.js"></script>
+<script>
+autoCalc("f", () => {
+  const out = document.getElementById("out");
+  const usedBefore = Math.min(num("used"), 2000000);
+  const mainBase = Math.min(num("price"), 2000000 - usedBefore);
+  const main = Math.max(0, mainBase) * 0.13;
+  const pct = Math.min(num("pct"), 3000000) * 0.13;
+  const total = main + pct;
+  const perYear = num("inc") * 0.13;
+  if (!total) { out.innerHTML = "Укажите стоимость жилья или проценты."; return; }
+  out.innerHTML = `Можно вернуть: <div class="big">${rub(total)}</div>
+    <ul>
+      <li>За покупку жилья: ${rub(main)}</li>
+      <li>За проценты по ипотеке: ${rub(pct)}</li>
+      ${perYear ? `<li>При вашем доходе — до ${rub(perYear)} в год, примерно за <b>${Math.ceil(total / perYear)} г.</b></li>` : ""}
+    </ul>
+    <p class="note">Вычет по процентам возвращают по мере их уплаты, поэтому на практике он растянется на срок ипотеки.</p>`;
+});
+</script>
+</body>
+</html>
